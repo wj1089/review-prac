@@ -31,19 +31,14 @@ const Login = () => {
         console.log(e.target.value)
     }
 
-    const handleClick = () =>{
-    //     { type === 'submit' ? (
-    //         console.log("Submit Clicked")
-    //     ): (
-    //         console.log("button Clicked")
-    //     )
-    // }
-    console.log("Clicked")
+    const onClick = (e) =>{
+        console.log("Click button")
     }
 
-    // const LinkSign = () =>{
-
-    // }
+    const onSubmit = (e) =>{
+        e.preventDefault();
+        console.log("Submit")
+    }
 
     return (
     <>
@@ -55,13 +50,13 @@ const Login = () => {
                     <input className="idpw-input" value={userPw} type="text" placeholder="비밀번호" onChange={changePw} />
                     
                     <div className="find-area">
-                        <a href="./forgotid"><button className="btn-find" type="button" onClick={handleClick}>아이디 찾기</button></a>
-                        <a href="./forgotpw"><button className="btn-find" type="button" onClick={handleClick}>비밀번호 찾기</button></a>
+                        <a href="./forgotid"><button className="btn-find" type="button" onClick={onClick}>아이디 찾기</button></a>
+                        <a href="./forgotpw"><button className="btn-find" type="button" onClick={onClick}>비밀번호 찾기</button></a>
                     </div>
                 </div>
                 <div className="select-btn">
                     {/* submit */}
-                    <button className="btn-item" type="submit">로그인</button>
+                    <button className="btn-item" type="submit" onClick={onSubmit}>로그인</button>
 
                     {/* signin */}
                     <a href="./Signin"><button className="btn-item" type="button" >회원가입</button></a>
