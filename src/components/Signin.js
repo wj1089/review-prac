@@ -3,24 +3,32 @@ import './login.css';
 
 const Signin = () => {
 
-    const [signId, setSignId] = useState('');
-    const [signPw, setSignPw] = useState('');
-    const [checkPw, setCheckPw] = useState('');
-    const [signName, setName] = useState('');
-    const [signEmail, setEmail] = useState('');
-    const [signPhone, setPhone] = useState('');
-    const [signAdres, setAdres] = useState('');
-    const [gender,setGender] = useState('')
-    const [birth,setBirth] = useState('')
+    const [signInput,setSignInput] = useState({
+        signId:'',
+        signPw:'',
+        checkPw:'',
+        signName:'',
+        signEmail:'',
+        signPhone:'',
+        signAdres:'',
+        gender:'',
+        birth:''
+    })
+    const {signId,signPw,checkPw,signName,signEmail,
+        signPhone,signAdres,gender,birth} = signInput;
 
-    const changeId = e =>{
-        setSignId(e.target.value);
+    // const [birth,setBirth] = useState('')
+
+    const onChange = (e) =>{
+        const {value, name} = e.target;
+
+        setSignInput({
+            ...signInput,
+            [name]:value
+        })
+        console.log("e.target")
+        console.log(e.target)
     }
-    const changePw = e =>{
-        setSignPw(e.target.value);
-    }
-
-
 
     return (
         <>
@@ -30,22 +38,22 @@ const Signin = () => {
                     <header><h1>Welcome to ~~ Please Signin</h1></header>
 
                     <div className="mid-area">
-                        <input className="idpw-input" value={signId} type="text" placeholder="아이디" onChange={changeId} />
-                        <input className="idpw-input" value={signPw} type="text" placeholder="비밀번호" onChange={changePw} />
-                        <input className="idpw-input" value={checkPw} type="text" placeholder="비밀번호 확인" onChange={changePw} />
-                        <input className="idpw-input" value={signName} type="text" placeholder="이름" onChange={changePw} />
-                        <input className="idpw-input" value={signEmail} type="text" placeholder="이메일" onChange={changePw} />
-                        <input className="idpw-input" value={signPhone} type="text" placeholder="휴대폰" onChange={changePw} />
-                        <input className="idpw-input" value={signAdres} type="text" placeholder="주소" onChange={changePw} />
+                        <input className="idpw-input" value={signId} name="signId" type="text" placeholder="아이디" onChange={onChange} />
+                        <input className="idpw-input" value={signPw} name="signPw" type="text" placeholder="비밀번호" onChange={onChange} />
+                        <input className="idpw-input" value={checkPw} tynamepe="checkPw" type="text" placeholder="비밀번호 확인" onChange={onChange} />
+                        <input className="idpw-input" value={signName} name="signName" type="text" placeholder="이름" onChange={onChange} />
+                        <input className="idpw-input" value={signEmail} name="signEmail" type="text" placeholder="이메일" onChange={onChange} />
+                        <input className="idpw-input" value={signPhone} name="signPhone" type="text" placeholder="휴대폰" onChange={onChange} />
+                        <input className="idpw-input" value={signAdres} name="signAdres" type="text" placeholder="주소" onChange={onChange} />
                         {/* <div>
                             <input className="idpw-input" type="checkbox" >남</input>
                             <input className="idpw-input" type="checkbox" >녀</input>
                             <input className="idpw-input" type="checkbox" >선택안함</input>
                         </div> */}
-                        <input className="idpw-input" value={birth} type="text" placeholder="생년월일" onChange={changePw} />
+                        <input className="idpw-input" value={birth} type="text" placeholder="생년월일" onChange={signInput} />
                     </div>
-                    
-                    <a href="/"><button>back to Login</button></a>
+                    <a href="/login"><button>back to Login</button></a>
+                    <a href="/"><button>back to Home</button></a>
                 </div>
             </div>
         </>
