@@ -1,43 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { withRouter } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import {loginUser} from "../actions/userAction"
 import "./login.css"
 
-const Login = () => {
-
-    const [userId, setUserId] = useState('')
-    const [userPw, setUserPw] = useState('')
-
-
-    useEffect(()=>{
-        console.log("effect")
-        console.log(userId)
-
-        return() =>{
-            console.log("cleanup")
-            console.log(userId)
-        }
-    },[userId,userPw])
-
-
+const Login = (props) => {
+    const dispatch = useDispatch();
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [os, setOs] = useState('')
+    const [uuid, setUuid] = useState('')
 
     const changeId = e =>{
-        setUserId(e.target.value)
-        console.log("changeId")
-        console.log(e.target.value)
+        setEmail(e.currentTarget.value)
     }
 
     const changePw = e =>{
-        setUserPw(e.target.value)
-        console.log("changePw")
-        console.log(e.target.value)
+        setPassword(e.currentTarget.value)
     }
 
-    const onClick = (e) =>{
-        console.log("Click button")
+    const changeOs = e =>{
+        setOs(e.currentTarget.value)
+    }
+    const changeUuid = e =>{
+        setUuid(e.currentTarget.value)
     }
 
     const onSubmit = (e) =>{
         e.preventDefault();
-        console.log("Submit")
+
+        const body = {
+            email : email,
+            password : password,
+            os : os,
+            uuid : uuid
+        }
+
+        dispatch(loginUser(body))
+        .then((response) => {
+            if(response.payload){
+                alert("로그인 성공! 환영합니다")
+                props.history.push("/logout")
+            }
+        })
     }
 
     return (
@@ -46,12 +51,14 @@ const Login = () => {
             <div className="outline">
                 <header><h1>Login Page</h1></header>
                 <div className="mid-area">
-                    <input className="idpw-input" value={userId} type="text" placeholder="아이디" onChange={changeId} />
-                    <input className="idpw-input" value={userPw} type="text" placeholder="비밀번호" onChange={changePw} />
-                    
+                    <input className="idpw-input" value={email} name="email" type="text" placeholder="아이디" onChange={changeId} />
+                    <input className="idpw-input" value={password} name="password" type="text" placeholder="비밀번호" onChange={changePw} />
+                    <input className="idpw-input" value={os} name="os" type="text" placeholder="OS" onChange={changeOs} />
+                    <input className="idpw-input" value={uuid} name="uuid" type="text" placeholder="uuid" onChange={changeUuid} />
+
                     <div className="find-area">
-                        <a href="./forgotid"><button className="btn-find" type="button" onClick={onClick}>아이디 찾기</button></a>
-                        <a href="./forgotpw"><button className="btn-find" type="button" onClick={onClick}>비밀번호 찾기</button></a>
+                        <a href="./forgotid"><button className="btn-find" type="button">아이디 찾기</button></a>
+                        <a href="./forgotpw"><button className="btn-find" type="button">비밀번호 찾기</button></a>
                     </div>
                 </div>
                 <div className="select-btn">
@@ -68,4 +75,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default withRouter(Login);
