@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import {loginUser} from "../actions/userAction"
+import { loginUser } from "../actions/userAction"
 import "./login.css"
 
 const Login = (props) => {
@@ -26,22 +26,27 @@ const Login = (props) => {
         setUuid(e.currentTarget.value)
     }
 
-    const onSubmit = (e) =>{
-        e.preventDefault();
-
+    const onSubmit = () =>{
+     
         const body = {
             email : email,
             password : password,
             os : os,
-            uuid : uuid
+            uuid : uuid,
         }
-
+      
         dispatch(loginUser(body))
         .then((response) => {
-            if(response.payload){
-                alert("로그인 성공! 환영합니다")
-                props.history.push("/logout")
-            }
+        console.log("respose")
+        console.log(response.payload)
+
+        if(response.payload.accountEntity !== false){
+            alert("로그인 성공! 환영합니다")
+            props.history.push("/Logout")
+        }
+        })
+        .catch((error)=>{
+            alert(error.response.data.error.message)
         })
     }
 

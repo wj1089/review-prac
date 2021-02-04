@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../actions/userAction';
 import './login.css';
+// import { request } from '../util/axios';
 
 const Signin = (props) => {
     const dispatch = useDispatch();
@@ -14,10 +15,12 @@ const Signin = (props) => {
         phone:'',
         address:'',
         addressDetail:'',
-        gender:''
+        gender:'',
+        birthday :'',
+        // token : request.get('token')
     })
     const {email,password,checkPw,name,
-        phone,address,addressDetail,gender} = signInput;
+        phone,address,addressDetail,gender,birthday} = signInput;
         
     // const [birth,setBirth] = useState('')
     console.log("signInput")
@@ -39,20 +42,25 @@ const Signin = (props) => {
         //바디라는 이름으로 전달내용을 묶는다.
         let body = {
             email : email,
-            password : password,
             name : name,
             address: address,
             addressDetail: addressDetail,
+            birthday : birthday,
+            gender: gender,
             phone : phone,
-            gender: gender
+            password : password,
+            // token: `${token}`
         };
+
         //계정 생성 도중 비밀번호가 다를 경우 alert를 띄운다 
         if(password === checkPw){
-            dispatch(registerUser(body)).then((res)=>{
-                console.log("res")
-                console.log(res)
+            dispatch(registerUser(body))
+            .then((response)=>{
+                console.log("response")
+                console.log(response)
                 alert("정상가입 성공!")
-                props.history.push("/login")
+                return
+                // props.history.push("/login")
             })
         }else{
             alert("비밀번호가 일치하지 않습니다");
@@ -77,6 +85,7 @@ const Signin = (props) => {
                         <input className="sign-input" value={address} name="address" type="text" placeholder="주소" onChange={onChange} />
                         <input className="sign-input" value={addressDetail} name="addressDetail" type="text" placeholder="주소" onChange={onChange} />
                         <input className="sign-input" value={gender} name="gender" type="text" placeholder="성별" onChange={onChange} />
+                        <input className="sign-input" value={birthday} name="birthday" type="text" placeholder="생년월일" onChange={onChange} />
 
                         {/* <div>
                             <input className="idpw-input" type="checkbox" >남</input>
