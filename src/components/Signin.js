@@ -1,45 +1,73 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../actions/userAction';
+import axios from 'axios';
+// import useFrom from './useForm';
+import validate from './validationInfo';
+import moment from 'moment';
+import DatePicker from "react-datepicker";
 import './login.css';
-// import { request } from '../util/axios';
+import "react-datepicker/dist/react-datepicker.css";
+import { registerUser } from '../actions/userAction';
+// import { useDispatch } from 'react-redux';
 
-const Signin = (props) => {
-    const dispatch = useDispatch();
-    const [signInput,setSignInput] = useState({
-        email:'',
-        password:'',
-        checkPw:'',
-        name:'',
-        phone:'',
-        address:'',
-        addressDetail:'',
-        gender:'',
-        birthday :'',
-        // token : request.get('token')
-    })
-    const {email,password,checkPw,name,
-        phone,address,addressDetail,gender,birthday} = signInput;
-        
-    // const [birth,setBirth] = useState('')
-    console.log("signInput")
-    console.log(signInput)
+const Signin = validate => {
+    
+    // const {handleInfoChange, signInput, onSubmit, error } = useFrom(validate);
+    
+        const dispatch = useDispatch();
+    
+        const [signInput,setSignInput] = useState({
+            email:'',
+            password:'',
+            name:'',
+            phone:'',
+            address:'',
+            addressDetail:'',
+            gender:'',
+            birthday :''
+        })
+    
 
-    const onChange = (e) =>{
+    const {email,password,name, phone,address,
+        addressDetail,gender,birthday} = signInput;
+    
+    const [checkAgree, setCheckAgree] = useState(false);
+
+    const [startDate, setStartDate] = useState(new Date());
+
+    const onError =(error)=>{
+        alert(error.response.data.error.message)
+    }
+
+    const handleCheckYn = ()=>{
+        setCheckAgree(!checkAgree)
+    }
+
+    const [error, setError] = useState({})
+
+    const handleInfoChange = (e) =>{  
         const {value, name} = e.target;
-
         setSignInput({
             ...signInput,
             [name]:value
         })
     }
 
-
+    const HandleDatePick = ({ value, onClick }) => {
+        console.log("startDate")
+        // console.log(moment(value).format('YYMMDD'))
+        console.log(moment(startDate).format('YYMMDD'))
+        return(
+        <button className="example-custom-input" onClick={onClick}>
+            {moment(value).format('YYMMDD')}
+        </button>
+        )
+    };
 
     const onSubmit = (e) =>{
+        console.log(e)
         e.preventDefault()
-        //바디라는 이름으로 전달내용을 묶는다.
         let body = {
             email : email,
             name : name,
@@ -48,57 +76,186 @@ const Signin = (props) => {
             birthday : birthday,
             gender: gender,
             phone : phone,
-            password : password,
-            // token: `${token}`
+            password : password
         };
-
+   
         //계정 생성 도중 비밀번호가 다를 경우 alert를 띄운다 
-        if(password === checkPw){
+        setError(validate(body));
+        console.log("setError")
+        console.log(setError)
             dispatch(registerUser(body))
             .then((response)=>{
+                localStorage.getItem('user')
                 console.log("response")
                 console.log(response)
                 alert("정상가입 성공!")
-                return
-                // props.history.push("/login")
+                validate.history.push("/login")
             })
-        }else{
-            alert("비밀번호가 일치하지 않습니다");
-        }
+            .catch((error)=>{
+                alert(error.response.data.error.message)
+            })
+        
         console.log("Submit")
     }
-
 
     return (
         <>
             <div className="full-screen">
                 <div className="outline">
-
                     <header><h2> Please Sign Account </h2></header>
-
                     <div className="mid-area">
-                        <input className="sign-input" value={email} name="email" type="text" placeholder="아이디" onChange={onChange} />
-                        <input className="sign-input" value={password} name="password" type="text" placeholder="비밀번호" onChange={onChange} />
-                        <input className="sign-input" value={checkPw} name="checkPw" type="text" placeholder="비밀번호 확인" onChange={onChange} />
-                        <input className="sign-input" value={name} name="name" type="text" placeholder="이름" onChange={onChange} />
-                        <input className="sign-input" value={phone} name="phone" type="text" placeholder="휴대폰" onChange={onChange} />
-                        <input className="sign-input" value={address} name="address" type="text" placeholder="주소" onChange={onChange} />
-                        <input className="sign-input" value={addressDetail} name="addressDetail" type="text" placeholder="주소" onChange={onChange} />
-                        <input className="sign-input" value={gender} name="gender" type="text" placeholder="성별" onChange={onChange} />
-                        <input className="sign-input" value={birthday} name="birthday" type="text" placeholder="생년월일" onChange={onChange} />
+                        <div>
+                            <input 
+                            className="sign-input" 
+                            id="email"
+                            name="email" 
+                            type="text" 
+                            placeholder="아이디" 
+                            value={signInput.email} 
+                            onChange={handleInfoChange} 
+                            />
+                            {error.email && <p>{error.email}</p>}
+                        </div>
 
-                        {/* <div>
-                            <input className="idpw-input" type="checkbox" >남</input>
-                            <input className="idpw-input" type="checkbox" >녀</input>
-                            <input className="idpw-input" type="checkbox" >선택안함</input>
-                        </div> */}
-                        {/* <input className="sign-input" value={birth} type="text" placeholder="생년월일" onChange={signInput} /> */}
+                        <div>
+                            <input 
+                            className="sign-input" 
+                            id="password"
+                            name="password" 
+                            type="text" 
+                            placeholder="비밀번호" 
+                            value={signInput.password} 
+                            onChange={handleInfoChange} 
+                            />
+                            {error.password && <p>{error.password}</p>}
+                        </div>
+
+                        <div>
+                            <input 
+                                className="sign-input" 
+                                value={signInput.checkPw} 
+                                name="checkPw" 
+                                id="checkPw"
+                                type="text" 
+                                placeholder="비밀번호 확인" 
+                                onChange={handleInfoChange} 
+                                />
+                            {error.checkPw && <p>{error.checkPw}</p>}
+                        </div>
+                        <div>
+                            <input 
+                                className="sign-input" 
+                                value={signInput.name} name="name" 
+                                type="text" 
+                                placeholder="이름" 
+                                onChange={handleInfoChange} 
+                            />
+                                {error.name && <p>{error.name}</p>}
+                        </div>
+                        <div>
+                            <input 
+                                className="sign-input" 
+                                value={signInput.phone} 
+                                name="phone" 
+                                type="tel" 
+                                placeholder="휴대폰" 
+                                onChange={handleInfoChange} 
+                            />
+                                {error.phone && <p>{error.phone}</p>}
+                        </div>
+                        <div>
+                            <input 
+                                className="sign-input" 
+                                value={signInput.address} 
+                                name="address" 
+                                type="text" 
+                                placeholder="주소" 
+                                onChange={handleInfoChange} 
+                            />
+                            {error.address && <p>{error.address}</p>}
+                        </div>
+
+                        <div>
+                            <input 
+                            className="sign-input" 
+                            value={signInput.addressDetail} 
+                            name="addressDetail" 
+                            type="text" 
+                            placeholder="상세주소" 
+                            onChange={handleInfoChange} />
+                            {error.addressDetail && <p>{error.addressDetail}</p>}
+                        </div>
+                        <div>
+                            {/* <input 
+                            className="sign-input" 
+                                value={signInput.value} 
+
+                            name="birthday" 
+                            type="text" 
+                            placeholder="생년월일" 
+                            onChange={handleInfoChange} /> */}
+                            {/* {error.birthday && <p>{error.birthday}</p>} */}
+
+                            <DatePicker
+                                value={startDate}
+                                selected={startDate}
+                                onChange={date => setStartDate(date)}
+                                customInput={<HandleDatePick/>}
+                            />
+
+                        </div>
+                        {/* checked={gender === "Man"} */}
+
+
+
+
+
+                        <div>
+                            <input 
+                            className="sign-input" 
+                            value={signInput.gender}
+                            name="Man" 
+                            placeholder="성별" 
+                            onChange={handleInfoChange} />
+                            {error.gender && <p>{error.gender}</p>}
+                        </div>
+
+                        
+                        {/* <h1>checkbox : {checkAgree ? "true" : "false" }</h1> */}
+                        <h1>checkbox : {gender}</h1>
+                        <div>
+                            <label style={{display:"flex"}}>
+                                <input className="sign-input" checked={gender === "Man"} value={"Man"} name="gender" type="checkbox" placeholder="성별"  onChange={(e)=>{handleInfoChange()}} />
+                                남
+                            </label>
+                            <label style={{display:"flex"}}>
+                                <input className="sign-input" checked={gender === "Woman"} value={"Woman"} name="gender" type="checkbox" placeholder="성별"  onChange={(e)=>{handleInfoChange()}} />
+                                여
+                            </label>
+                        </div>
                     </div>
-                    <a href="/login"><button>back to Login</button></a>
-                    <a href="/"><button>back to Home</button></a>
-                    <form onSubmit={onSubmit}>
-                        <button type="submit">Sign in</button>
-                    </form>
+                    
+                    <div style={{display:"flex"}}>
+                        <input style={{width:30, height:30}} onClick={handleCheckYn} type="checkbox" /> 
+                        <p>개인정보 수집/이용에 동의합니다.</p>
+                    </div>
+
+                    <div style={{display:"flex", paddingLeft:50}}>
+                        <a href="/login"><button >back to Login</button></a>
+
+                        {(checkAgree === true) && (
+                            <form onSubmit={onSubmit} style={{marginLeft:50}}>
+                                <button type="submit">Sign in</button>
+                            </form>
+                            )
+                        }
+                        {(checkAgree === false) && (
+                            <form style={{marginLeft:50}}>
+                                <button type="submit" onClick={onError}>Sign in</button>
+                            </form>
+                        )
+                        }
+                    </div>
                 </div>
             </div>
         </>

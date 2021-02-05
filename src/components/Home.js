@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../actions/userAction'
-import Login from './Login';
+import Signin from './Signin';
+import Logout from './Logout';
 
 const Home = (props) => {
     // const adminUser = {
@@ -22,6 +23,13 @@ const Home = (props) => {
 
     //첫번째 파라미터 = "state=> state.out" = map state같은 
     //두번재 파라미터 = "[]"  = useMemo와 같은 
+
+    const [isSubmit, setIsSubmit] = useState(false)
+
+    function submitForm() {
+        setIsSubmit(true)
+    }
+
     const findState = useSelector(state=> state);
     const dispatch = useDispatch();
 
@@ -53,8 +61,12 @@ const Home = (props) => {
                         <a href="/login"><button>로그인</button></a>
                     </Login>
                 )} */}
-                <h1>Welcome to website</h1>
-                <a href="/login"><button>로그인</button></a>
+                <h1>Please Sign Up First</h1>
+                {/* <a href="/login"><button>로그인</button></a> */}
+
+                {!isSubmit ? (
+                    <Signin submitForm={submitForm}/>) : 
+                    (<Logout />)}
             </div>
         </>
     );

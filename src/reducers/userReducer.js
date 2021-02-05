@@ -4,22 +4,31 @@ import { REGISTER_USER, LOGIN_USER,LOGOUT } from "../actions/type";
 
 export default function userReducer(state = {}, action, token){
 
+    // const user = JSON.parse(localStorage.getItem("user"));
+
     switch (action.type) {
+
     case REGISTER_USER:
-        return { ...state, success: action.payload, token};
+        return { ...state, success: action.payload};
     case LOGIN_USER:
-        // console.log(LOGIN_USER action)
-        // console.log(action)
         return {...state, accountEntity: action.payload, token }
 
     case LOGOUT:
-        console.log("LOGOUT_USER")
+        console.log("LOGOUT")
         console.log(action)
-        return {...state, success: action.payload, token }
+        return {...state, success: action.payload }
     default:
       return state;
   }
 }
+
+
+
+
+
+
+
+
 
 
 // import { 

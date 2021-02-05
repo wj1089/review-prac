@@ -6,18 +6,18 @@ import Logout from './components/Logout';
 import Signin from './components/Signin';
 import ForgotId from './components/ForgotId';
 import ForgotPw from './components/ForgotPw';
-
+// import Auth from './hoc/Auth';
 
 const Page = () => {
     return (
         <>
         <Switch>
             <Route exact path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/signin" component={Signin} />
             <Route path="/forgotid" component={ForgotId} />
             <Route path="/forgotpw" component={ForgotPw} />
-            <Route path="/login" component={Login} />
             <Route path="/Logout" component={Logout} />
-            <Route path="/signin" component={Signin} />
         </Switch>
         </>
     );

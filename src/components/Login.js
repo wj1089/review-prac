@@ -22,6 +22,7 @@ const Login = (props) => {
     const changeOs = e =>{
         setOs(e.currentTarget.value)
     }
+    
     const changeUuid = e =>{
         setUuid(e.currentTarget.value)
     }
@@ -42,7 +43,12 @@ const Login = (props) => {
 
         if(response.payload.accountEntity !== false){
             alert("로그인 성공! 환영합니다")
+            
+            localStorage.setItem("user", JSON.stringify(response.payload));
             props.history.push("/Logout")
+
+            console.log("localStorage")
+            console.log(localStorage)
         }
         })
         .catch((error)=>{

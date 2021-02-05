@@ -1,13 +1,44 @@
 import {REGISTER_USER, LOGIN_USER, LOGOUT} from  "./type"
 import { request } from "../util/axios";
-// import axios from "axios";
-
+import authHeader from "../hoc/authHeader";
 
 const REGISTER_URL = "https://childsnack-test.appspot.com/_ah/api/user/v1/join"
 const LOGIN_URL ="https://childsnack-test.appspot.com/_ah/api/user/v1/login"
 
 const LOGOUT_URL ="https://childsnack-test.appspot.com/_ah/api/user/v1/logout"
 
+export function loginUser(toDataSubmit){
+    const data = request("post", LOGIN_URL, toDataSubmit, {headers: authHeader()});
+    return {
+        type:LOGIN_USER, 
+        payload: data,
+    }
+}
+
+export function logoutUser(toDataSubmit){
+    const data = request("get", LOGOUT_URL, toDataSubmit,  {headers: authHeader()});
+    return {
+        type:LOGOUT, 
+        payload: data,
+    }
+}
+export function registerUser(toDataSubmit){
+    const data = request("post", REGISTER_URL, toDataSubmit, {headers: authHeader()});
+    return {
+        type: REGISTER_USER, 
+        payload: data,
+    }
+}
+
+
+
+// export function authUser() {
+//     const data = request("post", USER_URL + "/auth");
+//     return {
+//       type: AUTH_USER,
+//       payload: data,
+//     };
+//   }
 
 // const userAction = () => {
 
@@ -37,39 +68,4 @@ const LOGOUT_URL ="https://childsnack-test.appspot.com/_ah/api/user/v1/logout"
 // }
 
 // export default new userAction();
-
-
-
-
-
-export function registerUser(dataToSubmit){
-    const data = request("post", REGISTER_URL, dataToSubmit);
-    return {
-        type: REGISTER_USER, 
-        payload: data,
-    }
-}
-
-
-export function loginUser(dataToSubmit){
-    const data = request("post", LOGIN_URL, dataToSubmit);
-    return {
-        type:LOGIN_USER, 
-        payload: data,
-    }
-}
-
-export function logoutUser(dataToSubmit){
-    // const token = loginUser(data)
-    const data = request("get", LOGOUT_URL, dataToSubmit);
-    
-    return {
-        type:LOGOUT, 
-        payload: data,
-        // token : token
-    }
-}
-
-
-
 
