@@ -23,16 +23,19 @@ const Signin = () => {
             phone:'',
             address:'',
             addressDetail:'',
-            gender:'',
+            // gender:'',
             // birthday : ''
         })
+    const [gender,setGender] = useState('')
     const [birthday, setBirthday] = useState(new Date());
     const [pswcheck,setPswcheck]= useState('')
     const [error, setError] = useState({})
 
+    console.log("gender")
+    console.log(gender)
 
     const {email,password,name, phone,address,
-        addressDetail,gender} = signInput;
+        addressDetail} = signInput;
     
     const onError =(error)=>{
         alert(error.response.data.error.message)
@@ -72,12 +75,19 @@ const Signin = () => {
         const date = moment(value).format('YYMMDD');
         // console.log(date)
         
-    return(
-        <button className="example-custom-input" onClick={onClick}>
+        
+        return(
+            <button className="example-custom-input" onClick={onClick}>
             {date}
         </button>
         )
     }
+        const handleMailCheck = (e)=>{
+            setGender(e.target.value)
+        }
+        const handleFemailCheck = (e)=>{
+            setGender(e.target.value)
+        }
     // );
 
 
@@ -238,27 +248,29 @@ const Signin = () => {
                             />
                             {error.gender && <p>{error.gender}</p>}
                         </div> */}
-
-                        <div placeholder="성별"  style={{display:"flex", justifyContent:'center', alignItems:'center'}}>
-                            <input type="radio" id="male" name="gender" value="male" onChange={handleGdrCheck} />
-                            <p style={{margin:0}} id="male" name="gender">Male</p>
+                        <div style={{display:"flex", justifyContent:'center', alignItems:'center'}}>
+                            <div>
+                                <input 
+                                    type="radio" 
+                                    name="gender" 
+                                    value="male" 
+                                    // checked={gender.value === "male" ? true : false} 
+                                    onChange={handleMailCheck} 
+                                />
+                                Male
+                            </div>
                             
-                            <input type="radio" id="female" name="gender" value="female" onChange={handleGdrCheck} />
-                            <p style={{margin:0}} id="female" name="gender">Female</p>
+                            <div>
+                                <input 
+                                    type="radio" 
+                                    name="gender" 
+                                    value="female" 
+                                    // checked={gender.value === "femail" ? true : false}
+                                    onChange={handleFemailCheck} 
+                                />
+                                Female
+                            </div>
                         </div>
-                        
-                        {/* <h1>checkbox : {checkAgree ? "true" : "false" }</h1> */}
-                        {/* <h1>checkbox : {gender}</h1>
-                        <div>
-                            <label style={{display:"flex"}}>
-                                <input className="sign-input" checked={gender === "Man"} value={"Man"} name="gender" type="checkbox" placeholder="성별"  onChange={(e)=>{handleInfoChange()}} />
-                                남
-                            </label>
-                            <label style={{display:"flex"}}>
-                                <input className="sign-input" checked={gender === "Woman"} value={"Woman"} name="gender" type="checkbox" placeholder="성별"  onChange={(e)=>{handleInfoChange()}} />
-                                여
-                            </label>
-                        </div> */}
                     </div>
                     
                     <div style={{display:"flex"}}>
