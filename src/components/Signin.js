@@ -27,8 +27,10 @@ const Signin = () => {
             // birthday : ''
         })
     const [birthday, setBirthday] = useState(new Date());
+    const [pswcheck,setPswcheck]= useState('')
     const [error, setError] = useState({})
-    
+
+
     const {email,password,name, phone,address,
         addressDetail,gender} = signInput;
     
@@ -40,6 +42,11 @@ const Signin = () => {
         setCheckAgree(!checkAgree)
     }
 
+    const handleGdrCheck =()=>{
+        setSignInput(signInput.gender)
+        console.log("signInput.gender")
+        console.log(signInput.gender)
+    }
 
     const handleInfoChange = (e) =>{  
         const {value, name} = e.target;
@@ -48,17 +55,22 @@ const Signin = () => {
             [name]:value
         })
     }
+    const handlePwsChange  = (e) =>{
+        setPswcheck(e.target.value)
+        console.log("handlePwsChange")
+        console.log(pswcheck)
+    }
 
     const HandleDatePick = ({ value, onClick }) => {
         // console.log("birthday")
         // console.log(birthday)
         // console.log(moment(birthday).format('YYMMDD'))
-        console.log("value")
-        console.log(value)
+        // console.log("value")
+        // console.log(value)
         // console.log(moment(value).format('YYMMDD'))
-        console.log("date")
+        // console.log("date")
         const date = moment(value).format('YYMMDD');
-        console.log(date)
+        // console.log(date)
         
     return(
         <button className="example-custom-input" onClick={onClick}>
@@ -67,6 +79,7 @@ const Signin = () => {
         )
     }
     // );
+
 
     const onSubmit = (e) =>{
         console.log("Submit event")
@@ -82,10 +95,16 @@ const Signin = () => {
             phone : phone,
             password : password
         };
-   
         setError(validate(body));
-        // console.log("setError")
-        // console.log(setError)
+        if(pswcheck === signInput.password){
+            console.log("비밀번호 통과")
+            setPswcheck(pswcheck)
+        }else {
+            console.log("pswcheck")
+            console.log(pswcheck)
+            alert("비밀번호가 맞지 않습니다 다시 입력해주세요!")
+            return
+        }
             dispatch(registerUser(body))
             .then((response)=>{
                 localStorage.getItem('user')
@@ -112,7 +131,7 @@ const Signin = () => {
                             className="sign-input" 
                             id="email"
                             name="email" 
-                            type="text" 
+                            type="email" 
                             placeholder="아이디" 
                             value={signInput.email} 
                             onChange={handleInfoChange} 
@@ -136,15 +155,15 @@ const Signin = () => {
                         <div>
                             <input 
                                 className="sign-input" 
-                                value={signInput.checkPw} 
-                                name="checkPw" 
-                                id="checkPw"
+                                value={pswcheck} 
+                                name="pswcheck" 
+                                // id="pswcheck"
                                 type="text" 
                                 placeholder="비밀번호 확인" 
-                                onChange={handleInfoChange} 
+                                onChange={handlePwsChange} 
                                 />
-                            {error.checkPw && <p>{error.checkPw}</p>}
                         </div>
+
                         <div>
                             <input 
                                 className="sign-input" 
@@ -188,6 +207,7 @@ const Signin = () => {
                             onChange={handleInfoChange} />
                             {error.addressDetail && <p>{error.addressDetail}</p>}
                         </div>
+
                         <div>
                             {/* <input 
                             className="sign-input" 
@@ -208,7 +228,7 @@ const Signin = () => {
 
                         </div>
                         {/* checked={gender === "Man"} */}
-                        <div>
+                        {/* <div>
                             <input 
                                 className="sign-input" 
                                 value={signInput.gender}
@@ -217,8 +237,15 @@ const Signin = () => {
                                 onChange={handleInfoChange} 
                             />
                             {error.gender && <p>{error.gender}</p>}
-                        </div>
+                        </div> */}
 
+                        <div placeholder="성별"  style={{display:"flex", justifyContent:'center', alignItems:'center'}}>
+                            <input type="radio" id="male" name="gender" value="male" onChange={handleGdrCheck} />
+                            <p style={{margin:0}} id="male" name="gender">Male</p>
+                            
+                            <input type="radio" id="female" name="gender" value="female" onChange={handleGdrCheck} />
+                            <p style={{margin:0}} id="female" name="gender">Female</p>
+                        </div>
                         
                         {/* <h1>checkbox : {checkAgree ? "true" : "false" }</h1> */}
                         {/* <h1>checkbox : {gender}</h1>
