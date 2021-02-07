@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
+import { registerUser } from '../actions/userAction';
 import axios from 'axios';
-// import useFrom from './useForm';
 import validate from './validationInfo';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import './login.css';
 import "react-datepicker/dist/react-datepicker.css";
-import { registerUser } from '../actions/userAction';
+
+// import useFrom from './useForm';
 // import { useDispatch } from 'react-redux';
 
-const Signin = validate => {
-    
-    // const {handleInfoChange, signInput, onSubmit, error } = useFrom(validate);
-    
-        const dispatch = useDispatch();
-    
-        const [signInput,setSignInput] = useState({
+
+const Signin = () => {
+    const dispatch = useDispatch();
+    const [checkAgree, setCheckAgree] = useState(false);
+    const [signInput,setSignInput] = useState({
             email:'',
             password:'',
             name:'',
@@ -25,17 +24,14 @@ const Signin = validate => {
             address:'',
             addressDetail:'',
             gender:'',
-            birthday :''
+            // birthday : ''
         })
+    const [birthday, setBirthday] = useState(new Date());
+    const [error, setError] = useState({})
     
-
     const {email,password,name, phone,address,
-        addressDetail,gender,birthday} = signInput;
+        addressDetail,gender} = signInput;
     
-    const [checkAgree, setCheckAgree] = useState(false);
-
-    const [startDate, setStartDate] = useState(new Date());
-
     const onError =(error)=>{
         alert(error.response.data.error.message)
     }
@@ -44,7 +40,6 @@ const Signin = validate => {
         setCheckAgree(!checkAgree)
     }
 
-    const [error, setError] = useState({})
 
     const handleInfoChange = (e) =>{  
         const {value, name} = e.target;
@@ -55,17 +50,26 @@ const Signin = validate => {
     }
 
     const HandleDatePick = ({ value, onClick }) => {
-        console.log("startDate")
+        // console.log("birthday")
+        // console.log(birthday)
+        // console.log(moment(birthday).format('YYMMDD'))
+        console.log("value")
+        console.log(value)
         // console.log(moment(value).format('YYMMDD'))
-        console.log(moment(startDate).format('YYMMDD'))
-        return(
+        console.log("date")
+        const date = moment(value).format('YYMMDD');
+        console.log(date)
+        
+    return(
         <button className="example-custom-input" onClick={onClick}>
-            {moment(value).format('YYMMDD')}
+            {date}
         </button>
         )
-    };
+    }
+    // );
 
     const onSubmit = (e) =>{
+        console.log("Submit event")
         console.log(e)
         e.preventDefault()
         let body = {
@@ -79,15 +83,14 @@ const Signin = validate => {
             password : password
         };
    
-        //계정 생성 도중 비밀번호가 다를 경우 alert를 띄운다 
         setError(validate(body));
-        console.log("setError")
-        console.log(setError)
+        // console.log("setError")
+        // console.log(setError)
             dispatch(registerUser(body))
             .then((response)=>{
                 localStorage.getItem('user')
-                console.log("response")
-                console.log(response)
+                // console.log("response")
+                // console.log(response)
                 alert("정상가입 성공!")
                 validate.history.push("/login")
             })
@@ -154,12 +157,12 @@ const Signin = validate => {
                         </div>
                         <div>
                             <input 
-                                className="sign-input" 
-                                value={signInput.phone} 
-                                name="phone" 
-                                type="tel" 
-                                placeholder="휴대폰" 
-                                onChange={handleInfoChange} 
+                                className="sign-input"
+                                value={signInput.phone}
+                                name="phone"
+                                type="tel"
+                                placeholder="휴대폰"
+                                onChange={handleInfoChange}
                             />
                                 {error.phone && <p>{error.phone}</p>}
                         </div>
@@ -197,32 +200,28 @@ const Signin = validate => {
                             {/* {error.birthday && <p>{error.birthday}</p>} */}
 
                             <DatePicker
-                                value={startDate}
-                                selected={startDate}
-                                onChange={date => setStartDate(date)}
+                                value={birthday}
+                                selected={birthday}
+                                onChange={HandleDatePick}
                                 customInput={<HandleDatePick/>}
                             />
 
                         </div>
                         {/* checked={gender === "Man"} */}
-
-
-
-
-
                         <div>
                             <input 
-                            className="sign-input" 
-                            value={signInput.gender}
-                            name="Man" 
-                            placeholder="성별" 
-                            onChange={handleInfoChange} />
+                                className="sign-input" 
+                                value={signInput.gender}
+                                name="Man" 
+                                placeholder="성별" 
+                                onChange={handleInfoChange} 
+                            />
                             {error.gender && <p>{error.gender}</p>}
                         </div>
 
                         
                         {/* <h1>checkbox : {checkAgree ? "true" : "false" }</h1> */}
-                        <h1>checkbox : {gender}</h1>
+                        {/* <h1>checkbox : {gender}</h1>
                         <div>
                             <label style={{display:"flex"}}>
                                 <input className="sign-input" checked={gender === "Man"} value={"Man"} name="gender" type="checkbox" placeholder="성별"  onChange={(e)=>{handleInfoChange()}} />
@@ -232,7 +231,7 @@ const Signin = validate => {
                                 <input className="sign-input" checked={gender === "Woman"} value={"Woman"} name="gender" type="checkbox" placeholder="성별"  onChange={(e)=>{handleInfoChange()}} />
                                 여
                             </label>
-                        </div>
+                        </div> */}
                     </div>
                     
                     <div style={{display:"flex"}}>

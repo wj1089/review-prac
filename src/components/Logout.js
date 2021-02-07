@@ -9,8 +9,8 @@ const Logout = (props) => {
     const findState = useSelector(state=> state);
     // const dispatch = useDispatch();
 
-    console.log("findState")
-    console.log(findState)
+    // console.log("findState")
+    // console.log(findState)
 
     const onClickHandler = () =>{
         // dispatch(logoutUser())

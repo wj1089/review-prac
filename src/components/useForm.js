@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import validate from './validationInfo';
-import { registerUser } from '../actions/userAction';
-import { useDispatch } from 'react-redux';
+
 
 const useForm = validate => {
     
