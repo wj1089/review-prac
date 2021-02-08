@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
-import { logoutUser } from '../actions/userAction'
+// import { useDispatch, useSelector } from 'react-redux';
+// import { logoutUser } from '../actions/userAction'
 import Signin from './Signin';
 import Logout from './Logout';
 
@@ -30,23 +30,20 @@ const Home = (props) => {
         setIsSubmit(true)
     }
 
-    const findState = useSelector(state=> state);
-    const dispatch = useDispatch();
+    // const findState = useSelector(state=> state);
+    // const dispatch = useDispatch();
 
-    // console.log("findState")
-    // console.log(findState)
-
-    const onClickHandler = () =>{
-        dispatch(logoutUser())
-        .then((response)=>{
-            if(response.payload.success !== false){
-                props.history.push("/login")
-            }
-        })
-        .catch((error)=>{
-            alert(error.response.data.error.message)
-        })
-    }
+    // const onClickHandler = () =>{
+    //     dispatch(logoutUser())
+    //     .then((response)=>{
+    //         if(response.payload.success !== false){
+    //             props.history.push("/login")
+    //         }
+    //     })
+    //     .catch((error)=>{
+    //         alert(error.response.data.error.message)
+    //     })
+    // }
     return (
         <>
             <div className="full-screen">

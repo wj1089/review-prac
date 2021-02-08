@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../actions/userAction';
-import axios from 'axios';
 import validate from './validationInfo';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import './login.css';
 import "react-datepicker/dist/react-datepicker.css";
-
-// import useFrom from './useForm';
-// import { useDispatch } from 'react-redux';
-
+// import "http://dmaps.daum.net/map_js_init/postcode.v2.js";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import LogModal from './LogModal'
+import {Modal, Button} from "react-bootstrap"
+import DaumPostcode from 'react-daum-postcode';
 
 const Signin = () => {
     const dispatch = useDispatch();
@@ -23,32 +23,50 @@ const Signin = () => {
             phone:'',
             address:'',
             addressDetail:'',
-            // gender:'',
-            // birthday : ''
+            gender:'',
+            pswcheck:''
         })
-    const [gender,setGender] = useState('')
+
+    const {email,password,name, phone,address,gender,addressDetail,pswcheck} = signInput;
     const [birthday, setBirthday] = useState(new Date());
-    const [pswcheck,setPswcheck]= useState('')
+    
     const [error, setError] = useState({})
 
-    console.log("gender")
-    console.log(gender)
+    const [disabled, setDisabled] = useState(false)
 
-    const {email,password,name, phone,address,
-        addressDetail} = signInput;
-    
-    const onError =(error)=>{
-        alert(error.response.data.error.message)
+    const [show, setShow] = useState(false);
+    const handleClose = () => {setShow(false);}
+    const handleShow = () => {setShow(true);}
+
+    const handleComplete = (data) => {
+        console.log("최상단data")
+        console.log(data)
+
+    let fullAddress = data.address;
+    let extraAddress = ''; 
+
+      if (data.addressType === 'R') {
+        console.log("data")
+        console.log(data)
+
+        if (data.bname !== '') {
+          extraAddress += data.bname;
+        }
+        if (data.buildingName !== '') {
+          extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+        }
+        fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+      }
+
+        console.log("fullAddress")
+        console.log(fullAddress)
+        console.log("extraAddress")
+        console.log(extraAddress)
     }
 
     const handleCheckYn = ()=>{
         setCheckAgree(!checkAgree)
-    }
-
-    const handleGdrCheck =()=>{
-        setSignInput(signInput.gender)
-        console.log("signInput.gender")
-        console.log(signInput.gender)
+        setDisabled(false)
     }
 
     const handleInfoChange = (e) =>{  
@@ -58,77 +76,102 @@ const Signin = () => {
             [name]:value
         })
     }
-    const handlePwsChange  = (e) =>{
-        setPswcheck(e.target.value)
-        console.log("handlePwsChange")
-        console.log(pswcheck)
-    }
-
-    const HandleDatePick = ({ value, onClick }) => {
-        // console.log("birthday")
-        // console.log(birthday)
-        // console.log(moment(birthday).format('YYMMDD'))
-        // console.log("value")
-        // console.log(value)
-        // console.log(moment(value).format('YYMMDD'))
-        // console.log("date")
-        const date = moment(value).format('YYMMDD');
-        // console.log(date)
-        
-        
-        return(
-            <button className="example-custom-input" onClick={onClick}>
-            {date}
-        </button>
-        )
-    }
-        const handleMailCheck = (e)=>{
-            setGender(e.target.value)
-        }
-        const handleFemailCheck = (e)=>{
-            setGender(e.target.value)
-        }
-    // );
-
 
     const onSubmit = (e) =>{
-        console.log("Submit event")
-        console.log(e)
         e.preventDefault()
         let body = {
             email : email,
             name : name,
             address: address,
             addressDetail: addressDetail,
-            birthday : birthday,
+            birthday : moment(birthday).format('YYMMDD'),
             gender: gender,
             phone : phone,
-            password : password
+            password : password,
+            pswcheck : pswcheck
         };
-        setError(validate(body));
-        if(pswcheck === signInput.password){
-            console.log("비밀번호 통과")
-            setPswcheck(pswcheck)
-        }else {
-            console.log("pswcheck")
-            console.log(pswcheck)
-            alert("비밀번호가 맞지 않습니다 다시 입력해주세요!")
+
+        if(validate(body)){
+            setError(validate(body));
+            alert("입력정보을 확인하여 다시 시도해주세요.")
+            console.log('진입 막힘')
             return
-        }
+        }else{
+            console.log('진입 성공')
             dispatch(registerUser(body))
             .then((response)=>{
                 localStorage.getItem('user')
-                // console.log("response")
-                // console.log(response)
                 alert("정상가입 성공!")
                 validate.history.push("/login")
             })
             .catch((error)=>{
                 alert(error.response.data.error.message)
             })
-        
-        console.log("Submit")
+        }
     }
+
+    const LogModal = () => {
+
+        // function Postcode (props){
+        // const [isAddress, setIsAddress] = useState("");
+        // const [isZoneCode, setIsZoneCode] = useState();
+        //         console.log("isAddress")
+        //         console.log(isAddress)
+        //   }
+        return (
+            <>
+            <Button variant="primary" onClick={handleShow}>
+                우편번호 찾기
+            </Button>
+    
+            <Modal 
+                show={show} 
+                data-toggle="modal"
+                onHide={handleClose}
+            >
+                <Modal.Header closeButton>
+                <Modal.Title>Modal heading</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <DaumPostcode onComplete={handleComplete}/>
+                </Modal.Body>
+                <Modal.Footer>
+                </Modal.Footer>
+            </Modal>   
+            </>
+        );
+    };
+
+
+
+    
+    // function makeInputElement(){
+    //     return(
+    //         <div>
+    //             <div style={{display:"flex"}}>
+    //                 {/* isZoneCode */}
+    //                 <input 
+    //                     type="text" 
+    //                     id="postcode" 
+    //                     placeholder="우편번호" 
+    //                     address={handleComplete}
+    //                 />
+    //                 <LogModal  type="button" value="우편번호 찾기"  />
+    //             </div>
+
+    //             {/* isAddress */}
+    //             <input 
+    //                 type="text" 
+    //                 id="roadAddress" 
+    //                 // onChange={}
+    //                 placeholder="도로명주소" 
+    //             />
+    //         </div>
+    //     )
+    // }
+
+    
+
 
     return (
         <>
@@ -165,13 +208,14 @@ const Signin = () => {
                         <div>
                             <input 
                                 className="sign-input" 
-                                value={pswcheck} 
+                                id="pswcheck"
                                 name="pswcheck" 
-                                // id="pswcheck"
                                 type="text" 
                                 placeholder="비밀번호 확인" 
-                                onChange={handlePwsChange} 
-                                />
+                                value={signInput.pswcheck} 
+                                onChange={handleInfoChange}
+                            />
+                                {error.pswcheck && <p>{error.pswcheck}</p>}
                         </div>
 
                         <div>
@@ -184,6 +228,7 @@ const Signin = () => {
                             />
                                 {error.name && <p>{error.name}</p>}
                         </div>
+
                         <div>
                             <input 
                                 className="sign-input"
@@ -195,67 +240,78 @@ const Signin = () => {
                             />
                                 {error.phone && <p>{error.phone}</p>}
                         </div>
+
+                        {/* 다음주소 API */}
                         <div>
+                            <div style={{display:"flex"}}>
+                                {/* isZoneCode */}
+                                <input 
+                                    type="text" 
+                                    id="postcode" 
+                                    placeholder="우편번호" 
+                                    onChange={handleComplete}
+                                    value={data=>data.target.value}
+                                />
+                                <LogModal  type="button" value="우편번호 찾기" />
+                            </div>
+
+                            {/* isAddress */}
                             <input 
-                                className="sign-input" 
-                                value={signInput.address} 
-                                name="address" 
                                 type="text" 
-                                placeholder="주소" 
-                                onChange={handleInfoChange} 
+                                id="roadAddress" 
+                                // onChange={}
+                                placeholder="도로명주소" 
                             />
-                            {error.address && <p>{error.address}</p>}
                         </div>
 
-                        <div>
-                            <input 
+
+
+                        {/* <input 
                             className="sign-input" 
-                            value={signInput.addressDetail} 
-                            name="addressDetail" 
+                            value={signInput.address} 
+                            name="address" 
                             type="text" 
-                            placeholder="상세주소" 
-                            onChange={handleInfoChange} />
-                            {error.addressDetail && <p>{error.addressDetail}</p>}
-                        </div>
-
-                        <div>
-                            {/* <input 
-                            className="sign-input" 
-                                value={signInput.value} 
-
-                            name="birthday" 
-                            type="text" 
-                            placeholder="생년월일" 
-                            onChange={handleInfoChange} /> */}
-                            {/* {error.birthday && <p>{error.birthday}</p>} */}
-
-                            <DatePicker
-                                value={birthday}
-                                selected={birthday}
-                                onChange={HandleDatePick}
-                                customInput={<HandleDatePick/>}
-                            />
-
-                        </div>
-                        {/* checked={gender === "Man"} */}
+                            placeholder="주소" 
+                            onChange={handleInfoChange} 
+                        />
+                        {error.address && <p>{error.address}</p>}
+                        */}
                         {/* <div>
                             <input 
                                 className="sign-input" 
-                                value={signInput.gender}
-                                name="Man" 
-                                placeholder="성별" 
+                                type="text" 
+                                value={signInput.addressDetail} 
+                                name="addressDetail" 
+                                placeholder="상세주소" 
                                 onChange={handleInfoChange} 
                             />
-                            {error.gender && <p>{error.gender}</p>}
+                                {error.addressDetail && <p>{error.addressDetail}</p>}
                         </div> */}
-                        <div style={{display:"flex", justifyContent:'center', alignItems:'center'}}>
+
+
+                        <div>
+                            <DatePicker
+                                className="sign-input" 
+                                name="birthday"
+                                value={birthday}
+                                selected={birthday}     
+                                onChange={date => setBirthday(date)}
+                                // customInput={<HandleDatePick/>}
+                            />
+                        </div>
+                        
+                        <div 
+                            className="sign-input"  
+                            style={{display:"flex", 
+                            justifyContent:'center', 
+                            alignItems:'center'}}   
+                        >
                             <div>
                                 <input 
                                     type="radio" 
                                     name="gender" 
                                     value="male" 
-                                    // checked={gender.value === "male" ? true : false} 
-                                    onChange={handleMailCheck} 
+                                    onChange={handleInfoChange} 
                                 />
                                 Male
                             </div>
@@ -265,8 +321,7 @@ const Signin = () => {
                                     type="radio" 
                                     name="gender" 
                                     value="female" 
-                                    // checked={gender.value === "femail" ? true : false}
-                                    onChange={handleFemailCheck} 
+                                    onChange={handleInfoChange} 
                                 />
                                 Female
                             </div>
@@ -283,13 +338,14 @@ const Signin = () => {
 
                         {(checkAgree === true) && (
                             <form onSubmit={onSubmit} style={{marginLeft:50}}>
-                                <button type="submit">Sign in</button>
+                                <button type="submit" value="submit" >Sign in</button>
                             </form>
                             )
                         }
                         {(checkAgree === false) && (
                             <form style={{marginLeft:50}}>
-                                <button type="submit" onClick={onError}>Sign in</button>
+                                 {/* onClick={onError} */}
+                                <button type="submit" value="submit" disabled={!disabled}>Sign in</button>
                             </form>
                         )
                         }
