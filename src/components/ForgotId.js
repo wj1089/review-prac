@@ -1,79 +1,138 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import axios from 'axios';
 import validate from './validationInfo';
+import PropTypes from 'prop-types';
 
-const ForgotId = (props) => {
-    const phoneCode = "https://childsnack-test.appspot.com/_ah/api/user/v1/getAuthNum?phone=%7bparam1%7d";
+const ForgotId = () => {
+    const adrsUrl = ""
+
+    const phoneCode = adrsUrl +"/_ah/api/user/v1/getAuthNum?phone=%7bparam1%7d";
+    const searchEmail = 'https://childsnack-test.appspot.com/_ah/api/user/v1/findEmail?phone=';
     
+    const sendEmail = adrsUrl + '/_ah/api/user/v1/sendEmail';
+    const searchPass = adrsUrl + '/_ah/api/user/v1/findPassword?email=';
+    const sendPassword = adrsUrl + '/_ah/api/user/v1/sendPassword';
+
+
     const [forgotInfo,setForgotInfo] = useState({
         name : '',
         phone : ''
     })
 
-    const {name,phone} = forgotInfo
-
     const [rqustSwitch, setRqustSwitch] = useState(true)
-    // const [rqustAuth, setRqustAuth] = useState('')
-    // const [codeNum, setCodeNum] = useState('')
+    const [rqustAuth, setRqustAuth] = useState(false)
+    const [codeNum, setCodeNum] = useState('')
+
+    const [finalCheck, setFinalCheck] = useState(false)
+
+    const [show, setShow] = useState(false);
+
+    const handleShow = useCallback(()=>{
+        setFinalCheck(false)
+        setShow(true)
+    })
+
+    const handleClose = () => {setShow(false);}
+
+    const codeNumChange = () =>{
+        setCodeNum(codeNum)
+    }
+
+    console.log("codeNum")
+    console.log(codeNum)
 
     const handleChange = (e) =>{  
         const {value, name} = e.target;
-        console.log(e.target)
         setForgotInfo({
             ...forgotInfo,
             [name]:value
         })
     }
 
-    // setRqustSwitch(rqustSwitch)
     // 인증번호 요청 버튼 클릭
     const hanldeCodeSwitch = (e) =>{
         e.preventDefault()
-        console.log(e)
         console.log("sending Auth number")
         console.log(rqustSwitch)
-        const body = {
-            name : '',
-            phone : ''
-        }
-
-        let checkValidate = validate(body);
-        console.log("checkValidate")
-        console.log(checkValidate)
-
-        if(!checkValidate.success){
-            console.log("success")
-            console.log(checkValidate)
-            alert(checkValidate.message.content);
+        
+        if(rqustSwitch === false){
+            console.log(rqustSwitch)
+            setFinalCheck(false);
             return
         }
-
         axios
-        .get(phoneCode)
-            console.log("진입")
-        // .then((response)=>{
-        //     console.log("response")
-        //     console.log(response)
-        //     if(response && response.data){
-        //         const parseJson = JSON.parse(response.data.authId);
-        //         setRqustAuth(parseJson)
-        //         console.log("inside then")
-        //     }
-        // })
+        .get(adrsUrl + searchEmail + forgotInfo.phone + '&name=' + forgotInfo.name)
+        .then((response)=>{
+            // const parseJson = JSON.parse(response.data.  )
+            console.log("response")
+            console.log(response)
+            setRqustAuth(rqustAuth)
+            setFinalCheck(true);
+
+        })
+        .catch((error)=>{
+            console.log("error log")
+            console.log(error.response.data.error.message)
+            alert(error.response.data.error.message)
+        })
     }
 
 
-    const requestAuth = () =>{
-        setRqustSwitch(rqustSwitch)
-    }  
+    const makeInputElement = () =>{
+        return(
+            <>
+                <button onClick={hanldeCodeSwitch} style={{float:'right'}}> 인증요청 </button>
+
+
+            </>
+        )
+    }
 
 
     //버튼 클릭시 아래 인증번호 <div>영역 발생 element
-    const mackReqElement = () =>{
-        
+    const makeReqElement = () =>{
+        return(
+            <>
+            <div>
+                <input
+                    // className="modal-input"
+                    type='text'
+                    onChange={codeNumChange}
+                    value={codeNum}
+                />
+                {codeNum.length !== 6 &&(
+                    <button type="button">인증</button>
+                )
+                }
+               
+            </div>
+            <div className="footer">
+                <div className="modal-timer">
+                    인증번호가 발송되었습니다 
+                    {/* (남은 시간 {minutes}: */}
+                    {/* {seconds < 10 ? `0${seconds}` : seconds}) */}
+                    
+                </div>
+            </div>
+        </>
+        )
     }
 
-
+    function handleCFcode() {
+        if (codeNum.length !== 6) {
+          return;
+        }
+        // if (minutes === 0 && seconds === 0) {
+        //   return;
+        // }
+        axios
+          .post(phoneCode, { authId: rqustAuth, code: codeNum })
+          .then((response) => {
+            if (response && response.data.code === '1') {
+              handleClose();
+            }
+          });
+      }
     //인증번호 입력후 다음 전송
     const nextSubmit = () =>{
         console.log("next Submit on")
@@ -113,8 +172,13 @@ const ForgotId = (props) => {
                                     onChange={handleChange}
                                 />
                             </div>
+                            
+                            <div>
+                                {/* <button onClick={hanldeCodeSwitch} style={{float:'right'}}> 인증요청 </button> */}
+                                {finalCheck ? makeReqElement() : makeInputElement()}
 
-                            <button onClick={hanldeCodeSwitch} style={{float:'right'}}> 인증요청 </button>
+                            </div>
+
                             <button onClick={nextSubmit} style={{float:'right',width:'100%'}}>다음</button>
 
                         </div>
@@ -131,3 +195,12 @@ const ForgotId = (props) => {
 };
 
 export default ForgotId;
+
+    ForgotId.propTypes = {
+        
+    };
+
+    ForgotId.defaultTypes = {
+        
+    };
+    

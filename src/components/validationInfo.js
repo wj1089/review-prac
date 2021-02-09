@@ -1,4 +1,4 @@
-export default function validationInfo(signInput,forgotInfo){
+export default function validationInfo(signInput){
 
     let error = [];
     // error.success : true, false
@@ -10,8 +10,8 @@ export default function validationInfo(signInput,forgotInfo){
     console.log("validation SignInput")
     console.log(signInput)
 
-    console.log("forgotInfo")
-    console.log(forgotInfo)
+    // console.log("forgotInfo")
+    // console.log(forgotInfo)
 
     let check = true;
 
@@ -26,14 +26,14 @@ export default function validationInfo(signInput,forgotInfo){
       }
 
 //아이디찾기
-    if(!forgotInfo.name){
-        error.success= false
-        error.message={
-            name : "name",
-            content : "성함을 정확히 입력해주세요.(아이디찾기)"
-        }
-        return error;
-    }
+    // if(!forgotInfo.name){
+    //     error.success= false
+    //     error.message={
+    //         name : "name",
+    //         content : "성함을 정확히 입력해주세요.(아이디찾기)"
+    //     }
+    //     return error;
+    // }
 
 
     if (!/\S+@\S+\.\S+/.test(signInput.email)) {
@@ -65,14 +65,14 @@ export default function validationInfo(signInput,forgotInfo){
     }
 
 //아이디찾기 인증번호
-    if (forgotInfo.phone.length < 10 || forgotInfo.phone.length > 11) {
-        error.success= false
-        error.message={
-            name : "phone",
-            content : "전화번호를 정확히 입력해주세요!"
-        }
-        return error;
-    }
+    // if (forgotInfo.phone.length < 10 || forgotInfo.phone.length > 11) {
+    //     error.success= false
+    //     error.message={
+    //         name : "phone",
+    //         content : "전화번호를 정확히 입력해주세요!"
+    //     }
+    //     return error;
+    // }
 
 
     if(signInput.address === ''){
