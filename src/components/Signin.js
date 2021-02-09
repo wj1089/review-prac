@@ -11,7 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from "react-bootstrap"
 import DaumPostcode from 'react-daum-postcode';
 
-const Signin = () => {
+const Signin = (props) => {
     const dispatch = useDispatch();
     const [checkAgree, setCheckAgree] = useState(false);
     const [signInput,setSignInput] = useState({
@@ -36,21 +36,20 @@ const Signin = () => {
     const handleClose = () => {setShow(false);}
 
     const handleComplete = (data) => {
-  
-    let fullAddress = data.roadAddress;
-    let extraAddress = ''; 
+        let fullAddress = data.roadAddress;
+        let extraAddress = ''; 
 
-      if (data.addressType === 'R') {
-        extraAddress += data.bname;
-        }  if (data.bname !== '') {
-         
-        if (data.buildingName !== '') {
-          extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+        if (data.addressType === 'R') {
+            extraAddress += data.bname;
+            }  if (data.bname !== '') {
+            
+            if (data.buildingName !== '') {
+            extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+            }
+            fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
         }
-        fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
-      }
-      setIsAddress(fullAddress)
-      setShow(false)
+        setIsAddress(fullAddress)
+        setShow(false)
     }
 
 
@@ -80,12 +79,13 @@ const Signin = () => {
             password : password,
             pswcheck : pswcheck
         };
+        // checkValidate를 등록하여 
+        // validation이 통과할 경우,다음 단계로 진입을 하는 형식
+
         let checkValidate = validate(body);
         if(!checkValidate.success){
             alert(checkValidate.message.content);
-            console.log('진입 막힘')
         }
-
         console.log('진입 성공')
         dispatch(registerUser(body))
         .then((response)=>{
@@ -93,14 +93,13 @@ const Signin = () => {
             console.log(response)
             localStorage.getItem('user')
             alert("정상가입 성공!")
-            validate.history.push("/login")
+            props.history.push("/login")
         })
 
         .catch((error)=>{
             console.log("error log")
             alert(error.response.data.error.message)
         })
-        
     }
 
     const LogModal = () => {
@@ -292,3 +291,5 @@ const Signin = () => {
 };
 
 export default withRouter(Signin);
+
+

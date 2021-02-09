@@ -63,7 +63,10 @@ const Home = (props) => {
 
                 {!isSubmit ? (
                     <Signin submitForm={submitForm}/>) : 
-                    (<Logout />)}
+                    (<Logout />)
+                    }
+
+
             </div>
         </>
     );
