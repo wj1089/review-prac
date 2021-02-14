@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Modal, Button} from "react-bootstrap"
 import DaumPostcode from 'react-daum-postcode';
+import PasswordMask from 'react-password-mask';
 
 const Signin = (props) => {
     const dispatch = useDispatch();
@@ -146,7 +147,7 @@ const Signin = (props) => {
                         </div>
 
                         <div>
-                            <input 
+                            <PasswordMask 
                             className="sign-input" 
                             id="password"
                             name="password" 
@@ -159,7 +160,7 @@ const Signin = (props) => {
                         </div>
 
                         <div>
-                            <input 
+                            <PasswordMask 
                                 className="sign-input" 
                                 id="pswcheck"
                                 name="pswcheck" 

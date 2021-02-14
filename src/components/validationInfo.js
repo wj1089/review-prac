@@ -1,3 +1,4 @@
+
 export default function validationInfo(signInput){
 
     let error = [];

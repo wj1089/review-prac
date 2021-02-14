@@ -4,7 +4,7 @@ import authHeader from "../hoc/authHeader";
 
 const REGISTER_URL = "https://childsnack-test.appspot.com/_ah/api/user/v1/join"
 const LOGIN_URL ="https://childsnack-test.appspot.com/_ah/api/user/v1/login"
-
+const UPDATE_URL = "https://childsnack-test.appspot.com/updateProfile"
 const LOGOUT_URL ="https://childsnack-test.appspot.com/_ah/api/user/v1/logout"
 
 export function loginUser(toDataSubmit){
@@ -26,6 +26,14 @@ export function registerUser(toDataSubmit){
     const data = request("post", REGISTER_URL, toDataSubmit, {headers: authHeader()});
     return {
         type: REGISTER_USER, 
+        payload: data,
+    }
+}
+
+export function updateProfile(toDataSubmit){
+    const data = request("post", UPDATE_URL, toDataSubmit, {headers: authHeader()});
+    return {
+        type: UPDATE_URL, 
         payload: data,
     }
 }

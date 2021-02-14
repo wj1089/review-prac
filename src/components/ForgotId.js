@@ -5,14 +5,10 @@ import testUtils from 'react-dom/test-utils';
 // import PropTypes from 'prop-types';
 
 const ForgotId = () => {
-
-    const phoneCode =  "https://childsnack-test.appspot.com/_ah/api/user/v1/getAuthNum?phone=%7bparam1%7d";
+    // const phoneCode =  "https://childsnack-test.appspot.com/_ah/api/user/v1/getAuthNum?phone=%7bparam1%7d";
     const searchEmail = 'https://childsnack-test.appspot.com/_ah/api/user/v1/findEmail?phone=';
     const sendEmail = 'https://childsnack-test.appspot.com/_ah/api/user/v1/sendEmail'
-    // 'https://catproject-test.appspot.com/_ah/api/auth/v1/login/client'
-    // const searchPass = 'https://childsnack-test.appspot.com/_ah/api/user/v1/findPassword?email=';
-    // const sendPassword = 'https://childsnack-test.appspot.com/_ah/api/user/v1/sendPassword';
-
+    
     // 기본 찾기항목
     const [forgotInfo,setForgotInfo] = useState({
         name : '',
@@ -27,6 +23,7 @@ const ForgotId = () => {
     const [rqustAuth, setRqustAuth] = useState('')
     // 입력한 코드넘버
     const [codeNum, setCodeNum] = useState('')
+    //마지막 사용자가 찾은 아이디
     const [userId, setUserId] = useState('')
     console.log("rqustAuth")
     console.log(rqustAuth)
@@ -37,17 +34,11 @@ const ForgotId = () => {
     const [finalCheck, setFinalCheck] = useState(false)
 
     // 아이디 보여주기
-    const [showId, setShowId] = useState(false)
+    // const [showId, setShowId] = useState(false)
+
     // 타이머
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);
-
-    // const [show, setShow] = useState(false);
-    // const handleShow = useCallback(()=>{
-    //     setFinalCheck(false)
-    //     setShow(true)
-    // })
-    // const handleClose = () => {setShow(false);}
 
     const codeNumChange = (e) =>{
         setCodeNum(e.target.value)
@@ -69,18 +60,16 @@ const ForgotId = () => {
         e.preventDefault()
         console.log("sending Auth number")
         console.log(rqustSwitch)
-        
-        setRqustSwitch(!rqustSwitch);
 
+        setRqustSwitch(!rqustSwitch);
         if(rqustSwitch === true){
             console.log("통과")
-        }else if(rqustSwitch === false &&forgotInfo.phone === '' && forgotInfo.name === ''){
+        }else if(rqustSwitch === false && forgotInfo.phone === '' && forgotInfo.name === ''){
             console.log("부합하지않음")
             alert("빈칸 내용을 정확히 입력해주세요")
             setRqustSwitch(false);
             return
         }
-        
         axios
         .get(searchEmail + forgotInfo.phone + '&name=' + forgotInfo.name)
         .then((response)=>{
@@ -102,7 +91,7 @@ const ForgotId = () => {
     },[forgotInfo.name, forgotInfo.phone, rqustSwitch])
 
 
-
+    //인증번호 발송 후 입력과정
     const pressCertiBtn = (
         <>
             <div>
@@ -128,7 +117,7 @@ const ForgotId = () => {
             </div>
         </>
     )
-
+    //인증요청 발송 전
     const notPressCertiBtn = (
         <button onClick={handleCodeSwitch} style={{float:'right'}}> 인증요청 </button>
     )
@@ -197,20 +186,11 @@ const ForgotId = () => {
             name :  forgotInfo.name
         } )
           .then((response) => {
-            console.log("response")
-            console.log(response)
-            console.log("agreeRqst")
-            console.log(agreeRqst)
-            console.log("showId")
-            console.log(showId)
             if(response && response.data){
                 const findId = response.data.email
-                console.log("findId")
-                console.log(findId)
                 setUserId(findId)
             }
             setAgreeRqst(true)
-            setShowId(true)
             setFinalCheck(true)
           })
           .catch((error)=>{
@@ -221,18 +201,9 @@ const ForgotId = () => {
 
 
       }
-
-    //인증번호 입력후 다음 전송
-    // const nextSubmit = () =>{
-    //     console.log("next Submit on")
-
-    // }
-
     
     //최종 아이디 보여지는부분
     const makeReqElement = () =>{
-
-       
         return(
             <>
             <div>
@@ -240,7 +211,7 @@ const ForgotId = () => {
                     Did you forgot own ID?
                 </h3>
                 <div className="mid-area" style={{height:150}}>
-                    <div>아이디를 알려드립니다.</div>
+                    <div>고객님의 아이디를 알려드립니다.</div>
                     {userId}
                 </div>
         </div>
@@ -249,22 +220,22 @@ const ForgotId = () => {
     }
 
 
-    // useEffect(() => {
-    //     const countdown = setInterval(() => {
-    //       if (Number(seconds) > 0) {
-    //         setSeconds(Number(seconds) - 1);
-    //       }
-    //       if (Number(seconds) === 0) {
-    //         if (Number(minutes) === 0) {
-    //           clearInterval(countdown);
-    //         } else {
-    //           setMinutes(Number(minutes) - 1);
-    //           setSeconds(59);
-    //         }
-    //       }
-    //     }, 1000);
-    //     return () => clearInterval(countdown);
-    //   }, [minutes, seconds]);
+    useEffect(() => {
+        const countdown = setInterval(() => {
+          if (Number(seconds) > 0) {
+            setSeconds(Number(seconds) - 1);
+          }
+          if (Number(seconds) === 0) {
+            if (Number(minutes) === 0) {
+              clearInterval(countdown);
+            } else {
+              setMinutes(Number(minutes) - 1);
+              setSeconds(59);
+            }
+          }
+        }, 1000);
+        return () => clearInterval(countdown);
+      }, [minutes, seconds]);
 
 
     
@@ -273,8 +244,6 @@ const ForgotId = () => {
             <div style={{border:"1px solid"}}>
                 <div className="full-screen">
                     <div className="outline">
-                        
-                        {/* <button onClick={hanldeCodeSwitch} style={{float:'right'}}> 인증요청 </button> */}
                         {finalCheck ? makeReqElement() : makeInputElement()}
                         <div>
                             <a href="/login"><button>back to Login</button></a>

@@ -59,12 +59,12 @@ const Home = (props) => {
                     </Login>
                 )} */}
                 <h1>Please Sign Up First</h1>
-                {/* <a href="/login"><button>로그인</button></a> */}
+                <a href="/login"><button>로그인</button></a>
 
-                {!isSubmit ? (
+                {/* {!isSubmit ? (
                     <Signin submitForm={submitForm}/>) : 
                     (<Logout />)
-                    }
+                    } */}
 
 
             </div>

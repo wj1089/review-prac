@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { loginUser } from "../actions/userAction"
+import PasswordMask from 'react-password-mask';
+
 import "./login.css"
 
 const Login = (props) => {
@@ -63,7 +65,7 @@ const Login = (props) => {
                 <header><h1>Login Page</h1></header>
                 <div className="mid-area">
                     <input className="idpw-input" value={email} name="email" type="text" placeholder="아이디" onChange={changeId} />
-                    <input className="idpw-input" value={password} name="password" type="text" placeholder="비밀번호" onChange={changePw} />
+                    <PasswordMask className="idpw-input" value={password} name="password" type="text" placeholder="비밀번호" onChange={changePw} />
                     <input className="idpw-input" value={os} name="os" type="text" placeholder="OS" onChange={changeOs} />
                     <input className="idpw-input" value={uuid} name="uuid" type="text" placeholder="uuid" onChange={changeUuid} />
 
