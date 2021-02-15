@@ -25,6 +25,8 @@ const ForgotPw = () => {
     const [pwSwitchCheck, setPwSwitchCheck] = useState(false)
     //인증요청 버튼
     const [agreeCheck, setAgreeCheck] = useState(false)
+    //입력 받은 Auth
+    const [rqstPsAuth, setRqstPsAuth] = useState('')
     //기본입력항목 input
     const handleChange = useCallback((e) =>{  
         const {value, name} = e.target;
@@ -35,12 +37,53 @@ const ForgotPw = () => {
         })
     },[forgotPw])
 
-    //다음버튼
-    const onSubmitPwChage =()=>{
+  
+      //다음버튼, 입력 받은 코드넘버 보내기
+      function handlePwCF(){
+        console.log("인증번호 수신 부분")
+        console.log("pwCodeNum")
+        console.log(pwCodeNum)
         setPwSwitchCheck(!pwSwitchCheck)
-        console.log("pwSwitchCheck")
-        console.log(pwSwitchCheck)
+
+        if(pwCodeNum.length !== 6 && agreeCheck === false){
+            console.log("return 까지왔음")
+            alert("정확한 수신인증번호를 입력해주세요.")
+            return
+        }
+        else{
+            console.log("비밀번호 통과")
+            setPwSwitchCheck(true)
+            setAgreeCheck(true)
+        }
+
+        axios
+        .post(sendPassword,{
+            authId : rqstPsAuth, 
+            code : pwCodeNum, 
+            email :  forgotPw.email
+        })
+
+        .then((response) =>{
+            console.log("response")
+            console.log(response)
+            if(response && response.data){
+                console.log("response.data")
+                console.log(response.data)
+                setPwSwitchCheck(true)
+            }
+        })
+
+        .catch((error)=>{
+            console.log(error.response.data.error.message)
+            alert(error.response.data.error.message)
+        })
+
     }
+
+    // const onSubmitPwChage =()=>{
+    //     console.log("pwSwitchCheck")
+    //     console.log(pwSwitchCheck)
+    // }
 
     //인증버튼 스위치
     const handlePwCodeSwitch = (e) =>{
@@ -48,14 +91,31 @@ const ForgotPw = () => {
         setAgreeCheck(!agreeCheck)
         console.log("agreeCheck")
         console.log(agreeCheck)
+        if(pwSwitchCheck === true){
+            console.log("통과")
+        }else if (pwSwitchCheck === false && forgotPw.email==='' && forgotPw.phone === ''){
+            console.log("부합하지않음")
+            alert("빈칸 내용을 정확히 입력해주세요")
+            setPwSwitchCheck(false);
+            setAgreeCheck(false);
+            return
+        }
         axios
         .get(searchPass + forgotPw.email + '&phone=' + forgotPw.phone)
         .then((response)=>{
-            console.log("들어옴")
             console.log("response")
             console.log(response)
+            if(response&& response.data){
+                const parseJason = JSON.parse(response.data.authId)
+                setRqstPsAuth(parseJason)
+                console.log("parseJason")
+                console.log(parseJason)
+            }
         })
-        .catch()
+        .catch((error)=>{
+            console.log(error.response.data.error.message)
+            alert(error.response.data.error.message)
+        })
     }
 
     //인증번호 inputChage
@@ -64,6 +124,8 @@ const ForgotPw = () => {
         console.log("pwCodeNum")
         console.log(pwCodeNum)
     }
+
+  
 
     //비밀번호 재설정 input
     const pwInputChange = (e) =>{
@@ -100,7 +162,7 @@ const ForgotPw = () => {
                 />
             </div>
                 {agreeCheck===true ? pressPwCertifi : notPressPwCertifi}
-            <button type="submit"  onClick={onSubmitPwChage} style={{width:"100%"}}>다음</button>
+            <button type="submit"  onClick={handlePwCF} style={{width:"100%"}}>다음</button>
         </>
         )
     }
@@ -108,7 +170,7 @@ const ForgotPw = () => {
     const makePwChange = () =>{
         return(
         <>
-            <div>
+            {/* <div>
                 <input 
                 type="text"
                 placeholder="비밀번호"
@@ -120,9 +182,14 @@ const ForgotPw = () => {
                 placeholder="비밀번호 재입력"
                 onChange={pwInputChange}
                 />
+            </div> */}
+
+            <div>
+                <p>등록하신 휴대전화 문자로 임시 비밀번호를 발송하였습니다.</p>
+                <p>다시 로그인 해주세요.</p>
             </div>
 
-            <button type="button" style={{width:"100%"}}>로그인하러 가기</button>
+            <a href="/login"><button type="button" style={{width:"100%"}}>확인</button></a>
         </>
         )
     }

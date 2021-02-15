@@ -26,10 +26,11 @@ const Logout = (props) => {
     }
 
     return (
-        <div>
-            <h1>Welcome to <span>Park</span></h1>
-            <button type="button" onClick={onClickHandler}>Logout</button>
-        </div>
+        <>
+            <div>
+                <button type="button" onClick={onClickHandler}>Logout</button>
+            </div>
+        </>
     );
 };
 

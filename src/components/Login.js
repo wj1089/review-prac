@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { loginUser } from "../actions/userAction"
 import PasswordMask from 'react-password-mask';
+import PropTypes from 'prop-types';
 
 import "./login.css"
 
@@ -40,17 +41,14 @@ const Login = (props) => {
       
         dispatch(loginUser(body))
         .then((response) => {
-        console.log("respose")
-        console.log(response.payload)
-
+        // console.log("respose.payload")
+        // console.log(response.payload.token)
         if(response.payload.accountEntity !== false){
             alert("로그인 성공! 환영합니다")
-            
-            localStorage.setItem("user", JSON.stringify(response.payload));
-            props.history.push("/Logout")
-
-            console.log("localStorage")
-            console.log(localStorage)
+            localStorage.setItem("user", JSON.stringify(response.payload.token));
+            props.history.push("./mypage")
+            // console.log("localStorage get")
+            // console.log(localStorage.getItem("user"))
         }
         })
         .catch((error)=>{
@@ -89,3 +87,12 @@ const Login = (props) => {
 };
 
 export default withRouter(Login);
+
+Login.propTypes = {
+    login: PropTypes.bool.isRequired,
+};
+  
+Login.defaultTypes = {
+    login: true,
+};
+

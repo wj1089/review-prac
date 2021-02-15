@@ -92,7 +92,7 @@ const Signin = (props) => {
         .then((response)=>{
             console.log("response")
             console.log(response)
-            localStorage.getItem('user')
+            localStorage.getItem('user',JSON.stringify(response.payload))
             alert("정상가입 성공!")
             props.history.push("/login")
         })
@@ -135,26 +135,26 @@ const Signin = (props) => {
                     <div className="mid-area">
                         <div>
                             <input 
-                            className="sign-input" 
-                            id="email"
-                            name="email" 
-                            type="email" 
-                            placeholder="아이디" 
-                            value={signInput.email} 
-                            onChange={handleInfoChange} 
+                                className="sign-input" 
+                                id="email"
+                                name="email" 
+                                type="email" 
+                                placeholder="아이디" 
+                                value={signInput.email} 
+                                onChange={handleInfoChange} 
                             />
                             {error.email && <p>{error.email}</p>}
                         </div>
 
                         <div>
                             <PasswordMask 
-                            className="sign-input" 
-                            id="password"
-                            name="password" 
-                            type="text" 
-                            placeholder="비밀번호" 
-                            value={signInput.password} 
-                            onChange={handleInfoChange} 
+                                className="sign-input" 
+                                id="password"
+                                name="password" 
+                                type="text" 
+                                placeholder="비밀번호" 
+                                value={signInput.password} 
+                                onChange={handleInfoChange} 
                             />
                             {error.password && <p>{error.password}</p>}
                         </div>
@@ -207,7 +207,7 @@ const Signin = (props) => {
                                     value={isAddress}
                                     selected={isAddress}
                                 />
-                                <LogModal  type="button" value="도로명주소 찾기" />
+                                <LogModal type="button" value="도로명주소 찾기" />
                                 {error.address && <p>{error.address}</p>}
                             </div>
 
