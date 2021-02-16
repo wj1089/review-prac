@@ -90,7 +90,48 @@ const ForgotId = () => {
         })
     },[forgotInfo.name, forgotInfo.phone, rqustSwitch])
 
+    //인증번호 입력후 완료 절차
+    function handleCFcode() {
+        console.log("일단 탔음")
+        console.log("codeNum inside")
+        console.log(codeNum)
+        if (codeNum.length !== 6 && agreeRqst === false) {
+            console.log("return까지 왔음")
+            alert("정확한 수신인증번호를 입력해주세요.")
+            return;
+        }
+        if (minutes === 0 && seconds === 0) {
+            return;
+        }
+        else {
+            console.log("통과")
+            setRqustSwitch(true)
+            setAgreeRqst(true)
+        }
+        axios
+          .post(sendEmail,{
+            authId : rqustAuth, 
+            code : codeNum, 
+            phone : forgotInfo.phone, 
+            name :  forgotInfo.name
+        } )
+          .then((response) => {
+            if(response && response.data){
+                const findId = response.data.email
+                setUserId(findId)
+            }
+            setAgreeRqst(true)
+            setFinalCheck(true)
+          })
+          .catch((error)=>{
+            console.log(error.response.data.error.message)
+            alert(error.response.data.error.message)
+        })
 
+
+
+      }
+      
     //인증번호 발송 후 입력과정
     const pressCertiBtn = (
         <>
@@ -161,46 +202,7 @@ const ForgotId = () => {
    
   
     
-    function handleCFcode() {
-        console.log("일단 탔음")
-        console.log("codeNum inside")
-        console.log(codeNum)
-        if (codeNum.length !== 6 && agreeRqst === false) {
-            console.log("return까지 왔음")
-            alert("정확한 수신인증번호를 입력해주세요.")
-            return;
-        }
-        if (minutes === 0 && seconds === 0) {
-            return;
-        }
-        else {
-            console.log("통과")
-            setRqustSwitch(true)
-            setAgreeRqst(true)
-        }
-        axios
-          .post(sendEmail,{
-            authId : rqustAuth, 
-            code : codeNum, 
-            phone : forgotInfo.phone, 
-            name :  forgotInfo.name
-        } )
-          .then((response) => {
-            if(response && response.data){
-                const findId = response.data.email
-                setUserId(findId)
-            }
-            setAgreeRqst(true)
-            setFinalCheck(true)
-          })
-          .catch((error)=>{
-            console.log(error.response.data.error.message)
-            alert(error.response.data.error.message)
-        })
-
-
-
-      }
+    
     
     //최종 아이디 보여지는부분
     const makeReqElement = () =>{

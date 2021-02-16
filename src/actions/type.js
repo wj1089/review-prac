@@ -10,7 +10,7 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 // export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 // export const LOGOUT_FAIL = "LOGOUT_FAIL";
 export const LOGOUT = "LOGOUT";
-export const UPDATE = "UPDATE"
+// export const UPDATE = "UPDATE"
 
 export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";

@@ -13,6 +13,7 @@ const MyPage = () => {
         <>
             <h1>Welcome to My Page</h1>
             <a href="/userInfo"><button type="button">회원정보관리</button></a>
+            <a href="/serviceCenter"><button>고객센터</button></a>
             {/* <button type="submit" onClick={serveToMyPage}>회원정보관리</button> */}
             
             <Logout />
