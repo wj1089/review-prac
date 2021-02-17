@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../actions/userAction';
-import validate from './validationInfo';
+import { registerUser } from '../../actions/userAction';
+import validate from '../validationInfo';
 import moment from 'moment';
 import DatePicker from "react-datepicker";
 import './login.css';

@@ -1,14 +1,14 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
-import Home from './components/Home';
-import Signin from './components/Signin';
-import Login from './components/Login';
-import Logout from './components/Logout';
-import ForgotId from './components/ForgotId';
-import ForgotPw from './components/ForgotPw';
-import MyPage from './components/MyPage';
-import UserInfo from './components/UserInfo';
-import ServiceCenter from './components/ServiceCenter';
+import Home from './components/main/Home';
+import Signin from './components/log/Signin';
+import Login from './components/log/Login';
+import Logout from './components/log/Logout';
+import ForgotId from './components/log/ForgotId';
+import ForgotPw from './components/log/ForgotPw';
+import MyPage from './components/user/MyPage';
+import UserInfo from './components/user/UserInfo';
+import ServiceCenter from './components/user/ServiceCenter';
 
 const Page = () => {
     return (

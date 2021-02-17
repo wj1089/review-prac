@@ -12,7 +12,7 @@ const Logout = (props) => {
     const onClickHandler = () =>{
         // dispatch(logoutUser())
         localStorage.removeItem("user");
-        props.history.push("/login")
+        props.history.push("/")
 
         console.log("localStorage-logout")
         console.log(localStorage)

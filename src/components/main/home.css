@@ -1,0 +1,17 @@
+.full-screen{
+    width: 100%;
+    background-color: aquamarine;
+    text-align: center;
+    border: 1px solid;
+    position: relative;
+}
+
+.screen-main{
+    position: relative;
+    min-width: 100%;
+    background-color: lightgreen;
+    text-align: center;
+    border: 1px solid;
+}
+
+

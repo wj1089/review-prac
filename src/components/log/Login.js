@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { loginUser } from "../actions/userAction"
+import { loginUser } from "../../actions/userAction"
 import PasswordMask from 'react-password-mask';
 import PropTypes from 'prop-types';
-
 import "./login.css"
 
-const Login = (props) => {
+const Login = (props,{submitForm}) => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -41,14 +40,10 @@ const Login = (props) => {
       
         dispatch(loginUser(body))
         .then((response) => {
-        // console.log("respose.payload")
-        // console.log(response.payload.token)
         if(response.payload.accountEntity !== false){
             alert("로그인 성공! 환영합니다")
             localStorage.setItem("user", JSON.stringify(response.payload.token));
-            props.history.push("./mypage")
-            // console.log("localStorage get")
-            // console.log(localStorage.getItem("user"))
+            props.history.push("./")
         }
         })
         .catch((error)=>{
@@ -87,12 +82,3 @@ const Login = (props) => {
 };
 
 export default withRouter(Login);
-
-Login.propTypes = {
-    login: PropTypes.bool.isRequired,
-};
-  
-Login.defaultTypes = {
-    login: true,
-};
-

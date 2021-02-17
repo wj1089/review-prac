@@ -1,12 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useState,useCallback } from 'react';
-import authHeader from "../hoc/authHeader"
-// import { request } from "../util/axios";
+import { withRouter} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import authHeader from "../../actions/userAction"
 import {Modal, Button} from "react-bootstrap"
 import "./userinfo.css"
 import DaumPostcode from 'react-daum-postcode';
 import { useDispatch } from 'react-redux';
-import { updateProfile } from '../actions/userAction';
 
 const UserInfo = ({props,history}) => {
     const userInfomation = "https://childsnack-test.appspot.com/_ah/api/user/v1/getAccount"
@@ -15,12 +14,9 @@ const UserInfo = ({props,history}) => {
     const phoneCodeCheck = "https://childsnack-test.appspot.com/_ah/api/user/v1/checkAuthNum"
     const updateInfo = "https://childsnack-test.appspot.com/updateProfile"
 
-    const dispatch = useDispatch();
-    
     const [clickAction, setClickAction] = useState(false)
 
     const [passwordClick, setPasswordClick] = useState(false)
-    // const [phoneClick, setPhoneClick] = useState(false)
 
     //회원정보 변경버튼 
     const [sendClick, setSendClick] = useState(false)
@@ -43,9 +39,7 @@ const UserInfo = ({props,history}) => {
     const handlePhoneClose = () =>{
         setPhoneShow(false)
         setSendClick(false)
-        // setPhoneClick(false)
     }
-
     //회원 정보
     const [userInfo, setUserInfo]  = useState('')
     //입력한 주소
@@ -58,31 +52,29 @@ const UserInfo = ({props,history}) => {
     const [codeInput, setCodeInput] = useState('');
     //수락여부 
     const [allow,setAllow] = useState(false)
-
+    //상세주소
+    const [addDetail,setAddDetail] = useState(false)
     //비밀번호 변경
     const [oldPw, setOldPw] = useState('')
     const [newPw, setNewPw] = useState('')
     const [checkPw, setCheckPw] = useState('')
     const [isAuthId, setIsAuthId] = useState('')
-
     //Old Passward
-    const oldPwChange = (e) =>{
-        setOldPw(e.target.value)
-        
-    }
+    const oldPwChange = (e) =>{setOldPw(e.target.value)}
     //New Passward
-    const newPwChange = (e) =>{
-    setNewPw(e.target.value)
-    }
+    const newPwChange = (e) =>{setNewPw(e.target.value)}
     //신규 비밀번호 재입력
     const checkPwChange = (e) =>{
     setCheckPw(e.target.value)
     }
+
     //validation check Passward
     const validatePw = () =>{
         // if(userInfo.password !== oldPw){
-        //     alert("기존 비밀번호가 다릅니다!")
+        //     alert("기존비밀번호와 다릅니다!")
         //     return
+        // }else{
+        //     console.log("통과")
         // }
         if(oldPw.length < 6 || newPw.length < 6 ){
             alert("비밀번호는 6자 이상으로 설정해주세요!")
@@ -102,7 +94,7 @@ const UserInfo = ({props,history}) => {
             setAgreeSign(true)
             console.log("통과")
             alert("통과")
-            setCheckPw(checkPw)
+            setNewPw(newPw)
             setPasswordClick(false)
         }
     }
@@ -116,7 +108,7 @@ const UserInfo = ({props,history}) => {
 
     //신규번호 확인
     const addDetailChange = (e) =>{
-        console.log("phoneCodeChange")
+        console.log("isAddressDetail")
         setIsAddressDetail(e.target.value)
         console.log(isAddressDetail)
     }
@@ -126,7 +118,7 @@ const UserInfo = ({props,history}) => {
         setCodeInput(e.target.value)
         console.log(codeInput)
     }
-    //뒤로가기
+    // //뒤로가기
     const goBack = () =>{
         history.goBack();
     }
@@ -153,6 +145,11 @@ const UserInfo = ({props,history}) => {
         setClickAction(!clickAction)
         console.log("clickAction")
         console.log(clickAction)
+    }
+    const handleAddDetailSwitch = () =>{
+        setAddDetail(!addDetail)
+        console.log("addDetail")
+        console.log(addDetail)
     }
 
     //비밀번호 변경 여부 버튼
@@ -223,43 +220,47 @@ const UserInfo = ({props,history}) => {
             alert(error.response.data.error.message)
         })
     }
+    console.log("userInfo.address")
+    console.log(userInfo.address)
 
 
     //변경완료 확인버튼
     const changeSubmit = () =>{
-
-
-        console.log("데이터 주입 확인용 body")
-        const body={
-            password : newPw,
-            address: isAddress,
-            addressDetail: isAddressDetail,
-            name : userInfo.name,
-            headers: authHeader()
-        }
-        console.log(body)
-
-        // dispatch(updateProfile(body))
+        console.log("최종변경")
         axios
         .post(updateInfo, {
+            oldPassword : oldPw,
             password : newPw,
             address: isAddress,
             addressDetail: isAddressDetail,
             name : userInfo.name,
         }, {headers: authHeader()})
+
         .then((response)=>{
             console.log("재등록 보냄")
             console.log(response)
-            // localStorage.getItem('user',JSON.stringify(response.payload))
-            // console.log(localStorage)
-            // console.log(response.payload)
+            if(response && response.data.code === "1"){
+                localStorage.getItem('user',JSON.stringify(response.payload))
+                alert("변경이 완료되었습니다")
+                console.log( "password : newPw")
+                console.log(newPw)
+                // props.history.push("/myPage")
+                goBack()
+            }
+            console.log("localStorage")
+            console.log(localStorage)
+            console.log("response.payload")
+            console.log(response)
         })
+        
         .catch((error)=>{
             console.log("error log")
             console.log(error)
-            alert(error)
+            console.log(error.response)
+            alert(error.response)
         })
-    } 
+    }
+
 
     //회원 탈퇴 
     const handleRemoveId = () =>{
@@ -272,8 +273,8 @@ const UserInfo = ({props,history}) => {
             }
         })
         .catch((error)=>{
-            console.log(error.response.data.error.message)
-            alert(error.response.data.error.message)
+            console.log(error.response)
+            alert(error.response)
         })
     } 
     
@@ -468,12 +469,14 @@ const UserInfo = ({props,history}) => {
                     type="text" 
                     placeholder="비밀번호" 
                     style={{border: "1px solid", width:100,height:30}} 
-                />
+                >
+                    {"*******"}
+                </div>
+
             </div>
 
             <div className="user-infoContent">
                 <p>전화번호</p>
-
                 <div 
                     type="text" 
                     placeholder="전화번호" 
@@ -487,6 +490,7 @@ const UserInfo = ({props,history}) => {
             <div className="user-infoContent">
                 <p>주소</p> 
                 <div 
+                    value={userInfo.address}
                     type="text" 
                     placeholder="주소" 
                     style={{border: "1px solid",height:30}}
@@ -498,6 +502,7 @@ const UserInfo = ({props,history}) => {
             <div className="user-infoContent">
                 <p>상세주소</p> 
                 <div 
+                    value={userInfo.addressDetail}
                     type="text" 
                     placeholder="상세주소" 
                     style={{border: "1px solid",width: 100,height:30}}
@@ -506,7 +511,7 @@ const UserInfo = ({props,history}) => {
                 </div>
             </div>
 
-            <button onClick={goBack}>마이페이지</button>
+            <a href="./myPage"><button>마이페이지</button></a>
             <button type="button" onClick={handleClickEvent}>수정하기</button>
         </>
     )
@@ -596,23 +601,32 @@ const UserInfo = ({props,history}) => {
             </div>
             <div className="user-infoContent">
                 <p>상세주소</p> 
-                {allow === true && (
-                <input 
-                    value={isAddressDetail}
-                    type="text" 
-                    placeholder="상세주소" 
-                    style={{border: "1px solid",width: 100,height:30}}
-                    onChange={addDetailChange}
-                />
-                )}
-                {allow === false && (
+                {addDetail === true && (
+                <>
                     <input 
-                    value={userInfo.addressDetail}
-                    type="text" 
-                    placeholder="상세주소" 
-                    style={{border: "1px solid",width: 100,height:30}}
-                    onChange={addDetailChange}
-                />
+                        value={isAddressDetail}
+                        type="text" 
+                        placeholder="상세주소" 
+                        style={{border: "1px solid",width: 100,height:30}}
+                        onChange={addDetailChange}
+                    />
+                    <button onClick={handleAddDetailSwitch}>취소</button>
+                </>
+                )}
+                
+                {addDetail === false && (
+                <>
+                    <div 
+                        value={userInfo.addressDetail}
+                        type="text" 
+                        placeholder="상세주소" 
+                        style={{border: "1px solid",width: 100,height:30}}
+                        onChange={addDetailChange}
+                    >
+                        {userInfo.addressDetail}
+                    </div>
+                    <button onClick={handleAddDetailSwitch}>입력하기</button>
+                </>
                 )}
             </div>
             <button onClick={handleClickEvent}>뒤로가기</button>
@@ -630,6 +644,8 @@ const UserInfo = ({props,history}) => {
             console.log(response.data)
             const userInfo = response.data
             setUserInfo(userInfo)
+            console.log("userInfo.address")
+            console.log(userInfo.address)
         })
         .catch((error)=>{
             console.log(error.response.data.error.message)
@@ -686,21 +702,11 @@ const UserInfo = ({props,history}) => {
                     <Modal.Footer>
                     </Modal.Footer>
                 </Modal>   
-
-
                 {/* 모달 회원탈퇴여부 확인 */}
                 <RemoveModal type="button" />
-
-
-                
-
-                <div style={{display:'flex',justifyContent:'center'}}>
-                    <a href="/login"><button>로그인화면으로 가기</button></a>
-                    <a href="/mypage"><button>회원정보로 가기</button></a>
-                </div>
             </div>
         </>
     );
 };
 
-export default UserInfo;
+export default withRouter(UserInfo);
