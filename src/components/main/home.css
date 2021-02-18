@@ -1,17 +1,17 @@
-.full-screen{
+
+.screen-layout{
+    position: absolute;
     width: 100%;
-    background-color: aquamarine;
-    text-align: center;
-    border: 1px solid;
-    position: relative;
 }
 
 .screen-main{
     position: relative;
-    min-width: 100%;
-    background-color: lightgreen;
     text-align: center;
     border: 1px solid;
+    display: flex;
+    justify-content: center;
 }
-
+.main-center {
+    width: 1180px;
+}
 

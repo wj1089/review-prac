@@ -23,6 +23,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.3.0",
+    "url-prop-type": "^1.2.4",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

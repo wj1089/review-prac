@@ -3,8 +3,9 @@ import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { loginUser } from "../../actions/userAction"
 import PasswordMask from 'react-password-mask';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import "./login.css"
+import "../../index.css"
 
 const Login = (props,{submitForm}) => {
     const dispatch = useDispatch();
@@ -54,28 +55,30 @@ const Login = (props,{submitForm}) => {
     return (
     <>
         <div className="full-screen">
-            <div className="outline">
-                <header><h1>Login Page</h1></header>
-                <div className="mid-area">
-                    <input className="idpw-input" value={email} name="email" type="text" placeholder="아이디" onChange={changeId} />
-                    <PasswordMask className="idpw-input" value={password} name="password" type="text" placeholder="비밀번호" onChange={changePw} />
-                    <input className="idpw-input" value={os} name="os" type="text" placeholder="OS" onChange={changeOs} />
-                    <input className="idpw-input" value={uuid} name="uuid" type="text" placeholder="uuid" onChange={changeUuid} />
+            <div className="center-style">
+                <div className="outline">
+                    <header><h1>Login Page</h1></header>
+                    <div className="mid-area">
+                        <input className="idpw-input" value={email} name="email" type="text" placeholder="아이디" onChange={changeId} />
+                        <PasswordMask className="idpw-input" value={password} name="password" type="text" placeholder="비밀번호" onChange={changePw} />
+                        <input className="idpw-input" value={os} name="os" type="text" placeholder="OS" onChange={changeOs} />
+                        <input className="idpw-input" value={uuid} name="uuid" type="text" placeholder="uuid" onChange={changeUuid} />
 
-                    <div className="find-area">
-                        <a href="./forgotid"><button className="btn-find" type="button">아이디 찾기</button></a>
-                        <a href="./forgotpw"><button className="btn-find" type="button">비밀번호 찾기</button></a>
+                        <div className="find-area">
+                            <a href="./forgotid"><button className="btn-find" type="button">아이디 찾기</button></a>
+                            <a href="./forgotpw"><button className="btn-find" type="button">비밀번호 찾기</button></a>
+                        </div>
                     </div>
-                </div>
-                <div className="select-btn">
-                    {/* submit */}
-                    <button className="btn-item" type="submit" onClick={onSubmit}>로그인</button>
+                    <div className="select-btn">
+                        {/* submit */}
+                        <button className="btn-item" type="submit" onClick={onSubmit}>로그인</button>
 
-                    {/* signin */}
-                    <a href="./Signin"><button className="btn-item" type="button" >회원가입</button></a>
-                    <a href="./"><button>뒤로가기</button></a>
-                </div>
-            </div>  
+                        {/* signin */}
+                        <a href="./Signin"><button className="btn-item" type="button" >회원가입</button></a>
+                        <a href="./"><button>뒤로가기</button></a>
+                    </div>
+                </div>  
+            </div>
         </div>
     </>
     );

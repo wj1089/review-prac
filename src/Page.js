@@ -9,6 +9,7 @@ import ForgotPw from './components/log/ForgotPw';
 import MyPage from './components/user/MyPage';
 import UserInfo from './components/user/UserInfo';
 import ServiceCenter from './components/user/ServiceCenter';
+import ProductDetail from './components/products/ProductDetail'
 
 const Page = () => {
     return (
@@ -23,6 +24,7 @@ const Page = () => {
                 <Route path="/myPage" component={MyPage} />
                 <Route path="/userInfo" component={UserInfo} />
                 <Route path="/serviceCenter" component={ServiceCenter} />
+                <Route path="/productDetail" component={ProductDetail} />
             </Switch>
         </>
     );
