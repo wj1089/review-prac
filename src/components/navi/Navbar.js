@@ -1,21 +1,38 @@
 import React, { useRef, useState } from 'react';
 import Logout from '../log/Logout';
+import authHeader from "../../actions/userAction"
 import "./navi.css";
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
-const Navbar = ({history}) => {
-
+const Navbar = ({props,history}) => {
+    const cartHistory = "https://childsnack-test.appspot.com/_ah/api/cart/v1/getCartList"
 
     const [isSubmit, setIsSubmit] = useState(false)
+    //장바구니 버튼
+    const [cart, setCart] = useState(true)
+    
     const navBar = useRef(null);
     const logo = useRef(null);
 
-    const submitForm =()=> {
-        setIsSubmit(!isSubmit)
-        history.push("./login")
+    const ticket = localStorage.getItem("user")
+
+    //장바구니 버튼
+    const cartSwitch = () =>{
+        setCart(cart)
+        console.log(cart)
     }
 
-    const ticket = localStorage.getItem("user")
+
+    // const submitForm =()=> {
+    //     setIsSubmit(!isSubmit)
+    //     history.push("./login")
+    // }
+
+    // const 
+
+
+
 
 
     function scrollDown() {
@@ -50,18 +67,45 @@ const Navbar = ({history}) => {
 
     window.onscroll = () => {
         scrollDown()
-      };
+    };
     
+
+
+    if(cart === true){
+      if(ticket === null){
+        alert("로그인을 먼저 진행해주세요")
+        props.history.push('./login')
+        return
+      }
+      axios
+      .get(cartHistory, {headers: authHeader()})
+      .then((response)=>{
+        console.log("장바구니 진입")
+        console.log(response)
+        
+      })
+      .catch((error)=>{
+        console.log("error log")
+        console.log(error)
+      })
+      // .catch((error)=>{
+           
+      //       console.log(error.response.data.error.message)
+      //       alert(error.response.data.error.message)
+      //   })
+    }
+  
+  
 
     return (
         <>
-            <div className="nav-header" ref={navBar}>
-                <div className="nav-bar">
+                <div className="nav-bar" style={{width:"100%"}}>
                     { ticket === null &&(
                         <>
                             <div style={{width:"100%"}}>
-                                <h1>Before Login Page</h1>
-                                <button style={{float:"right"}} onClick={submitForm}>로그인</button>
+                                <h1 style={{float:"left"}}>Before Login Page</h1>
+                                {/* <button style={{float:"right"}} onClick={submitForm}>로그인</button> */}
+                                <button type="button" onClick={cartSwitch}>카트</button>
                             </div>
                         </>
                     )}
@@ -69,16 +113,16 @@ const Navbar = ({history}) => {
                     { ticket !== null &&(
                         <>
                             <div style={{width:"100%"}}>
-                                <h1>After Login Page</h1>
+                                <h1 style={{float:"left"}}>After Login Page</h1>
                                 <div style={{float:"right", display:"flex"}}>
-                                    <a href="/mypage"><button >마이페이지</button></a>
+                                    {/* <a href="/mypage"><button >마이페이지</button></a> */}
                                     <Logout />
+                                    <button type="button" onClick={cartSwitch}>카트</button>
                                 </div>
                             </div>
                         </>
                     )}
                 </div>
-            </div>
         </>
     );
 };

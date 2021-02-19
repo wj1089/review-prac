@@ -1,5 +1,6 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import urlPropType from 'url-prop-type';
 import "./product.css"
 
@@ -11,12 +12,30 @@ const Products = ({
     imgCss
 }) => {
 
+    
+    // const [slideBtn, setSlideBtn] = useState({
+    //     left:false,
+    //     right:false
+    // })
+    
+    // const handleDirect = (e) =>{
+    //     // const [value, name] = e.target
+    //     // setSlideBtn({
+    //     //     ...slideBtn,
+    //     //     [name]:value
+    //     // })
+    //     setSlideBtn(!slideBtn)
+    //     console.log("slideBtn Click")
+    //     console.log(slideBtn)
+    // }
+    
+
     return (
         <>
+            {/* <button type="button" onClick={handleDirect}>left</button> */}
             <div className="productZone">
                 <div className="slide-area">
                     <div className="show-slide">
-
                         {data.map((item)=>(
                             <a href={`/productDetail?id=${item.id}`}>
                                 <div className={containerCss}>
@@ -30,6 +49,7 @@ const Products = ({
                     </div>
                 </div>
             </div>
+            {/* <button type="button" onClick={handleDirect}>right</button> */}
         </>
     );
 };

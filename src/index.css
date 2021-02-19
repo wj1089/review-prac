@@ -14,7 +14,7 @@ code {
 
 
 .full-screen{
-  min-width: 1180px;
+  width: 100%;
   text-align: center;
   border: 1px solid;
   position: relative;

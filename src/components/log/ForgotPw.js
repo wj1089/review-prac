@@ -137,7 +137,6 @@ const ForgotPw = () => {
     console.log("pwSwitchCheck")
     console.log(pwSwitchCheck)
 
-    //
     const makePwInput = () =>{
         return (
         <>

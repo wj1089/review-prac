@@ -1,0 +1,15 @@
+.rw-containter{
+    display: inline-flex;
+    width: 150px;
+    height: 100px;
+}
+
+.rw-content{
+    width: 150px;
+    height: 100px;
+}
+
+.rw-img{
+    width: 150px;
+    height: 100px;
+}

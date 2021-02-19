@@ -35,7 +35,7 @@ const ForgotId = () => {
 
     // 아이디 보여주기
     // const [showId, setShowId] = useState(false)
-
+    
     // 타이머
     const [minutes, setMinutes] = useState(0);
     const [seconds, setSeconds] = useState(0);

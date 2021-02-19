@@ -6,10 +6,18 @@ import Login from './components/log/Login';
 import Logout from './components/log/Logout';
 import ForgotId from './components/log/ForgotId';
 import ForgotPw from './components/log/ForgotPw';
-import MyPage from './components/user/MyPage';
-import UserInfo from './components/user/UserInfo';
-import ServiceCenter from './components/user/ServiceCenter';
 import ProductDetail from './components/products/ProductDetail'
+import Cart from './components/cart/Cart';
+import ServiceCenter from './components/user/ServiceCenter';
+import UserInfo from './components/user/UserInfo';
+import MyPage from './components/user/MyPage';
+import Notice from './components/user/Notice';
+import OrderHistory from './components/user/OrderHistory';
+import RvCenter from './components/review/RvCenter';
+import EventCenter from './components/event/EventCenter';
+import Coupon from './components/user/Coupon';
+
+
 
 const Page = () => {
     return (
@@ -25,6 +33,12 @@ const Page = () => {
                 <Route path="/userInfo" component={UserInfo} />
                 <Route path="/serviceCenter" component={ServiceCenter} />
                 <Route path="/productDetail" component={ProductDetail} />
+                <Route path="/cart" component={Cart} />
+                <Route path="/notice" component={Notice} />
+                <Route path="/orderHistory" component={OrderHistory} />
+                <Route path="/reCenter" component={RvCenter} />
+                <Route path="/eventCenter" component={EventCenter} />
+                <Route path="/coupon" component={Coupon} />
             </Switch>
         </>
     );

@@ -8,10 +8,42 @@
     position: relative;
     text-align: center;
     border: 1px solid;
-    display: flex;
-    justify-content: center;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+    min-width: 360px;
 }
 .main-center {
-    width: 1180px;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+.contentRetailPrice{
+    font-size: 18px;
+    color: #000000;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+}
+.contentPrice{
+    line-height: 1.46;
+    letter-spacing: normal;
+    text-align: left;
+    color: #9e9e9e;
+    margin-left: 5px;
+}
+/* 
+.reviewText{
+
 }
 
+.reviewName{
+
+}
+.reviewPoint{
+
+}
+
+.reviewDescrip{
+
+} */

@@ -2,7 +2,7 @@
     display: inline-flex;
     overflow: hidden;
     border: 1px solid;
-    height: 150px;
+    height: 100%;
     width: 150px;
     margin: 0;
 }
@@ -26,7 +26,7 @@
 }
 
 .productZone{
-    width: 1000px;
+    width: 360px;
     height: 100%;
     display: flex;
     border: 1px solid;
@@ -36,15 +36,15 @@
 
 .slide-area{
     position: absolute;
-    width: 1000px;
-    height :170px;
+    width: 360px;
+    height :250px;
     border: 1px solid;
     overflow: hidden;
 }
 .show-slide{
     /* width: 1000px; */
     display: flex;
-    height: 156px;
+    height: 100%;
     overflow: hidden;
 }
 
