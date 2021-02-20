@@ -220,9 +220,6 @@ const UserInfo = ({props,history}) => {
             alert(error.response.data.error.message)
         })
     }
-    console.log("userInfo.address")
-    console.log(userInfo.address)
-
 
     //변경완료 확인버튼
     const changeSubmit = () =>{
@@ -247,10 +244,6 @@ const UserInfo = ({props,history}) => {
                 // props.history.push("/myPage")
                 goBack()
             }
-            console.log("localStorage")
-            console.log(localStorage)
-            console.log("response.payload")
-            console.log(response)
         })
         
         .catch((error)=>{

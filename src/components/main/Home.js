@@ -21,7 +21,6 @@ const Home = () => {
     
     const getStoryList = "https://childsnack-test.appspot.com/_ah/api/blogcontent/v1/list?count=5&startCursor=0"
     const getList = "https://childsnack-test.appspot.com/_ah/api/category/v1/getList?id="
-
     const eventList = "https://childsnack-test.appspot.com/_ah/api/event/v1/getAllEvent?type=1"
 
 
@@ -56,79 +55,79 @@ const Home = () => {
 
 
     //신상품 리스트 가져오기
-    // useEffect(()=>{
-    //     axios
-    //     .get(getAllList)
-    //     .then((response)=>{
-    //         //신상품
-    //         console.log("")
-    //         console.log(response.data)
-    //         if(response.data.items[6]){
-    //             const listArr = [];
-    //             response.data.items[6].products.map((item)=>listArr.push({
-    //                 id: item.productId,
-    //                 img: item.thumnail,
-    //                 content: makeGetItemElement(
-    //                     item.originClassification,
-    //                     item.name,
-    //                     item.retailPrice,
-    //                     item.price,
-    //                     )
-    //             }))
-    //                 setItemList(listArr)
-    //         }
+    useEffect(()=>{
+        axios
+        .get(getAllList)
+        .then((response)=>{
+            //신상품
+            console.log("")
+            console.log(response.data)
+            if(response.data.items[6]){
+                const listArr = [];
+                response.data.items[6].products.map((item)=>listArr.push({
+                    id: item.productId,
+                    img: item.thumnail,
+                    content: makeGetItemElement(
+                        item.originClassification,
+                        item.name,
+                        item.retailPrice,
+                        item.price,
+                        )
+                }))
+                    setItemList(listArr)
+            }
 
-    //         //tag추천
-    //         if(response.data.items[0]){
-    //             const listArr = [];
-    //             response.data.items[0].products.map((item)=>listArr.push({
-    //                 id: item.productId,
-    //                 img: item.thumnail,
-    //                 tag : item.tags,
-    //                 content: makeTagRecomendElement(
-    //                     item.originClassification,
-    //                     item.name,
-    //                     item.retailPrice,
-    //                     item.price,
-    //                     )
-    //             }))
-    //             setTagRecommend(listArr)
-    //         }
+            //tag추천
+            if(response.data.items[0]){
+                const listArr = [];
+                response.data.items[0].products.map((item)=>listArr.push({
+                    id: item.productId,
+                    img: item.thumnail,
+                    tag : item.tags,
+                    content: makeTagRecomendElement(
+                        item.originClassification,
+                        item.name,
+                        item.retailPrice,
+                        item.price,
+                        )
+                }))
+                setTagRecommend(listArr)
+            }
 
-    //         //hotProduct추천
-    //         if(response.data.items[4]){
-    //             const listArr = [];
-    //             response.data.items[4].products.map((item)=>listArr.push({
-    //                 id: item.productId,
-    //                 img: item.thumnail,
-    //                 content: makeHotProductElement(
-    //                     item.originClassification,
-    //                     item.name,
-    //                     item.retailPrice,
-    //                     item.price,
-    //                     )
-    //             }))
-    //             setHotProduct(listArr)
-    //         }
+            //hotProduct추천
+            if(response.data.items[4]){
+                const listArr = [];
+                response.data.items[4].products.map((item)=>listArr.push({
+                    id: item.productId,
+                    img: item.thumnail,
+                    content: makeHotProductElement(
+                        item.originClassification,
+                        item.name,
+                        item.retailPrice,
+                        item.price,
+                        )
+                }))
+                setHotProduct(listArr)
+            }
 
-    //         //md 추천
-    //         if(response.data.items[1]){
-    //             const listArr = [];
-    //             response.data.items[1].products.map((item)=>listArr.push({
-    //                 id: item.productId,
-    //                 img: item.thumnail,
-    //                 content: makeMdRecomendElement(
-    //                     item.originClassification,
-    //                     item.name,
-    //                     item.retailPrice,
-    //                     item.price,
-    //                 )
-    //             }))
-    //             setMdRecommend(listArr)
-    //         }
-    //             setItemClick(true)
-    //         });
-    // }, []);
+            //md 추천
+            if(response.data.items[1]){
+                const listArr = [];
+                response.data.items[1].products.map((item)=>listArr.push({
+                    id: item.productId,
+                    img: item.thumnail,
+                    content: makeMdRecomendElement(
+                        item.originClassification,
+                        item.name,
+                        item.retailPrice,
+                        item.price,
+                    )
+                }))
+                setMdRecommend(listArr)
+            }
+                setItemClick(true)
+            });
+    }, []);
 
  
 
@@ -163,12 +162,12 @@ const Home = () => {
     
     // , {headers: authHeader()}
 
-    //event 컨텐츠
+    // 상단 event bener
     useEffect(()=>{
         axios
         .get(eventList)
         .then((response)=>{
-            console.log("event 내부 response")
+            console.log("event bener 내부 response")
             console.log(response)
             const listArr = [];
             response.data.items.map((event)=>listArr.push({
@@ -181,7 +180,7 @@ const Home = () => {
         })
     },[])
 
-
+    //스토리
     useEffect(()=>{
         console.log("스토리")
         axios
@@ -287,11 +286,14 @@ const Home = () => {
                     {/* marginTop:"60px",  */}
                         <div style={{
                             width:"100%",
-                            height:328.3,
+                            // height:328.3,
                             border:"1px solid", 
                             backgroundColor:"lightgray"}}>
                             <div>
-                                header Bener
+                                <Event 
+                                    data={event}
+                                    eventImg="evt-img"
+                                />
                             </div>
                         </div>
 

@@ -5,7 +5,7 @@ import "./navi.css";
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
-const Navbar = ({props,history}) => {
+const Navbar = ({history},data) => {
     const cartHistory = "https://childsnack-test.appspot.com/_ah/api/cart/v1/getCartList"
 
     const [isSubmit, setIsSubmit] = useState(false)
@@ -29,7 +29,15 @@ const Navbar = ({props,history}) => {
     //     history.push("./login")
     // }
 
-    // const 
+    const query = window.location.search
+    console.log("query")
+    console.log(query)
+    const urlParams = new URLSearchParams(query)
+    console.log("urlParams")
+    console.log(urlParams)
+    const getId = urlParams.get('id')
+    console.log("getId")
+    console.log(getId)
 
 
 
@@ -68,31 +76,38 @@ const Navbar = ({props,history}) => {
     window.onscroll = () => {
         scrollDown()
     };
-    
+    console.log("getId")
+    console.log(getId)
 
+    const handleCertificate =() =>{
 
-    if(cart === true){
-      if(ticket === null){
-        alert("로그인을 먼저 진행해주세요")
-        props.history.push('./login')
-        return
+      if(cart === true){
+        if(ticket === null){
+          alert("로그인을 먼저 진행해주세요")
+          history.push('./login')
+          return
+        }
+        axios
+        .get(cartHistory, {headers: authHeader()})
+        .then((response)=>{
+          console.log("장바구니 진입")
+          console.log(response)
+
+            history.push(`./cart?id=+${cart}`)
+
+          // {data.map((cart)=>(
+          // ))
+        })
+        .catch((error)=>{
+          console.log("error log")
+          console.log(error)
+        })
+        // .catch((error)=>{
+             
+        //       console.log(error.response.data.error.message)
+        //       alert(error.response.data.error.message)
+        //   })
       }
-      axios
-      .get(cartHistory, {headers: authHeader()})
-      .then((response)=>{
-        console.log("장바구니 진입")
-        console.log(response)
-        
-      })
-      .catch((error)=>{
-        console.log("error log")
-        console.log(error)
-      })
-      // .catch((error)=>{
-           
-      //       console.log(error.response.data.error.message)
-      //       alert(error.response.data.error.message)
-      //   })
     }
   
   
@@ -105,7 +120,7 @@ const Navbar = ({props,history}) => {
                             <div style={{width:"100%"}}>
                                 <h1 style={{float:"left"}}>Before Login Page</h1>
                                 {/* <button style={{float:"right"}} onClick={submitForm}>로그인</button> */}
-                                <button type="button" onClick={cartSwitch}>카트</button>
+                                <button type="button" onClick={handleCertificate}>카트</button>
                             </div>
                         </>
                     )}
@@ -117,7 +132,7 @@ const Navbar = ({props,history}) => {
                                 <div style={{float:"right", display:"flex"}}>
                                     {/* <a href="/mypage"><button >마이페이지</button></a> */}
                                     <Logout />
-                                    <button type="button" onClick={cartSwitch}>카트</button>
+                                    <button type="button" onClick={handleCertificate}>카트</button>
                                 </div>
                             </div>
                         </>
