@@ -405,7 +405,7 @@ const Home = () => {
                             </div>
                         </footer>
 
-                        {/* <DownNav /> */}
+                        <DownNav />
                     </div>
                 </div>
 

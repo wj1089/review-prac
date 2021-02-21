@@ -1,11 +1,13 @@
 import React,{useEffect, useState} from 'react';
 import axios from 'axios'
 import Navbar from "../navi/Navbar"
+// import authHeader from "../../actions/userAction"
 
-const ProductDetail = () => {
+const ProductDetail = ({history}) => {
     
     const productGetItem = "https://childsnack-test.appspot.com/_ah/api/product/v1/get?id="
-    
+    const addItemURL = "https://childsnack-test.appspot.com/_ah/api/order/v1/insert"
+
     const query = window.location.search
     console.log(query)
     
@@ -19,12 +21,20 @@ const ProductDetail = () => {
 
     const [infoMenu, setInfoMenu] = useState([])
     const [toggle, setToggle] = useState(1)
-    const [able, setAble] = useState([infoMenu])
+    const [able, setAble] = useState(false)
 
 
 
+    //뒤로가기
+    const goBack = () =>{
+        history.goBack();
+    }
 
-
+    const addProduct = () =>{
+        setAble(!able)
+        console.log("추가하기")
+        console.log(able)
+    }
 
 
     const onClickDetailInfo = (index) =>{
@@ -85,12 +95,29 @@ const ProductDetail = () => {
     console.log(infoMenu)
 
 
+    useEffect(()=>{
+        axios
+        // ,{headers: authHeader()}
+        .post(addItemURL)
+        .then((response)=>{
+            console.log("추가버튼 useEffect")
+            console.log(response)
+        })
+        .catch((error)=>{
+            console.log(error)
+            console.log(error.response)
+        })
+    })
+
+
+
 
     return (
         <>
             <div>
                 <Navbar />
                 <h4>Product Detail</h4>
+                <button type="button" onClick={goBack}>뒤로가기</button>
                 <div 
                     style={{
                     backgroundColor:"lightYellow",
@@ -160,6 +187,7 @@ const ProductDetail = () => {
                         </div>
                     </div>
                 </div>
+                    <button type="button" onClick={addProduct}>추가하기</button>
             </div>  
         </>
     );

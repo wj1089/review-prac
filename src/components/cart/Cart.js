@@ -148,10 +148,8 @@ const Cart = ({history}) => {
         )
     }
 
-   
-
     return (
-        <div>
+        <div style={{height: 600,display: "flex",alignItems: "center"}}>
             <div style={{width:500, border:"1px solid"}}>
                 <div style={{display:"flex"}}>
                     <button onClick={goBack}>뒤로</button>

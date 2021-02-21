@@ -16,6 +16,7 @@ import OrderHistory from './components/user/OrderHistory';
 import RvCenter from './components/review/RvCenter';
 import EventCenter from './components/event/EventCenter';
 import Coupon from './components/user/Coupon';
+import Category from './components/categorys/Category';
 
 
 
@@ -39,6 +40,8 @@ const Page = () => {
                 <Route path="/reCenter" component={RvCenter} />
                 <Route path="/eventCenter" component={EventCenter} />
                 <Route path="/coupon" component={Coupon} />
+                <Route path="/category" component={Category} />
+
             </Switch>
         </>
     );

@@ -36,7 +36,7 @@ const DownNav = ({history,props}) => {
             {ticket !== null &&(
                 <>
                     <a href={'./video'} style={categoryStyle}><div type="button">video</div></a>
-                    <a href={'./home'} style={categoryStyle}><div type="button">home</div></a>
+                    <a href={'./'} style={categoryStyle}><div type="button">home</div></a>
                     <a href={'./category'} style={categoryStyle}><div type="button">category</div></a>
                     <a href={'./mypage'} style={categoryStyle}><div type="button">my</div></a>
                 </>
