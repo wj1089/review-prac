@@ -10,11 +10,11 @@ const Event = ({
 
     return (
         <>
-            <div>
-                {data.map((event)=>(
+            {data.map((event)=>(
+                <a href={`./eventMore?id=${event.id}`}>
                     <img className={eventImg} src={event.img} alt={event.id} />
-                ))}
-            </div>  
+                </a>
+            ))}
         </>
     );
 };

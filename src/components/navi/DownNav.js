@@ -1,6 +1,6 @@
 import React, { useState }  from 'react';
 
-const DownNav = ({history,props}) => {
+const DownNav = () => {
 
     const categoryStyle = {
         width:"95px", 
@@ -12,7 +12,6 @@ const DownNav = ({history,props}) => {
     }
 
     // const [isSubmit, setIsSubmit] = useState(false)
-
     // const submitForm =()=> {
     //     setIsSubmit(!isSubmit)
     //     props.history.push("./login")

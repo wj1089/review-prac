@@ -8,7 +8,7 @@
 }
 .contentLayout{
     border: 1px solid;
-    height: 40px;
+    /* height: 40px; */
     margin: 0;
 }
 .imgLayout{
@@ -26,17 +26,17 @@
 }
 
 .productZone{
-    width: 360px;
+    /* width: 360px; */
     height: 100%;
     display: flex;
-    border: 1px solid;
+    /* border: 1px solid; */
     justify-content: center;
     align-items: center;
 }
 
 .slide-area{
     position: absolute;
-    width: 360px;
+    /* width: 360px; */
     height :250px;
     border: 1px solid;
     overflow: hidden;

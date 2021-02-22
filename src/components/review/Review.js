@@ -13,7 +13,7 @@ const Review = ({
         <>
             <div className="">
                 {data.map((review)=>(
-                    <a href={`/home?id=${review.id}`}>
+                    <a href={`/productDetail?id=${review.id}`}>
                         <div className={reviewContainer}>
                             <div className={reviewContent}>
                             <img className={reviewImg} src={review.img}  alt={review.id}/>

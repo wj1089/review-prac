@@ -12,7 +12,6 @@ const OrderHistory = () => {
         axios
         .get(OrderURL,{headers: authHeader()})
         .then((response)=>{
-            console.log(response)
             const ListArr = []
             response.data.items.map((order)=>ListArr.push({
                 id:order.orderId,

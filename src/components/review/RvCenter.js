@@ -10,12 +10,9 @@ const RvCenter = () => {
     const [reviews,setReviews]= useState([])
 
     useEffect(()=>{
-
         axios
         .get(reviewListURL,{headers: authHeader()})
         .then((response)=>{
-            console.log("안쪽response")
-            console.log(response)
             const ListArr = []
             response.data.map((reviews)=>ListArr.push({
 

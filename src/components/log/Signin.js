@@ -29,9 +29,9 @@ const Signin = (props) => {
     const [birthday, setBirthday] = useState(new Date());
     const [isAddress, setIsAddress] = useState('');
 
-    const [show, setShow] = useState(false);
     const [disabled, setDisabled] = useState(false)
     const [error, setError] = useState({})
+    const [show, setShow] = useState(false);
 
     const handleShow = () => {setShow(true);}
     const handleClose = () => {setShow(false);}

@@ -11,11 +11,8 @@ const CartItem = ({
     const cartUserItem = "https://childsnack-test.appspot.com/_ah/api/cart/v1/get?id="
 
     const query = window.location.search
-    console.log(query)
     const urlParams = new URLSearchParams(query)
-    console.log(urlParams)
     const getId = urlParams.get('id')
-    console.log(getId)
 
 
 

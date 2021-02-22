@@ -9,6 +9,7 @@ import Review from '../review/Review';
 import Story from '../story/Story';
 import Event from '../event/Event'
 import "./home.css"
+import NewArrive from '../products/NewArrive';
 
 const Home = () => {
     const productGetList = "https://childsnack-test.appspot.com/_ah/api/product/v1/getProductList?count=10&startCursor=0";
@@ -21,9 +22,8 @@ const Home = () => {
     
     const getStoryList = "https://childsnack-test.appspot.com/_ah/api/blogcontent/v1/list?count=5&startCursor=0"
     const getList = "https://childsnack-test.appspot.com/_ah/api/category/v1/getList?id="
-    const eventList = "https://childsnack-test.appspot.com/_ah/api/event/v1/getAllEvent?type=1"
-
-
+    const eventBenerList = "https://childsnack-test.appspot.com/_ah/api/event/v1/getAllEvent?type=1"
+    const eventLink = "https://storage.googleapis.com/igre-event/event%20landing.html"
 
     //임의로 넣은 product info
     const [itemInfo, setItemInfo] = useState([])
@@ -43,15 +43,16 @@ const Home = () => {
     const [story, setStory] = useState([])
     // const [mdRecommend, setMdRecommend] = useState([])
 
-    //이벤트
-    const [event, setEvent] = useState([])
-
+ 
     const [certificate, setCertificate] = useState('')
     const [itemClick, setItemClick] = useState(false)
 
 
-  
-
+    //이벤트
+    const [event, setEvent] = useState([])
+    const[eventMeal , setEventMeal ] = useState([])
+    const[eventSnack, setEventSnack] = useState([])
+    const[eventCoupon, setEventCoupon] = useState([])
 
 
     //신상품 리스트 가져오기
@@ -60,11 +61,11 @@ const Home = () => {
         .get(getAllList)
         .then((response)=>{
             //신상품
-            console.log("")
-            console.log(response.data)
-            if(response.data.items[6]){
+            // console.log("get all List response")
+            // console.log(response)
+            if(response.data.items[7]){
                 const listArr = [];
-                response.data.items[6].products.map((item)=>listArr.push({
+                response.data.items[7].products.map((item)=>listArr.push({
                     id: item.productId,
                     img: item.thumnail,
                     content: makeGetItemElement(
@@ -95,9 +96,9 @@ const Home = () => {
             }
 
             //hotProduct추천
-            if(response.data.items[4]){
+            if(response.data.items[5]){
                 const listArr = [];
-                response.data.items[4].products.map((item)=>listArr.push({
+                response.data.items[5].products.map((item)=>listArr.push({
                     id: item.productId,
                     img: item.thumnail,
                     content: makeHotProductElement(
@@ -143,31 +144,20 @@ const Home = () => {
                 content: makeReviewElement(
                     review.product.name,
                     review.point,
-                    review.description
+                    review.description,
+                    review.shippingFee
                 )
             }))
             setUserReview(listArr)
         })
     },[])
 
-
-
-    // const ticket = localStorage.getItem("user")
-    // console.log("ticket")
-    // console.log(ticket)
-    
-    // console.log("headers")
-    // console.log(authHeader())
-    
-    
-    // , {headers: authHeader()}
-
     // 상단 event bener
     useEffect(()=>{
         axios
-        .get(eventList)
+        .get(eventBenerList)
         .then((response)=>{
-            console.log("event bener 내부 response")
+            console.log("상단 event bener 내부 response")
             console.log(response)
             const listArr = [];
             response.data.items.map((event)=>listArr.push({
@@ -175,10 +165,10 @@ const Home = () => {
                 img : event.thumbnail
             }))
             setEvent(listArr)
-            console.log("listArr")
-            console.log(listArr)
         })
     },[])
+
+    
 
     //스토리
     useEffect(()=>{
@@ -186,11 +176,18 @@ const Home = () => {
         axios
         .get(getStoryList, {headers: authHeader()})
         .then((response)=>{
-            console.log("스토리 들어옴")
-            console.log(response)
+            const listArr = [];
+            response.data.item.map((story)=>listArr.push({
+                id:story.id,
+                img:story.thumbnail,
+                title:story.title,
+                blogUrl:story.blogUrl
+            }))
+            setStory(listArr)
         })
-    })
+    },[])
 
+    console.log(story)
 
     //상품이용 후기 
     function makeReviewElement (name,point,description){
@@ -215,8 +212,8 @@ const Home = () => {
               <p className="contentCompany">{originClassification}</p>
 
               <div style={{display:"flex", alignItems:"center"}}>
-                <p className="contentRetailPrice">{retailPrice}</p>
                 <p className="contentPrice">{price}</p>
+                <p className="contentRetailPrice">{retailPrice}</p>
               </div>
 
             </div>
@@ -271,7 +268,7 @@ const Home = () => {
           </>
         );
       }
-    
+     
     return (
         <>
             <div className="full-screen">
@@ -298,9 +295,11 @@ const Home = () => {
                         </div>
 
                         <body style={{ border:"1px solid"}}>
-                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex"}}>
+                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex", padding:" 20px 0 0 20px"}}>
                                 <h3>신상품</h3>
-                                <p style={{float:'right'}}>더보기</p>
+                                <a href="./newArrive">
+                                    <button type="button" style={{float:'right'}} >더보기</button>
+                                </a>
                             </div>
                             <div style={{display:"flex", alignContent:"center",justifyContent:"center", height:400, border:"1px solid",textAlign:"center"}}>
                                 <Products 
@@ -314,7 +313,7 @@ const Home = () => {
                             
                             <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex", padding:" 20px 0 0 20px"}}>
                                 <h3>MD 추천</h3>
-                                <p style={{float:'right'}}>더보기</p>
+                                {/* <p style={{float:'right'}}>더보기</p> */}
                             </div>
                             <div style={{display:"flex", alignContent:"center",justifyContent:"center", height:400, border:"1px solid",textAlign:"center"}}>
                                 <Products 
@@ -326,9 +325,8 @@ const Home = () => {
                             </div>
 
                             
-                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex"}}>
+                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex", padding:" 20px 0 0 20px"}}>
                                 <h3>상품후기</h3>
-                                <p style={{float:'right'}}>더보기</p>
                             </div>
                             <div style={{display:"flex", height:400, border:"1px solid",textAlign:"center"}}>
                                 <Review 
@@ -340,9 +338,8 @@ const Home = () => {
                             </div>
 
                             
-                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex"}}>
+                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex", padding:" 20px 0 0 20px"}}>
                                 <h3>#TAG 추천</h3>
-                                <p style={{float:'right'}}>더보기</p>
                             </div>
                             <div style={{display:"flex", alignContent:"center",justifyContent:"center", height:400, border:"1px solid",textAlign:"center"}}>
                                 <Products 
@@ -353,21 +350,24 @@ const Home = () => {
                                 />
                             </div>
 
-                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex"}}>
+                            <div style={{width:"100%",height: 70, border:"1px solid",display:"flex", padding:" 20px 0 0 20px"}}>
                                 <h3>중간 베너</h3>
-                                <p style={{float:'right'}}>더보기</p>
                             </div>
-                            <div style={{ height:400, border:"1px solid",textAlign:"center"}}>
-                                <Event 
+                            <div style={{ display:"flex",border:"1px solid",justifyContent:"center"}}>
+                                {/* <Event 
                                     data={event}
                                     eventImg="evt-img"
-                                />
+                                /> */}
+                                <a href={eventLink} style={{ border:"1px solid",width:150, height:150}}>이미지 링크</a>
                             </div>
 
 
-                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex"}}>
+                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex", padding:" 20px 0 0 20px"}}>
                                 <h3>인기상품</h3>
-                                <p style={{float:'right'}}>더보기</p>
+                                <a href="./hotListMore">
+                                    <button type="button" style={{float:'right'}} >더보기</button>
+                                </a>
+                                {/* <a href="./"><p style={{float:'right'}}>더보기</p></a> */}
                             </div>
                             <div style={{ height:400,display:"flex", alignContent:"center",justifyContent:"center",border:"1px solid",textAlign:"center"}}>
                                 <Products 
@@ -378,25 +378,29 @@ const Home = () => {
                                 />
                             </div>
 
-                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex"}}>
+                            <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex", padding:" 20px 0 0 20px"}}>
                                 <h3>스토리</h3>
-                                <p style={{float:'right'}}>더보기</p>
+                                <a href="./storyMore">
+                                    <button type="button" style={{float:'right'}} >더보기</button>
+                                </a>
                             </div>
-                            <div style={{ height:400, border:"1px solid",textAlign:"center"}}>
+                            <div style={{ height:400, border:"1px solid",textAlign:"center",display:"flex"}}>
                                 <Story
                                     data={story}
-                                    containerCss="itemContainer"
-                                    contentCss="contentLayout"
-                                    imgCss="imgLayout"
+                                    containerCss="st-containter"
+                                    contentCss="st-content"
+                                    imgCss="st-img"
                                 />
                             </div>
 
+                            
                             <div style={{ height:400, border:"1px solid",textAlign:"center"}}>
-                                <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex"}}>
+                                {/* <div style={{ width:"100%", border:"1px solid",display:"flex", padding:" 20px 0 0 20px"}}> */}
                                     <h3>하단 베너</h3>
-                                    <p style={{float:'right'}}>더보기</p>
-                                </div>
+                                    <button>자세히보기</button>
+                                {/* </div> */}
                             </div>
+
                         </body>
 
                         <footer style={{backgroundColor:"lightBlue", height:400, border:"1px solid"}}>

@@ -30,14 +30,14 @@ const Navbar = ({history},data) => {
     // }
 
     const query = window.location.search
-    console.log("query")
-    console.log(query)
+    // console.log("query")
+    // console.log(query)
     const urlParams = new URLSearchParams(query)
-    console.log("urlParams")
-    console.log(urlParams)
+    // console.log("urlParams")
+    // console.log(urlParams)
     const getId = urlParams.get('id')
-    console.log("getId")
-    console.log(getId)
+    // console.log("getId")
+    // console.log(getId)
 
 
 
@@ -76,8 +76,6 @@ const Navbar = ({history},data) => {
     window.onscroll = () => {
         scrollDown()
     };
-    console.log("getId")
-    console.log(getId)
 
     const handleCertificate =() =>{
 

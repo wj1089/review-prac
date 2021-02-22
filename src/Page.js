@@ -8,6 +8,8 @@ import ForgotId from './components/log/ForgotId';
 import ForgotPw from './components/log/ForgotPw';
 import ProductDetail from './components/products/ProductDetail'
 import Cart from './components/cart/Cart';
+import Payment from './components/cart/Payment';
+
 import ServiceCenter from './components/user/ServiceCenter';
 import UserInfo from './components/user/UserInfo';
 import MyPage from './components/user/MyPage';
@@ -18,6 +20,11 @@ import EventCenter from './components/event/EventCenter';
 import Coupon from './components/user/Coupon';
 import Category from './components/categorys/Category';
 
+import ReviewMore from './components/review/ReviewMore'
+import NewArrive from './components/products/NewArrive'
+import StoryMore from './components/story/StoryMore'
+import EventMore from './components/event/EventMore'
+import HotListMore from './components/products/HotListMore'
 
 
 const Page = () => {
@@ -35,6 +42,7 @@ const Page = () => {
                 <Route path="/serviceCenter" component={ServiceCenter} />
                 <Route path="/productDetail" component={ProductDetail} />
                 <Route path="/cart" component={Cart} />
+                <Route path="/payment" component={Payment} />
                 <Route path="/notice" component={Notice} />
                 <Route path="/orderHistory" component={OrderHistory} />
                 <Route path="/reCenter" component={RvCenter} />
@@ -42,6 +50,11 @@ const Page = () => {
                 <Route path="/coupon" component={Coupon} />
                 <Route path="/category" component={Category} />
 
+                <Route path="/reviewMore" component={ReviewMore} />
+                <Route path="/newArrive" component={NewArrive} />
+                <Route path="/hotListMore" component={HotListMore} />
+                <Route path="/storyMore" component={StoryMore} />
+                <Route path="/eventMore" component={EventMore} />
             </Switch>
         </>
     );

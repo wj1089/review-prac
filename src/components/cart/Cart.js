@@ -4,6 +4,7 @@ import "./cart.css"
 import authHeader from "../../actions/userAction"
 import Products from "../products/Products"
 import CartItem from './CartItem';
+import OrderNav from '../navi/OrderNav';
 
 const Cart = ({history}) => {
     const cartUrl = 'https://childsnack-test.appspot.com/_ah/api/cart/v1/getCartList';
@@ -11,11 +12,8 @@ const Cart = ({history}) => {
     const updateUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/update";
 
     const query = window.location.search
-    console.log(query)
     const urlParams = new URLSearchParams(query)
-    console.log(urlParams)
     const getId = urlParams.get('id')
-    console.log(getId)
 
     const [cartList, setCartList] = useState([]) 
     const [checkItem, setCheckItem] = useState(false)
@@ -187,6 +185,7 @@ const Cart = ({history}) => {
                     <div>총 결제금액</div>
                     {}
                 </div>
+            <OrderNav />
             </div>
         </div>
     );
