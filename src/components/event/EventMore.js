@@ -1,135 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios"
+import EventDetail from './EventDetail';
 
-const EventMore = () => {
+const EventMore = ({history}) => {
 
-    const eventBener = "https://childsnack-test.appspot.com//_ah/api/event/v1/getEvent?id="
-    const[eventSnack, setEventSnack] = useState([])
-    const[snackImg, setSnackImg] = useState('')
-    const[eventCoupon, setEventCoupon] = useState([])
-    const[eventMeal , setEventMeal ] = useState([])
-    console.log("snackImg")
-    console.log(snackImg)
+    const eventBener = "https://childsnack-test.appspot.com/_ah/api/event/v1/getEvent?id="
+    const [eventSnack, setEventSnack] = useState([])
+    const [snackImg, setSnackImg] = useState('')
 
     const query = window.location.search
     const urlParams = new URLSearchParams(query)
     const getId = urlParams.get('id')
     console.log(getId)
-    const [wat, setWat] = useState([])
+
+    //뒤로가기
+    const goBack = () =>{
+        history.goBack();
+    }
 
     useEffect(()=>{
         axios
         .get(eventBener + getId)
         .then((response)=>{
-            console.log("event more response")
-            console.log(response)
-            if(response.data.items){
-                const listArr = []
-                const urlAddress = response.data.items
-                const mainImg = urlAddress.detailImg
-                urlAddress.products.map((eventlist)=>listArr.push({
-                    id: eventlist.productId,
-                    img:eventlist.thumnail,
-                    content:makeEventElement(
-                        eventlist.name,
-                        eventlist.description,
-                        eventlist.retailPrice,
-                        eventlist.price
-                    )
-                }))
+            const mainImg = response.data.detailImg
+            const listArr = []
+            if(response.data.products){
+            response.data.products.map((eventlist)=>listArr.push({
+                id: eventlist.productId,
+                img:eventlist.thumnail,
+                content:makeEventElement(
+                    eventlist.name,
+                    eventlist.description,
+                    eventlist.distributor,
+                    eventlist.retailPrice,
+                    eventlist.price
+                )
+            }))
+            }
                 setSnackImg(mainImg)
                 setEventSnack(listArr)
-                // setWat(where)
-                // console.log("listArr")
-                // console.log(listArr,urlAddress)
-                console.log(listArr)
-                console.log("mainImg")
-                console.log(mainImg)
-            }
-        //     if(response.data.items === [1]){
-        //         // response.data.items.map((eventlist)=>listArr.push({
-        //         //     id: eventlist.id,
-        //         //     detailImg:eventlist.detailImg,
-        //         //     content:makeEventElement(
-        //         //         eventlist.products
-        //         //     )
-        //         // }))
-        //         // setEventCoupon(listArr)
-        //     }
-        //     if(response.data.items === [2]){
-
-        //         // const 
-
-
-        //         // response.data.items.map((eventlist)=>listArr.push({
-        //         //     id: eventlist.id,
-        //         //     detailImg:eventlist.detailImg,
-        //         //     content:makeEventElement(
-        //         //         eventlist.products
-        //         //     )
-        //         // }))
-        //         // setEventMeal(listArr)
-        //     }
         })
-    },[])
+        },[])
 
-    function makeEventElement (){
+        
+    function makeEventElement (name,distributor,description,retailPrice,price){
         return(
             <>
                 <div>
-
+                    <p className="eventCompany">{distributor}</p>
+                    <p className="eventDescription">{description}</p>
+                    <p className="eventName">{name}</p>
+                    <p className="eventPrice">{price}</p>
+                    <p className="eventRetailPrice">{retailPrice}</p>
                 </div>
             </>
         )
     }
-    function makeMealElement (){
-        return(
-            <>
-                <div>
-                    <div>{}</div>
-                </div>
-            </>
-        )
-    }
-    function makeCouponElement (){
-        return(
-            <>
-                <div>
-
-                </div>
-            </>
-        )
-    }
-
-
 
     return (
         <>
+            <button type="button" onClick={goBack}>뒤로가기</button>
             <div>
-                {/* {wat === [0] && ( */}
-                    <>
-                        <img src={snackImg.mainImg} alt={eventSnack.id} />
-                        <div>
-                            
-                        </div>
-                    </>
-                {/* )} */}
-                {/* {wat === [1] && (
-                    <>
-                        <img src={eventSnack.mainImg} alt={eventSnack.id} />
-                        <div>
-                            
-                        </div>
-                    </>
-                )}
-                {wat === [2] && (
-                    <>
-                        <img src={eventSnack.mainImg} alt={eventSnack.id} />
-                        <div>
-                            
-                        </div>
-                    </>
-                )} */}
+                <h1>이벤트 리스트페이지</h1>
+                <img src={snackImg} alt={eventSnack.id} />
+                <EventDetail 
+                    data={eventSnack} 
+                    containerCss="itemContainer"
+                    contentCss="contentLayout"
+                    imgCss="imgLayout"
+                />
             </div>
         </>
     );

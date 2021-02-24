@@ -1,14 +1,17 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState, useRef} from 'react';
 import axios from 'axios'
 import Navbar from "../navi/Navbar"
 import authHeader from "../../actions/userAction"
 import {Modal, Button} from "react-bootstrap"
+
 
 const ProductDetail = ({history}) => {
     
     const productGetItem = "https://childsnack-test.appspot.com/_ah/api/product/v1/get?id="
     const addItemURL = "https://childsnack-test.appspot.com/_ah/api/cart/v1/insert"
     const cartUrl = 'https://childsnack-test.appspot.com/_ah/api/cart/v1/getCartList';
+    
+   
 
     const query = window.location.search
     const urlParams = new URLSearchParams(query)
@@ -24,46 +27,65 @@ const ProductDetail = ({history}) => {
     const handleClose = () => {setShow(false);}
     const [count, setCount] = useState(1)
 
-
+    //count 숫자 parse int로 계산
     const turnToNum = JSON.stringify(infoMenu.price)
     const countNum = parseInt(count)
     const calcItems = parseInt(turnToNum)*countNum;
+    console.log(countNum)
+
+    const [option, setOption] = useState([])
+    
+    const [onOptionBtn, setOnOptionBtn] = useState(false)
+    const [addBag, setAddbag] = useState(false)
+
+    const boxCheck = useRef(null); 
+
+
 
 
     //뒤로가기
     const goBack = () =>{
         history.goBack();
     }
-
+    //갯수증가
     const increaseNum = ()=>{
         setCount(count +1)
     }
+    //갯수감소
     const decreaseNum = ()=>{
         setCount(count -1)
         if(count <= 0){
             setCount(0)
         }
     }
-
-    const addProduct = () =>{
-        setAble(!able)
-        console.log("추가하기")
-        console.log(able)
+    const handlePutIn = () =>{
+        setAddbag(true)
+    }
+    
+    const payModal =()=>{
         setShow(true)
+    }
+
+
+    //장바구니 담기
+    const addProduct = () =>{
+        console.log("추가하기")
         axios
-        // headers: authHeader()
         .post(addItemURL,{
-            orderItems: [ // 상품정보 목록
+            cartItems: [ // 상품정보 목록
             {
-                productId: infoMenu.productId,
-                optionId: infoMenu.optionId,
-                quantity: count
+                productId: infoMenu.altId,
+                optionId: infoMenu.listArr[0].optionId,
+                quantity: countNum
             }
             ],
-        })
+        },{ headers: authHeader()})
         .then((response)=>{
             console.log("추가버튼 useEffect")
             console.log(response)
+            history.push("./")
+            alert("장바구니에 추가되었습니다.")
+            setShow(false)
         })
         .catch((error)=>{
             console.log(error)
@@ -76,14 +98,24 @@ const ProductDetail = ({history}) => {
         setToggle(index)
     }
 
+    const handleOptionMenu=()=>{
+        setOnOptionBtn(true)
+        console.log(onOptionBtn)
+
+        if(onOptionBtn === true){
+            console.log("옵션선택")
+        }
+    }
+
 
     useEffect(()=>{
         axios
         .get(productGetItem + getId)
         .then((response)=>{
-
+            console.log("response")
             console.log(response)
             const baseUrl = response.data
+
             const altId = baseUrl.productId
             const headImg = baseUrl.detailImage
             const distributor = baseUrl.distributor
@@ -91,85 +123,30 @@ const ProductDetail = ({history}) => {
             const name = baseUrl.name
             const price = baseUrl.price
             const retailPrice = baseUrl.retailPrice
-            const shippingFee = baseUrl.shippingCompany.shippingFee
+            // const shippingFee = baseUrl.shippingCompany.shippingFee
             const detailImg = baseUrl.detailImage
             const exchangeInfo = baseUrl.exchangeInfo
             const paymentInfo = baseUrl.paymentInfo
             const shippingInfo = baseUrl.shippingInfo
             const serviceInfo = baseUrl.serviceInfo
             const addressInfo = baseUrl.madeInfo
+            
             const listArr = []
-            const optionId = baseUrl.options.map((option)=>listArr.push({
-                optionId : option.optionId
+            // const option =
+            baseUrl.options.map((option)=>listArr.push({
+                optionId : option.optionId,
+                name : option.name
             }))
+            setOption(listArr.optionId)
+            console.log("inside option")
+            console.log(listArr.optionId)
 
-            const detailInfo = {altId,headImg,distributor,description,name,shippingInfo,addressInfo,optionId,
-                price,retailPrice,shippingFee,detailImg,exchangeInfo,paymentInfo,serviceInfo}
-
-            console.log(detailInfo)
+            const detailInfo = {altId,headImg,distributor,description,name,shippingInfo,addressInfo,listArr,
+                price,retailPrice,detailImg,exchangeInfo,paymentInfo,serviceInfo}
+            
             setInfoMenu(detailInfo)
         })
     },[])
-    console.log("infoMenu.optionId")
-    console.log(infoMenu.optionId)
-    console.log("infoMenu.productId")
-    console.log(infoMenu.productId)
-
-    // useEffect(()=>{
-    //     console.log("카트에 진입")
-    //     axios
-    //     .get(cartUrl, {headers: authHeader()})
-    //     .then((response)=>{
-    //         console.log("cart response 내부")
-    //         console.log(response)
-    //         const listArr = []
-    //         response.data.items.map((cart)=>listArr.push({
-    //             id: cart.productId,
-    //             img: cart.thumnail,
-    //             // content: makeCartelement(
-    //             //     cart.originClassification,
-    //             //     cart.name,
-    //             //     cart.retailPrice,
-    //             //     cart.price,
-    //             //     )
-    //             }))
-    //             setCartList(listArr)
-    //     })
-    //     .catch((error)=>{
-    //         console.log("error")
-    //         console.log(error)
-    //     })
-    // },[])
-
-    
-    // function makeCartelement(name,){
-    //     return(
-    //         <>
-    //             <input type="checkBox" style={{width:30,height:30, border:"1px solid"}} onClick={handleEachItemCheck} />
-    //             <div style={{display:"flex",alignItems:"center", float:"right", width:"100%", border:"1px solid"}}>
-    //                 {/* company */}
-    //                 <h3 className="cartItemName">{name}</h3>
-    //                 <div style={{textAlign:"right"}}>
-    //                 {/* shipping fee */}
-    //                     <p className="cartItemFee">{}</p>
-    //                     <p>제주, 도서지역 추가 3,000원(개별 연락)</p>
-    //                 </div>
-    //                 <div>
-    //                     {/* cartProductName */}
-    //                     <p className="cartProductName">{}</p>
-    //                     {/* cartProductDiscrip */}
-    //                     <p className="carItemIngred">{}</p>
-    //                     <div style={{display:"flex"}}>
-    //                         <button type="button" onClick={decreaseNum}>-</button>
-    //                         <div>{count}</div>
-    //                         <button type="button" onClick={increaseNum}>+</button>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </>
-    //     )
-    // }
-
 
     return (
         <>
@@ -182,20 +159,39 @@ const ProductDetail = ({history}) => {
                     backgroundColor:"lightYellow",
                     width:500, 
                     border:"1px solid"}}>
-                    <div style={{width:"100%", height:150, border:"1px solid", textAlign:"center"}}>image
+                    <div style={{width:"100%", height:150, border:"1px solid", textAlign:"center"}}>
                         <img src={infoMenu.headImg} alt={infoMenu.altId} />
                     </div>
                     <div style={{border:"1px solid"}}>
-                        <p>company{infoMenu.distributor}</p>
-                        <p>product name{infoMenu.name}</p>
-                        <p>product discription {infoMenu.description}</p>
+                        <p>회사 이름 :{infoMenu.distributor}</p>
+                        <p>상품 이름 :{infoMenu.name}</p>
+                        <p>상품 내용 :{infoMenu.description}</p>
                         {/* <p>product name {infoMenu.name}</p> */}
+                        <div style={{display:"flex"}}>
+                            <button type="button" onClick={handleOptionMenu}>옵션</button>
+                            {onOptionBtn === true && (
+                                <>
+                                    <div className="optionName">{infoMenu.listArr[0].name}</div>
+                                </>
+                                )
+                            }
+                            {onOptionBtn === false && (
+                                <>
+                                    <div>필요한 옵션을 선택해주세요</div>
+                                </>
+                                )
+                            }
+                            {/* {option[0].name} */}
+                            {/* 0번째로 일단 고정 */}
+                        </div>
+
+
                         <div style={{border:"1px solid", display:"flex"}}>
                             <p>product price {infoMenu.price}</p> 
                             <p>product retailPrice {infoMenu.retailPrice}</p> 
                         </div>
                         <div style={{border:"1px solid"}}>
-                            <p>배송비{infoMenu.shippingFee}</p>
+                            {/* <p>배송비{infoMenu.shippingFee}</p> */}
                             <p>제주, 도서지역 추가 3,000원</p>
                             {/* <p>shipping place{infoMenu.addressInfo}</p> */}
                         </div>
@@ -246,9 +242,10 @@ const ProductDetail = ({history}) => {
                         </div>
                     </div>
                 </div>
-
-                <Button variant="primary" onClick={addProduct}>
-                추가하기
+                
+                {/* 모달 */}
+                <Button variant="primary" onClick={payModal}>
+                    추가하기
                 </Button>
                 <Modal 
                     show={show} 

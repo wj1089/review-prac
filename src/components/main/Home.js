@@ -61,8 +61,8 @@ const Home = () => {
         .get(getAllList)
         .then((response)=>{
             //신상품
-            // console.log("get all List response")
-            // console.log(response)
+            console.log("get all List response")
+            console.log(response)
             if(response.data.items[7]){
                 const listArr = [];
                 response.data.items[7].products.map((item)=>listArr.push({
@@ -138,17 +138,19 @@ const Home = () => {
         .get(getReviewList, {headers: authHeader()})
         .then((response)=>{
             const listArr = [];
-            response.data.item.map((review)=>listArr.push({
-                id : review.id,
-                img : review.product.thumnail,
-                content: makeReviewElement(
-                    review.product.name,
-                    review.point,
-                    review.description,
-                    review.shippingFee
-                )
-            }))
-            setUserReview(listArr)
+            console.log("review response")
+            console.log(response)
+            // response.data.item.map((review)=>listArr.push({
+            //     id : review.id,
+            //     img : review.product.thumnail,
+            //     content: makeReviewElement(
+            //         review.product.name,
+            //         review.point,
+            //         review.description,
+            //         review.shippingFee
+            //     )
+            // }))
+            // setUserReview(listArr)
         })
     },[])
 
@@ -171,21 +173,21 @@ const Home = () => {
     
 
     //스토리
-    useEffect(()=>{
-        console.log("스토리")
-        axios
-        .get(getStoryList, {headers: authHeader()})
-        .then((response)=>{
-            const listArr = [];
-            response.data.item.map((story)=>listArr.push({
-                id:story.id,
-                img:story.thumbnail,
-                title:story.title,
-                blogUrl:story.blogUrl
-            }))
-            setStory(listArr)
-        })
-    },[])
+    // useEffect(()=>{
+    //     console.log("스토리")
+    //     axios
+    //     .get(getStoryList, {headers: authHeader()})
+    //     .then((response)=>{
+    //         const listArr = [];
+    //         response.data.item.map((story)=>listArr.push({
+    //             id:story.id,
+    //             img:story.thumbnail,
+    //             title:story.title,
+    //             blogUrl:story.blogUrl
+    //         }))
+    //         setStory(listArr)
+    //     })
+    // },[])
 
     console.log(story)
 
@@ -286,7 +288,7 @@ const Home = () => {
                             // height:328.3,
                             border:"1px solid", 
                             backgroundColor:"lightgray"}}>
-                            <div>
+                            <div style={{display:"flex"}}>
                                 <Event 
                                     data={event}
                                     eventImg="evt-img"

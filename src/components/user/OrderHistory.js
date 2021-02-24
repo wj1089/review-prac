@@ -13,6 +13,7 @@ const OrderHistory = () => {
         .get(OrderURL,{headers: authHeader()})
         .then((response)=>{
             const ListArr = []
+            console.log(response)
             response.data.items.map((order)=>ListArr.push({
                 id:order.orderId,
                 buyer:order.buyer,

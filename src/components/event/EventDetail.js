@@ -1,23 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CategoryDetail = ({
+const EventDetail = ({
     data,
     containerCss,
     contentCss,
     imgCss
 }) => {
 
-
     return (
         <>
             <div>
-                {data.map((cateItem)=>(
-                    <a href={`/productDetail?id=${cateItem.id}`}>
+                {data.map((eventItem)=>(
+                    <a href={`/productDetail?id=${eventItem.id}`}>
                         <div className={containerCss}>
                             <div className={contentCss}>
-                                <img className={imgCss} src={cateItem.img} alt={cateItem.id} />
-                                {cateItem.content}
+                                <img className={imgCss} src={eventItem.img} alt={eventItem.id} />
+                                {eventItem.content}
                             </div>
                         </div>
                     </a>
@@ -27,9 +26,8 @@ const CategoryDetail = ({
     );
 };
 
-export default CategoryDetail;
-
-CategoryDetail.propTypes ={
+export default EventDetail;
+EventDetail.propTypes ={
     data: PropTypes.arrayOf(PropTypes.object),
     containerCss : PropTypes.string,
     contentCss : PropTypes.string,
@@ -38,7 +36,7 @@ CategoryDetail.propTypes ={
 
 PropTypes.defaultType = {
     data :[],
-    containerCss : 'cateItemContainer',
+    containerCss : 'eventContainer',
     contentCss : 'contentLayout',
     imgCss : 'imgLayout'
 }

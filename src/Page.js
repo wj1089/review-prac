@@ -25,6 +25,8 @@ import NewArrive from './components/products/NewArrive'
 import StoryMore from './components/story/StoryMore'
 import EventMore from './components/event/EventMore'
 import HotListMore from './components/products/HotListMore'
+import CategoryMore from './components/categorys/CategoryMore'
+import TotalProducts from './components/categorys/TotalProducts'
 
 
 const Page = () => {
@@ -45,16 +47,21 @@ const Page = () => {
                 <Route path="/payment" component={Payment} />
                 <Route path="/notice" component={Notice} />
                 <Route path="/orderHistory" component={OrderHistory} />
-                <Route path="/reCenter" component={RvCenter} />
+
+                <Route path="/reviewCenter" component={RvCenter} />
+                
                 <Route path="/eventCenter" component={EventCenter} />
                 <Route path="/coupon" component={Coupon} />
                 <Route path="/category" component={Category} />
+                <Route path="/totalProducts" component={TotalProducts} />
 
                 <Route path="/reviewMore" component={ReviewMore} />
                 <Route path="/newArrive" component={NewArrive} />
                 <Route path="/hotListMore" component={HotListMore} />
                 <Route path="/storyMore" component={StoryMore} />
                 <Route path="/eventMore" component={EventMore} />
+                <Route path="/categoryMore" component={CategoryMore} />
+
             </Switch>
         </>
     );

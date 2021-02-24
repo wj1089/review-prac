@@ -18,7 +18,7 @@ const MyPage = ({history}) => {
                 </div>
 
                 <div>
-                    <a href="/reCenter"><button>리뷰관리</button></a>
+                    <a href="/reviewCenter"><button>리뷰관리</button></a>
                     <a href="/eventCenter"><button>이벤트</button></a>
                     <a href="/notice"><button>공지사항</button></a>
                     <a href="/serviceCenter"><button>고객센터</button></a>

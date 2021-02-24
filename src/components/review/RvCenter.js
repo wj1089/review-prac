@@ -14,11 +14,13 @@ const RvCenter = () => {
         .get(reviewListURL,{headers: authHeader()})
         .then((response)=>{
             const ListArr = []
+            console.log("review response")
+            console.log(response)
+            
             response.data.map((reviews)=>ListArr.push({
 
             }))
             setReviews(ListArr)
-            console.log(reviews)
         })
         .catch((error)=>{
             console.log(error)

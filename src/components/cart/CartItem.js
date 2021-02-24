@@ -8,33 +8,34 @@ const CartItem = ({
     contentLayout,
     imgLayout
 }) => {
-    const cartUserItem = "https://childsnack-test.appspot.com/_ah/api/cart/v1/get?id="
 
-    const query = window.location.search
-    const urlParams = new URLSearchParams(query)
-    const getId = urlParams.get('id')
+    const [checkAll, setCheckAll] = useState(false)
 
-
-
+    const productRef = React.useRef(false)
+    //아이템 전체 체크
     useEffect(()=>{
-        console.log("카트 id로 불러오기")
-        axios
-        .get(cartUserItem + getId)
-        .then((response)=>{
-            console.log(response)
-            //여기서 id를 못받아옴
+        if(checkAll===true){
+            console.log("ref")
+            console.log(productRef.current.children)
+            // productRef.current.children[0] === true
+            // productRef = <input type={'checkbox'} onChange={() => handleItemListCheck} checked={true} />
+            // productRef.current.input(true)
+        }else{
+            
+        }
+        console.log(productRef.current.children[0])
+    }, [checkAll])
 
-        })
-        .catch((error)=>{
-            console.log(error)
-        })
-    },[])
+    const handleItemListCheck = (e) =>{
+        setCheckAll(e.target.checked)
+    }
 
+    
     return (
         <>
             <div>
                 <p>carItem</p>   
-                <div>
+                <div ref={productRef}>
                     {data.map((cartItem)=>(
                         <div className={containerLayout} alt={cartItem.id}>
                             <div className={contentLayout}>
