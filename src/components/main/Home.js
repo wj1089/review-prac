@@ -130,7 +130,39 @@ const Home = () => {
             });
     }, []);
 
- 
+
+
+
+
+
+
+
+    
+  // axios
+            // .get(cartUrl, {headers: authHeader()})
+            // .then((response)=>{
+            //     console.log(response)
+            //     const arr = []
+            //     response.data.items.map((demo)=>arr.push({
+            //         id: demo.cartId
+            //     }))
+            //     console.log("arr")
+            //     console.log(arr)
+
+            // })
+            // setCheck(checkValue)
+
+
+
+
+
+
+
+
+
+
+
+
 
     // 상품 후기 불러오기
     useEffect(()=>{

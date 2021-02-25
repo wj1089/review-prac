@@ -23,15 +23,11 @@ const Cart = ({
     const urlParams = new URLSearchParams(query)
     const getId = urlParams.get('id')
 
-    const [cartList, setCartList] = useState([]) 
 
     // const reducer = (accumulator, currentValue) => accumulator + currentValue;
     // console.log("cartList.shippingFee")
     // console.log(cartList)
-
-    // const [checkItem, setCheckItem] = useState(false)
-    // const [checkAll, setCheckAll] = useState(false)
-
+    
 
     const [removeMenu, setRemoveMenu] = useState(false)
     const [addMenu,setAddMenu] = useState(true)
@@ -58,63 +54,69 @@ const Cart = ({
         history.goBack();
     }
 
+
     const [check, setCheck] = useState([])
+    const [cartList, setCartList] = useState([]) 
+    console.log("check")
+    console.log(check)
 
-    const handleCheckBox = () =>{
-        setCheck(check)
-        console.log(check)
+    // const [checkItem, setCheckItem] = useState(false)
+    const [checkAll, setCheckAll] = useState(false)
 
+    // const [checkResult, setCheckResult] = useState('')
+
+    //개별체크
+    const handleCheckBox = (e) =>{
+        const checkInfo = e.target.checked
+        const checkValue = e.target.value
+        // console.log("checkInfo")
+        // console.log(checkInfo)
+        //클릭시 나오는 값        
+        if(checkInfo === true){
+            let result = false
+            //forEach에서 하나씩 검사한다.
+            check.forEach((item)=>{               
+                console.log(item === checkValue);
+                if(item === checkValue){ 
+                    result = true               
+                    return;                  
+                }
+            })
+            if(result === false){
+                check.push(checkValue)
+            }
+        }else{
+            let result = 0
+            check.map((item,index)=>{
+                if(item === checkValue){
+                    result = index
+                    console.log("result")
+                    console.log(result)
+                    const idx = check.indexOf(index)
+                    if(idx > -1)check.splice(index, 1);
+                    console.log(idx)
+                    console.log("idx")
+                    return;
+                }
+            })
+            console.log(result)
+            if(result === false){
+                check.push(checkValue)
+                // console.log("checkValue")
+                // console.log(checkValue)
+            }
+            // n번째 있는 항목을 삭제
+        }
     }
 
 
+    //전체체크
+    const handleItemListCheck = (e) =>{
+        setCheckAll(checkAll)
+        console.log(checkAll)
+    }
 
 
-
-    const productRef = React.useRef(false)
-    console.log("productRef")
-    console.log(productRef)
-
-    //아이템 전체 체크
-    // useEffect(()=>{
-    //     if(checkAll===true){
-    //         setCheckItem(checkAll)
-    //         return productRef.current.children[0].checked === true && productRef.current.children[0].value === true
-    //     }else{
-    //         setCheckItem(checkAll)
-    //     }
-    //     // if(checkAll === true){
-
-    //     // }
-    // }, [checkAll])
-
-    // console.log("checkAll")
-    // console.log(checkAll)
-    // console.log("CheckItem")
-    // console.log(checkItem)
-
-    // const handleItemListCheck = (e) =>{
-    //     setCheckAll(e.target.checked)
-
-    //     if(checkAll === true){
-    //         setCheckItem(productRef.current.children[0].checked === true)
-    //         console.log("on")
-    //         console.log(checkItem)
-    //     }
-        // console.log("handleItemListCheck")
-        // console.log(checkAll)
-    // }
-
-    // const checkBoxOnChange = (e) =>{
-    //     setCheckItem(e.target.checked)
-
-    //     // if(checkItem === ){
-    //     // }
-    //     // console.log(e.target.checked)
-    //     // console.log("checkBoxOnChange")
-    //     // console.log(checkItem)
-    //     // console.log("event")
-    //     // console.log(e)
-    // }
 
 
 
@@ -123,8 +125,6 @@ const Cart = ({
     const removeItem = () =>{
         setRemoveMenu(true)
         // const cartid = cartList.cartId
-        console.log("cartid")
-        console.log(cartList)
         axios
         .delete(removeUrl + cartList)
         .then((response)=>{
@@ -145,13 +145,8 @@ const Cart = ({
         history.push("./")
     } 
 
-    // const [userInfo, setUserInfo] = useState([])
-
     const [receiver,setReceiver] = useState([])
     const [productInfo, setProductInfo] = useState([])
-    // const [optionInfo, setOptionInfo] = useState([])
-    // const [quantity, setQuantity] = useState([])
-
     
     useEffect(()=>{
         console.log("카트에 진입")
@@ -160,47 +155,49 @@ const Cart = ({
         .then((response)=>{
             console.log("cart response 내부")
             console.log(response)
+
             const listArr = []
+            const idArr = []
             response.data.items.map((cart)=>listArr.push({
                 id: cart.cartId,
                 // img: cart.product.thumnail,
                 content: makeCartelement(
+                    cart.cartId,
                     cart.product.distributor,
                     cart.product.name,
                     cart.product.description,
                     cart.product.price,
                 ),
                 shippingFee : cart.product.shippingCompany.shippingFee,
+                optionId : cart.option.optionId,
                 optionName : cart.option.name,
                 quantity: cart.quantity
-                }))
-            
-            //전달정보
-            const productArr = []
-            response.data.items.map((product)=>productArr.push({
-                cartId:product.cartId,
-                company:product.product.distributor,
-                productName:product.product.name,
-                productPrice:product.product.price,
-                productImg:product.product.thumnail,
-
-                optionId:product.option.optionId,
-                optionName:product.option.optionId,
-
-                quantity:product.quantity,
-                shipping:product.product.shippingCompany.shippingFee,
             }))
-            setProductInfo(productArr)
-            console.log("productArr")
-            console.log(productArr)
+
+            //아이디만
+            // const strInfo = JSON.stringify(
+            response.data.items.map((asd)=>idArr.push(
+                asd.cartId
+            ))
+
+            // console.log("strInfo")
+            // console.log(strInfo)
+
+            setCheck(idArr)
+            console.log("inside check")
+            console.log(idArr)
 
             setCartList(listArr)
+            console.log("cartList")
+            console.log(cartList)
+
         })
         .catch((error)=>{
             console.log("error")
             console.log(error)
         })
     },[])
+
     const [sendOrder, setSendOrder] = useState(false)
   
     const ClickOrder = (e)=>{
@@ -209,35 +206,34 @@ const Cart = ({
         console.log("주문버튼 클릭")
 
 
-        // if(sendOrder === true){
-        //     if(checkItem === true){
-        //         // setCheckItem(true)
-        //         const certifiInfo = {productInfo}
-        //         localStorage.setItem("save", JSON.stringify(certifiInfo));
-        //         console.log("localStorage에 들어감")
-        //         console.log(localStorage.getItem("save"));
-        //     }
-        // }
-       
+        if(sendOrder === true){
+            if(check === true){
+                // setCheckItem(true)
+                const certifiInfo = {productInfo}
+                localStorage.setItem("save", JSON.stringify(certifiInfo));
+                console.log("localStorage에 들어감")
+                console.log(localStorage.getItem("save"));
+            }
+        }
 
-        // axios
-        // .get(orderUrl,{
-        //     cartItems: [ // 상품정보 목록
-        //     {
-        //         productId: cartList.altId,
-        //         optionId: cartList.listArr.optionId,
-        //         quantity: cartList.quantity
-        //     }
-        //     ],
-        // },{ headers: authHeader()})
-        // .then((response)=>{
-        //     console.log(response)
-        //     history.push("./payment")
-        // })
-        // .catch((error)=>{
-        //     console.log("error")
-        //     console.log(error)
-        // })
+        axios
+        .get(orderUrl,{
+            cartItems: [ // 상품정보 목록
+            {
+                productId: cartList.altId,
+                optionId: cartList.optionId,
+                quantity: cartList.quantity
+            }
+            ],
+        },{ headers: authHeader()})
+        .then((response)=>{
+            console.log(response)
+            history.push("./payment")
+        })
+        .catch((error)=>{
+            console.log("error")
+            console.log(error)
+        })
     }
 
     //수신자 정보
@@ -263,7 +259,7 @@ const Cart = ({
         })
     },[])
 
-    function makeCartelement(name,price,distributor,option,shippingFee){
+    function makeCartelement(id,name,price,distributor,option,shippingFee){
         return(
             <>
                 <div>
@@ -271,16 +267,18 @@ const Cart = ({
                 </div>
 
                 <div style={{display:"flex"}} 
-                     ref={productRef}
+                    //  ref={productRef}
                 >
                     {/* 아이템 개별체크박스 */}
                     <input 
                         type="checkBox" 
                         name = "checkBox"
-                        // value={checkItem}
-                        // checked={checkItem}
-                        // onChange={checkBoxOnChange}
-                        onClick={handleCheckBox}
+                        // checked={check}
+                        배열안에 id가 있는지 확인
+                        // onCreate={check}
+                        // onClick={handleCheckBox}
+                        value={id}
+                        onChange={handleCheckBox}
                         style={{width:30,height:30, border:"1px solid"}} 
                     />
                     
@@ -331,8 +329,8 @@ const Cart = ({
                                 type="checkbox"
                                 name = "checkBox"
                                 // value={checkItem}
-                                // checked={checkAll}
-                                onClick={handleCheckBox} 
+                                checked={check}
+                                onClick={handleItemListCheck} 
                                 style={{width:30,height:30, border:"1px solid"}} 
                             />
                             <p style={{float:"right"}}>전체선택</p>
@@ -350,7 +348,7 @@ const Cart = ({
                         contentLayout="cartContent"
                         imgLayout="cartImg"
                     /> */}
-                    <div ref={productRef}>
+                    <div>
                         {cartList.map((cartItem)=>(
                             <div className={containerLayout} alt={cartItem.id}>
                                 <div className={contentLayout}>
