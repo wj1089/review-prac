@@ -23,16 +23,29 @@ const Cart = ({
     const urlParams = new URLSearchParams(query)
     const getId = urlParams.get('id')
 
-
-    // const reducer = (accumulator, currentValue) => accumulator + currentValue;
-    // console.log("cartList.shippingFee")
-    // console.log(cartList)
-    
-
-    const [removeMenu, setRemoveMenu] = useState(false)
-    const [addMenu,setAddMenu] = useState(true)
-
     const [count, setCount] = useState(1)
+
+    const [show, setShow] = useState(false);
+    const handleShow = () => {setShow(true);}
+    const handleClose = () => {setShow(false);}
+    const [addMenu,setAddMenu] = useState(true)
+    const [removeMenu, setRemoveMenu] = useState(false)
+    const [sendOrder, setSendOrder] = useState(false)
+
+    const [check, setCheck] = useState([])
+    const [checkList, setCheckList] = useState([])
+    const [cartList, setCartList] = useState([]) 
+    const [receiver,setReceiver] = useState([])
+    const [productInfo, setProductInfo] = useState([])
+
+    // const [checkItem, setCheckItem] = useState(false)
+    // const [checkResult, setCheckResult] = useState('')
+
+
+    //뒤로가기
+    const goBack = () =>{
+        history.goBack();
+    }
 
     const increaseNum = ()=>{
         setCount(count +1)
@@ -44,98 +57,65 @@ const Cart = ({
         }
     }
 
-    const [show, setShow] = useState(false);
-    const handleShow = () => {setShow(true);}
-    const handleClose = () => {setShow(false);}
+    //전체체크
+    const handleAllCheck = (e) =>{
+        const checkInfo = e.target.checked
+        const checkValue = e.target.name
+        const demoId = cartList.map((cart)=>cart.id);
+        if(checkInfo === true){
+            setCheckList(demoId)
+            console.log("checkList")
+            console.log(demoId)
+        }else{
+            setCheck([])
+        }
+    }   
+   
 
-    
-    //뒤로가기
-    const goBack = () =>{
-        history.goBack();
-    }
-
-
-    const [check, setCheck] = useState([])
-    const [cartList, setCartList] = useState([]) 
-    console.log("check")
-    console.log(check)
-
-    // const [checkItem, setCheckItem] = useState(false)
-    const [checkAll, setCheckAll] = useState(false)
-
-    // const [checkResult, setCheckResult] = useState('')
 
     //개별체크
     const handleCheckBox = (e) =>{
         const checkInfo = e.target.checked
-        const checkValue = e.target.value
-        // console.log("checkInfo")
-        // console.log(checkInfo)
+        const checkValue = e.target.name
+        console.log("check list size : " + check.length +" checkValue : " + checkValue)
+        console.log(typeof check)
         //클릭시 나오는 값        
         if(checkInfo === true){
-            let result = false
-            //forEach에서 하나씩 검사한다.
-            check.forEach((item)=>{               
-                console.log(item === checkValue);
-                if(item === checkValue){ 
-                    result = true               
-                    return;                  
-                }
-            })
-            if(result === false){
-                check.push(checkValue)
+            let result = check.includes(checkValue)
+            if(result === false){               
+                setCheck([...check, checkValue])
             }
         }else{
-            let result = 0
-            check.map((item,index)=>{
-                if(item === checkValue){
-                    result = index
-                    console.log("result")
-                    console.log(result)
-                    const idx = check.indexOf(index)
-                    if(idx > -1)check.splice(index, 1);
-                    console.log(idx)
-                    console.log("idx")
-                    return;
-                }
-            })
-            console.log(result)
-            if(result === false){
-                check.push(checkValue)
-                // console.log("checkValue")
-                // console.log(checkValue)
+            let result = check.indexOf(checkValue)            
+            if(result > -1){
+                setCheck(check.filter(demo => checkValue !== demo))
+                // check.splice(result, 1);
+                // setCheck(check.splice(result, 1))
             }
-            // n번째 있는 항목을 삭제
-        }
+        }   
     }
-
-
-    //전체체크
-    const handleItemListCheck = (e) =>{
-        setCheckAll(checkAll)
-        console.log(checkAll)
-    }
-
-
-
-
-
 
     //항목삭제
     const removeItem = () =>{
         setRemoveMenu(true)
-        // const cartid = cartList.cartId
+        // const checkInfo = e.target.checked
+        // const cartid = cartList.id
+        // if(checkInfo === true){
+        //     console.log("삭제 진입")
+        // }
         axios
-        .delete(removeUrl + cartList)
+        .delete(removeUrl, 
+            {cartItems:check},{headers: authHeader()
+        })
         .then((response)=>{
             console.log("삭제 들어왔음")
             console.log(response)
+
         })
         .catch((error)=>{
             console.log(error)
         })
     }
-    // console.log(cartList)
 
     //항목 추가하기 버튼
     const handleAddItem = () =>{
@@ -145,66 +125,47 @@ const Cart = ({
         history.push("./")
     } 
 
-    const [receiver,setReceiver] = useState([])
-    const [productInfo, setProductInfo] = useState([])
+    
     
     useEffect(()=>{
         console.log("카트에 진입")
         axios
         .get(cartUrl, {headers: authHeader()})
         .then((response)=>{
-            console.log("cart response 내부")
-            console.log(response)
-
+            // console.log("cart response 내부")
+            // console.log(response)
             const listArr = []
             const idArr = []
             response.data.items.map((cart)=>listArr.push({
                 id: cart.cartId,
-                // img: cart.product.thumnail,
-                content: makeCartelement(
-                    cart.cartId,
-                    cart.product.distributor,
-                    cart.product.name,
-                    cart.product.description,
-                    cart.product.price,
-                ),
+                // img: cart.product.thumnail,                
                 shippingFee : cart.product.shippingCompany.shippingFee,
                 optionId : cart.option.optionId,
                 optionName : cart.option.name,
-                quantity: cart.quantity
+                quantity: cart.quantity,
+                product : cart.product
             }))
-
             //아이디만
             // const strInfo = JSON.stringify(
             response.data.items.map((asd)=>idArr.push(
                 asd.cartId
             ))
-
-            // console.log("strInfo")
-            // console.log(strInfo)
-
             setCheck(idArr)
-            console.log("inside check")
-            console.log(idArr)
-
             setCartList(listArr)
-            console.log("cartList")
-            console.log(cartList)
-
         })
+      
         .catch((error)=>{
             console.log("error")
             console.log(error)
         })
     },[])
+    
 
-    const [sendOrder, setSendOrder] = useState(false)
-  
+    //주문버튼 클릭
     const ClickOrder = (e)=>{
         setSendOrder(!sendOrder)
         e.preventDefault()
         console.log("주문버튼 클릭")
-
 
         if(sendOrder === true){
             if(check === true){
@@ -215,10 +176,9 @@ const Cart = ({
                 console.log(localStorage.getItem("save"));
             }
         }
-
         axios
         .get(orderUrl,{
-            cartItems: [ // 상품정보 목록
+            cartItems: [
             {
                 productId: cartList.altId,
                 optionId: cartList.optionId,
@@ -241,8 +201,8 @@ const Cart = ({
         axios
         .get(receiverUrl, {headers: authHeader()})
         .then((response)=>{
-            console.log("수신자 정보 들어왔음")
-            console.log(response)
+            // console.log("수신자 정보 들어왔음")
+            // console.log(response)
             const receiverArr = []
             response.data.items.map((userInfo)=>receiverArr.push({
                 id: userInfo.receiverId,
@@ -253,8 +213,8 @@ const Cart = ({
             }))
            
             setReceiver(receiverArr)
-            console.log("receiverArr")
-            console.log(receiver)
+            // console.log("receiverArr")
+            // console.log(receiver)
 
         })
     },[])
@@ -267,21 +227,18 @@ const Cart = ({
                 </div>
 
                 <div style={{display:"flex"}} 
-                    //  ref={productRef}
                 >
                     {/* 아이템 개별체크박스 */}
                     <input 
                         type="checkBox" 
-                        name = "checkBox"
-                        // checked={check}
-                        배열안에 id가 있는지 확인
+                        name = {id}
+                        checked={check.includes(id)}
                         // onCreate={check}
                         // onClick={handleCheckBox}
-                        value={id}
+                        // value={id}                        
                         onChange={handleCheckBox}
                         style={{width:30,height:30, border:"1px solid"}} 
                     />
-                    
                     
                     <div style={{float:"right", width:"100%", border:"1px solid"}}>
                         <div style={{textAlign:"right"}}>
@@ -327,10 +284,9 @@ const Cart = ({
                         <div style={{display:"flex",alignItems:"center", float:"right", width:"100%"}}>
                             <input 
                                 type="checkbox"
-                                name = "checkBox"
-                                // value={checkItem}
-                                checked={check}
-                                onClick={handleItemListCheck} 
+                                // name = "checkBox"
+                                checked={cartList.includes()}
+                                onClick={handleAllCheck} 
                                 style={{width:30,height:30, border:"1px solid"}} 
                             />
                             <p style={{float:"right"}}>전체선택</p>
@@ -354,7 +310,13 @@ const Cart = ({
                                 <div className={contentLayout}>
                                 <div style={{border:"1px solid",display: "flex"}}>
                                     <img className={imgLayout} src={cartItem.img} alt={cartItem.id} />
-                                    {cartItem.content}
+                                    {makeCartelement(
+                                        cartItem.id,
+                                        cartItem.product.distributor,
+                                        cartItem.product.name,
+                                        cartItem.product.description,
+                                        cartItem.product.price,
+                                    )}
                                 </div>
                                 </div>
                             </div>
