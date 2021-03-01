@@ -1,5 +1,4 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const CartItem = ({
@@ -9,33 +8,33 @@ const CartItem = ({
     imgLayout
 }) => {
 
-    const [checkAll, setCheckAll] = useState(false)
+    // const [checkAll, setCheckAll] = useState(false)
 
-    const productRef = React.useRef(false)
-    //아이템 전체 체크
-    useEffect(()=>{
-        if(checkAll===true){
-            console.log("ref")
-            console.log(productRef.current.children)
-            // productRef.current.children[0] === true
-            // productRef = <input type={'checkbox'} onChange={() => handleItemListCheck} checked={true} />
-            // productRef.current.input(true)
-        }else{
+    // const productRef = React.useRef(false)
+    // //아이템 전체 체크
+    // useEffect(()=>{
+    //     if(checkAll===true){
+    //         console.log("ref")
+    //         console.log(productRef.current.children)
+    //         // productRef.current.children[0] === true
+    //         // productRef = <input type={'checkbox'} onChange={() => handleItemListCheck} checked={true} />
+    //         // productRef.current.input(true)
+    //     }else{
             
-        }
-        console.log(productRef.current.children[0])
-    }, [checkAll])
+    //     }
+    //     console.log(productRef.current.children[0])
+    // }, [checkAll])
 
-    const handleItemListCheck = (e) =>{
-        setCheckAll(e.target.checked)
-    }
+    // const handleItemListCheck = (e) =>{
+    //     setCheckAll(e.target.checked)
+    // }
 
     
     return (
         <>
             <div>
                 <p>carItem</p>   
-                <div ref={productRef}>
+                <div>
                     {data.map((cartItem)=>(
                         <div className={containerLayout} alt={cartItem.id}>
                             <div className={contentLayout}>

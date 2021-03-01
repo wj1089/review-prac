@@ -28,6 +28,11 @@ import HotListMore from './components/products/HotListMore'
 import CategoryMore from './components/categorys/CategoryMore'
 import TotalProducts from './components/categorys/TotalProducts'
 
+import ChangeAdrs from './components/cart/ChangeAdrs'
+import CouponList from './components/cart/CouponList'
+import AddressForm from './components/cart/AddressForm'
+import NewAddress from './components/cart/NewAddress'
+import AdrsManage from './components/user/AdrsManage'
 
 const Page = () => {
     return (
@@ -61,6 +66,11 @@ const Page = () => {
                 <Route path="/storyMore" component={StoryMore} />
                 <Route path="/eventMore" component={EventMore} />
                 <Route path="/categoryMore" component={CategoryMore} />
+                <Route path="/changeAdrs" component={ChangeAdrs} />
+                <Route path="/couponList" component={CouponList} />
+                <Route path="/addressForm" component={AddressForm} />
+                <Route path="/newAddress" component={NewAddress} />
+                <Route path="/adrsManage" component={AdrsManage} />
 
             </Switch>
         </>

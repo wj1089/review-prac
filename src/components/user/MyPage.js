@@ -4,7 +4,7 @@ import Logout from '../log/Logout';
 const MyPage = ({history}) => { 
    //뒤로가기
    const goBack = () =>{
-    history.goBack();
+    history.push("./");
 }
     return (
         <>

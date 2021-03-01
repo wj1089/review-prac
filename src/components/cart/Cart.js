@@ -14,14 +14,10 @@ const Cart = ({
     contentLayout,
     imgLayout}) => {
     const cartUrl = 'https://childsnack-test.appspot.com/_ah/api/cart/v1/getCartList';
-    const removeUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/delete?id=";
+    const removeCartUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/delete?id=";
     const orderUrl = "https://childsnack-test.appspot.com/_ah/api/order/v1/insert";
     const updateUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/update";
     const receiverUrl = "https://childsnack-test.appspot.com/_ah/api/receiver/v1/getReceiver"
-
-    const query = window.location.search
-    const urlParams = new URLSearchParams(query)
-    const getId = urlParams.get('id')
 
     const [count, setCount] = useState(1)
 
@@ -33,18 +29,12 @@ const Cart = ({
     const [sendOrder, setSendOrder] = useState(false)
 
     const [check, setCheck] = useState([])
-    const [checkList, setCheckList] = useState([])
     const [cartList, setCartList] = useState([]) 
     const [receiver,setReceiver] = useState([])
-    const [productInfo, setProductInfo] = useState([])
-
-    // const [checkItem, setCheckItem] = useState(false)
-    // const [checkResult, setCheckResult] = useState('')
-
 
     //뒤로가기
     const goBack = () =>{
-        history.goBack();
+        history.push("./");
     }
 
     const increaseNum = ()=>{
@@ -56,57 +46,64 @@ const Cart = ({
             setCount(0)
         }
     }
+   
+    const [checkAgree, setCheckAgree] = useState(false)
 
     //전체체크
     const handleAllCheck = (e) =>{
+        setCheckAgree(false)
         const checkInfo = e.target.checked
-        const checkValue = e.target.name
-        const demoId = cartList.map((cart)=>cart.id);
+        const wrapId = cartList.map((cart)=>cart.id);
+
         if(checkInfo === true){
-            setCheckList(demoId)
-            console.log("checkList")
-            console.log(demoId)
-        }else{
+            const total = check.indexOf(wrapId);
+            console.log("wrapId")
+            console.log(wrapId)
+            setCheckAgree(true)
+                
+            if(total >= -1){
+                setCheck(wrapId)
+            }
+        }else{ 
+            console.log("초기화")
             setCheck([])
         }
-    }   
-   
-
-
+    }
+    
     //개별체크
     const handleCheckBox = (e) =>{
+        setCheckAgree(false)
         const checkInfo = e.target.checked
         const checkValue = e.target.name
-        console.log("check list size : " + check.length +" checkValue : " + checkValue)
-        console.log(typeof check)
-        //클릭시 나오는 값        
+        // console.log("check list size : " + check.length +" checkValue : " + checkValue)
+        // console.log(typeof check)
+        //클릭시 나오는 값
         if(checkInfo === true){
             let result = check.includes(checkValue)
             if(result === false){               
                 setCheck([...check, checkValue])
+                setCheckAgree(true)
             }
         }else{
             let result = check.indexOf(checkValue)            
             if(result > -1){
-                setCheck(check.filter(demo => checkValue !== demo))
+                setCheck(check.filter(num => checkValue !== num))
                 // check.splice(result, 1);
                 // setCheck(check.splice(result, 1))
             }
         }   
     }
+    const query = window.location.search
+    const urlParams = new URLSearchParams(query)
+    const getId = urlParams.get('id')
 
     //항목삭제
     const removeItem = () =>{
-        setRemoveMenu(true)
-        // const checkInfo = e.target.checked
-        // const cartid = cartList.id
-        // if(checkInfo === true){
-        //     console.log("삭제 진입")
-        // }
+        // setRemoveMenu(true)
         axios
-        .delete(removeUrl, 
-            {cartItems:check},{headers: authHeader()
-        })
+        .delete(removeCartUrl + getId, 
+            {cartItems:check.id},
+            {headers: authHeader()})
         .then((response)=>{
             console.log("삭제 들어왔음")
             console.log(response)
@@ -132,25 +129,17 @@ const Cart = ({
         axios
         .get(cartUrl, {headers: authHeader()})
         .then((response)=>{
-            // console.log("cart response 내부")
-            // console.log(response)
             const listArr = []
-            const idArr = []
             response.data.items.map((cart)=>listArr.push({
                 id: cart.cartId,
-                // img: cart.product.thumnail,                
+                // img: cart.product.thumnail,  
+                productId:cart.product.productId,              
                 shippingFee : cart.product.shippingCompany.shippingFee,
                 optionId : cart.option.optionId,
                 optionName : cart.option.name,
                 quantity: cart.quantity,
                 product : cart.product
             }))
-            //아이디만
-            // const strInfo = JSON.stringify(
-            response.data.items.map((asd)=>idArr.push(
-                asd.cartId
-            ))
-            setCheck(idArr)
             setCartList(listArr)
         })
       
@@ -159,41 +148,43 @@ const Cart = ({
             console.log(error)
         })
     },[])
-    
+    console.log("check")
+    console.log(check)
+    console.log("cartList")
+    console.log(cartList)
 
     //주문버튼 클릭
     const ClickOrder = (e)=>{
-        setSendOrder(!sendOrder)
+        // setSendOrder(!sendOrder)
         e.preventDefault()
         console.log("주문버튼 클릭")
+        console.log(check)
 
-        if(sendOrder === true){
-            if(check === true){
-                // setCheckItem(true)
-                const certifiInfo = {productInfo}
-                localStorage.setItem("save", JSON.stringify(certifiInfo));
-                console.log("localStorage에 들어감")
-                console.log(localStorage.getItem("save"));
-            }
-        }
-        axios
-        .get(orderUrl,{
-            cartItems: [
-            {
-                productId: cartList.altId,
-                optionId: cartList.optionId,
-                quantity: cartList.quantity
-            }
-            ],
-        },{ headers: authHeader()})
-        .then((response)=>{
-            console.log(response)
-            history.push("./payment")
-        })
-        .catch((error)=>{
-            console.log("error")
-            console.log(error)
-        })
+        const certifiInfo = {check}
+        console.log(certifiInfo)
+        console.log("localStorage에 들어감")
+        localStorage.setItem("save", JSON.stringify(certifiInfo));
+        history.push("./payment")
+        // console.log(localStorage.getItem("save"));
+
+        // axios
+        // .post(orderUrl,{
+        //     cartItems: [
+        //     {
+        //         productId: cartList.productId,
+        //         optionId: cartList.optionId,
+        //         quantity: cartList.quantity
+        //     }
+        //     ],
+        // },{ headers: authHeader()})
+        // .then((response)=>{
+        //     console.log(response)
+        //     localStorage.setItem("save", JSON.stringify(certifiInfo));
+        // })
+        // .catch((error)=>{
+        //     console.log("error")
+        //     console.log(error)
+        // })
     }
 
     //수신자 정보
@@ -201,8 +192,6 @@ const Cart = ({
         axios
         .get(receiverUrl, {headers: authHeader()})
         .then((response)=>{
-            // console.log("수신자 정보 들어왔음")
-            // console.log(response)
             const receiverArr = []
             response.data.items.map((userInfo)=>receiverArr.push({
                 id: userInfo.receiverId,
@@ -213,9 +202,6 @@ const Cart = ({
             }))
            
             setReceiver(receiverArr)
-            // console.log("receiverArr")
-            // console.log(receiver)
-
         })
     },[])
 
@@ -233,9 +219,6 @@ const Cart = ({
                         type="checkBox" 
                         name = {id}
                         checked={check.includes(id)}
-                        // onCreate={check}
-                        // onClick={handleCheckBox}
-                        // value={id}                        
                         onChange={handleCheckBox}
                         style={{width:30,height:30, border:"1px solid"}} 
                     />
@@ -285,7 +268,7 @@ const Cart = ({
                             <input 
                                 type="checkbox"
                                 // name = "checkBox"
-                                checked={cartList.includes()}
+                                checked={cartList.length === check.length}
                                 onClick={handleAllCheck} 
                                 style={{width:30,height:30, border:"1px solid"}} 
                             />
@@ -339,7 +322,16 @@ const Cart = ({
                 </div>
 
             <div style={{width:"100%", height:50, display:"flex", justifyContent:"center", border:"1px solid"}}>
-                <button type="button" onClick={ClickOrder}>주문버튼</button>
+                
+                {checkAgree === false  &&(
+                    <button type="button" style={{backgroundColor:"lightGray"}}>주문하기</button>
+                )}
+                {checkAgree === true  &&(
+                    <button type="button" style={{backgroundColor:"lightcyan"}}
+                    name="save" 
+                    // id="save" 
+                    onClick={ClickOrder}>주문하기</button>
+                )}
 
                 {/* <Button variant="primary" onClick={ClickOrder}>
                     주문버튼

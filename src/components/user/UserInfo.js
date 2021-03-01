@@ -24,7 +24,7 @@ const UserInfo = ({props,history}) => {
     console.log(sendClick)
 
     const [show, setShow] = useState(false);
-    //주소 모달 show
+    // //주소 모달 show
     const [addShow, setAddShow] = useState(false)
     //Phone 모달 show
     const [phoneShow, setPhoneShow] = useState(false)
@@ -123,23 +123,23 @@ const UserInfo = ({props,history}) => {
         history.goBack();
     }
     //카카오 주소API
-    const handleComplete = (data) => {
-        let fullAddress = data.roadAddress;
-        let extraAddress = ''; 
+    // const handleComplete = (data) => {
+    //     let fullAddress = data.roadAddress;
+    //     let extraAddress = ''; 
 
-        if (data.addressType === 'R') {
-            extraAddress += data.bname;
-            }  if (data.bname !== '') {
+    //     if (data.addressType === 'R') {
+    //         extraAddress += data.bname;
+    //         }  if (data.bname !== '') {
             
-            if (data.buildingName !== '') {
-            extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
-            }
-            fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
-        }
-        setIsAddress(fullAddress)
-        setAddShow(false)
-        setAllow(true)
-    }
+    //         if (data.buildingName !== '') {
+    //         extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+    //         }
+    //         fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+    //     }
+    //     setIsAddress(fullAddress)
+    //     setAddShow(false)
+    //     setAllow(true)
+    // }
 
     const handleClickEvent = () =>{
         setClickAction(!clickAction)
@@ -281,14 +281,14 @@ const UserInfo = ({props,history}) => {
         )
     }
 
-    //주소지 신규등록 모달
-    const AddresModal = () => {
-        return (
-            <Button variant="primary" onClick={handleAddShow}>
-                주소검색
-            </Button>
-        )
-    }
+    // //주소지 신규등록 모달
+    // const AddresModal = () => {
+    //     return (
+    //         <Button variant="primary" onClick={handleAddShow}>
+    //             주소검색
+    //         </Button>
+    //     )
+    // }
 
     //회원탈퇴 모달
     const RemoveModal = () => {
@@ -590,7 +590,8 @@ const UserInfo = ({props,history}) => {
                             userInfo.address
                         )}
                     </div>
-                <AddresModal type="button"/>
+                    {/* ?id=${userInfo.accountId} */}
+                    <a href={`/adrsManage`}><button type="button">주소록관리</button></a>
             </div>
             <div className="user-infoContent">
                 <p>상세주소</p> 
@@ -658,45 +659,7 @@ const UserInfo = ({props,history}) => {
                     </div>
                 </div>
 
-                {/* 모달 번호인증 확인 */}
-                <Modal 
-                    show={phoneShow} 
-                    data-toggle="modal"
-                    onHide={handlePhoneClose}
-                >
-                    <Modal.Header closeButton>
-                    <Modal.Title>번호인증</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div style={{textAlign:"center"}}>
-                            <div style={{textAlign:"center"}}>
-                                <p >신규 번호</p>
-                                {sendClick ?  phoneForm : beforeChangePn}
-                            </div>
-                            <br />
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
-                </Modal>   
-
-                {/* 모달 주소검색 확인 */}
-                <Modal 
-                    show={addShow} 
-                    data-toggle="modal"
-                    onHide={handleAddClose}
-                >
-                    <Modal.Header closeButton>
-                    <Modal.Title>주소검색</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <DaumPostcode onComplete={handleComplete}/>
-                    </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
-                </Modal>   
-                {/* 모달 회원탈퇴여부 확인 */}
-                <RemoveModal type="button" />
+                
             </div>
         </>
     );
