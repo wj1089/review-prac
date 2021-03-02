@@ -33,6 +33,8 @@ import CouponList from './components/cart/CouponList'
 import AddressForm from './components/cart/AddressForm'
 import NewAddress from './components/cart/NewAddress'
 import AdrsManage from './components/user/AdrsManage'
+// import AdrsDetailList from './components/user/AdrsDetailList'
+
 
 const Page = () => {
     return (
@@ -71,6 +73,7 @@ const Page = () => {
                 <Route path="/addressForm" component={AddressForm} />
                 <Route path="/newAddress" component={NewAddress} />
                 <Route path="/adrsManage" component={AdrsManage} />
+                {/* <Route path="/adrsDetailList" component={AdrsDetailList} /> */}
 
             </Switch>
         </>

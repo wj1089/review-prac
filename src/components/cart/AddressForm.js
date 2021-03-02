@@ -18,7 +18,6 @@ const AddressForm = ({
     const [modifyAdrs,setModifyAdrs] = useState({
         name:'',
         phone:'',
-        address:'',
         addressDetail:''
     })
 
@@ -56,12 +55,9 @@ const AddressForm = ({
         setUserInfo(fullAddress)
     }
 
- //뒤로가기
+    //뒤로가기
     const goBack = () =>{
         history.goBack();
-    }
-    const handleClickInput = (e)=>{
-        {}
     }
 
     //배송정보 수정 input
@@ -71,9 +67,11 @@ const AddressForm = ({
             ...modifyAdrs,
             [name]:value
         })
-        console.log("modifyAdrs")
-        console.log(modifyAdrs)
     }
+    console.log("userInfo")
+    console.log(userInfo)
+    console.log("modifyAdrs")
+    console.log(modifyAdrs)
 
     //데이터 저장
     const saveModifyInfo =()=>{
@@ -81,13 +79,14 @@ const AddressForm = ({
         axios
         .post(updateAdrsUrl,{
             id: userInfo.receiverId,
-            name: userInfo.name,
-            phone: userInfo.phone,
-            // address: userInfo.address,
-            addressDetail: userInfo.addressDetail,
+            name: modifyAdrs.name,
+            phone: modifyAdrs.phone,
+            address: isAddress,
+            addressDetail: modifyAdrs.addressDetail,
         }, {headers: authHeader()})
         .then((response)=>{
             console.log(response)
+            history.push("/changeAdrs")
         })
         .catch((error)=>{
             console.log("error")
@@ -109,9 +108,6 @@ const AddressForm = ({
             console.log(error)
         })
     }
-    const modifyInfo =()=>{
-        console.log("수정하기")
-    }
 
     useEffect(()=>{
         axios
@@ -122,7 +118,6 @@ const AddressForm = ({
             const data = response.data.items[0]
             console.log("data")
             console.log(data)
-            
             setUserInfo(data)
         })
         .catch((error)=>{
@@ -144,8 +139,7 @@ const AddressForm = ({
                     id="name"
                     name="name"
                     type="name"
-                    value={userInfo.name} 
-                    onClick={handleClickInput}
+                    value={modifyAdrs.name} 
                     onChange={handleModifyAdrsInfo}
                 />
                 </p>
@@ -155,7 +149,7 @@ const AddressForm = ({
                         name="phone"
                         type="phone"
                         onChange={handleModifyAdrsInfo} 
-                        value={userInfo.phone} 
+                        value={modifyAdrs.phone} 
                     />
                     </p>
                 <div style={{display:"flex"}}>
@@ -165,7 +159,7 @@ const AddressForm = ({
                             name="address"
                             type="address"
                             onChange={handleModifyAdrsInfo} 
-                            value={userInfo.address}
+                            value={isAddress}
                         />
                     </p>
                     <Button variant="primary" type="button" onClick={handleAddShow}>
@@ -179,16 +173,16 @@ const AddressForm = ({
                         name="addressDetail"
                         type="addressDetail"
                         onChange={handleModifyAdrsInfo} 
-                        value={userInfo.addressDetail}
+                        value={modifyAdrs.addressDetail}
                     />
                 </p>
             </div>
-            <button type="button" onClick={modifyInfo}>수정하기</button>   
+            {/* <button type="button" onClick={modifyInfo}>수정하기</button>    */}
             <button type="button" onClick={saveModifyInfo}>저장</button>   
             <button type="button" onClick={removeInfo}>삭제</button>   
 
             {/* 모달 주소검색 확인 */}
-            {/* <Modal 
+            <Modal 
                 show={addShow} 
                 data-toggle="modal"
                 onHide={handleAddClose}
@@ -201,9 +195,7 @@ const AddressForm = ({
                 </Modal.Body>
                 <Modal.Footer>
                 </Modal.Footer>
-            </Modal>    */}
-            {/* 모달 회원탈퇴여부 확인 */}
-            {/* <RemoveModal type="button" /> */}
+            </Modal>   
         </>
     );
 };

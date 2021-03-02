@@ -86,6 +86,7 @@ const Signin = (props) => {
         let checkValidate = validate(body);
         if(!checkValidate.success){
             alert(checkValidate.message.content);
+            return
         }
         console.log('진입 성공')
         dispatch(registerUser(body))

@@ -9,12 +9,12 @@ import {Modal, Button} from "react-bootstrap"
 import PropTypes from 'prop-types';
 
 const Cart = ({
-    history,props,
+    history,
     containerLayout,
     contentLayout,
     imgLayout}) => {
     const cartUrl = 'https://childsnack-test.appspot.com/_ah/api/cart/v1/getCartList';
-    const removeCartUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/delete?id=";
+    const removeCartUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/delete";
     const orderUrl = "https://childsnack-test.appspot.com/_ah/api/order/v1/insert";
     const updateUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/update";
     const receiverUrl = "https://childsnack-test.appspot.com/_ah/api/receiver/v1/getReceiver"
@@ -27,12 +27,12 @@ const Cart = ({
     const [addMenu,setAddMenu] = useState(true)
     const [removeMenu, setRemoveMenu] = useState(false)
     const [sendOrder, setSendOrder] = useState(false)
+    const [checkAgree, setCheckAgree] = useState(false)
 
     const [check, setCheck] = useState([])
     const [cartList, setCartList] = useState([]) 
     const [receiver,setReceiver] = useState([])
 
-    //뒤로가기
     const goBack = () =>{
         history.push("./");
     }
@@ -47,7 +47,6 @@ const Cart = ({
         }
     }
    
-    const [checkAgree, setCheckAgree] = useState(false)
 
     //전체체크
     const handleAllCheck = (e) =>{
@@ -70,14 +69,13 @@ const Cart = ({
         }
     }
     
+    console.log(check)
+
     //개별체크
     const handleCheckBox = (e) =>{
         setCheckAgree(false)
         const checkInfo = e.target.checked
         const checkValue = e.target.name
-        // console.log("check list size : " + check.length +" checkValue : " + checkValue)
-        // console.log(typeof check)
-        //클릭시 나오는 값
         if(checkInfo === true){
             let result = check.includes(checkValue)
             if(result === false){               
@@ -88,26 +86,21 @@ const Cart = ({
             let result = check.indexOf(checkValue)            
             if(result > -1){
                 setCheck(check.filter(num => checkValue !== num))
-                // check.splice(result, 1);
-                // setCheck(check.splice(result, 1))
             }
-        }   
+        }
     }
-    const query = window.location.search
-    const urlParams = new URLSearchParams(query)
-    const getId = urlParams.get('id')
 
     //항목삭제
     const removeItem = () =>{
         // setRemoveMenu(true)
         axios
-        .delete(removeCartUrl + getId, 
-            {cartItems:check.id},
+        .delete(removeCartUrl,
+            {cartItems:{check}},
             {headers: authHeader()})
         .then((response)=>{
             console.log("삭제 들어왔음")
             console.log(response)
-
+            // window.location.reload();
         })
         .catch((error)=>{
             console.log(error)
@@ -132,7 +125,7 @@ const Cart = ({
             const listArr = []
             response.data.items.map((cart)=>listArr.push({
                 id: cart.cartId,
-                // img: cart.product.thumnail,  
+                // img: cart.product.thumnail,
                 productId:cart.product.productId,              
                 shippingFee : cart.product.shippingCompany.shippingFee,
                 optionId : cart.option.optionId,
@@ -142,49 +135,25 @@ const Cart = ({
             }))
             setCartList(listArr)
         })
-      
         .catch((error)=>{
             console.log("error")
             console.log(error)
         })
     },[])
-    console.log("check")
-    console.log(check)
-    console.log("cartList")
-    console.log(cartList)
+  
 
     //주문버튼 클릭
     const ClickOrder = (e)=>{
-        // setSendOrder(!sendOrder)
         e.preventDefault()
         console.log("주문버튼 클릭")
-        console.log(check)
-
-        const certifiInfo = {check}
-        console.log(certifiInfo)
         console.log("localStorage에 들어감")
-        localStorage.setItem("save", JSON.stringify(certifiInfo));
+        const go = []
+        check.forEach(id=>{
+            const data = cartList.find(arr =>arr.id === id)
+            go.push(data)
+        })
+        localStorage.setItem("save", JSON.stringify(go));
         history.push("./payment")
-        // console.log(localStorage.getItem("save"));
-
-        // axios
-        // .post(orderUrl,{
-        //     cartItems: [
-        //     {
-        //         productId: cartList.productId,
-        //         optionId: cartList.optionId,
-        //         quantity: cartList.quantity
-        //     }
-        //     ],
-        // },{ headers: authHeader()})
-        // .then((response)=>{
-        //     console.log(response)
-        //     localStorage.setItem("save", JSON.stringify(certifiInfo));
-        // })
-        // .catch((error)=>{
-        //     console.log("error")
-        //     console.log(error)
-        // })
     }
 
     //수신자 정보
@@ -267,7 +236,6 @@ const Cart = ({
                         <div style={{display:"flex",alignItems:"center", float:"right", width:"100%"}}>
                             <input 
                                 type="checkbox"
-                                // name = "checkBox"
                                 checked={cartList.length === check.length}
                                 onClick={handleAllCheck} 
                                 style={{width:30,height:30, border:"1px solid"}} 
@@ -281,12 +249,6 @@ const Cart = ({
                 </div>
 
                 <div style={{border:"1px solid", backgroundColor:"lightgray"}}>
-                    {/* <CartItem
-                        data={cartList}
-                        containerLayout="cartContainer"
-                        contentLayout="cartContent"
-                        imgLayout="cartImg"
-                    /> */}
                     <div>
                         {cartList.map((cartItem)=>(
                             <div className={containerLayout} alt={cartItem.id}>
@@ -321,37 +283,18 @@ const Cart = ({
                     {cartList.price}+{cartList.shippingFee}
                 </div>
 
-            <div style={{width:"100%", height:50, display:"flex", justifyContent:"center", border:"1px solid"}}>
-                
-                {checkAgree === false  &&(
-                    <button type="button" style={{backgroundColor:"lightGray"}}>주문하기</button>
-                )}
-                {checkAgree === true  &&(
-                    <button type="button" style={{backgroundColor:"lightcyan"}}
-                    name="save" 
-                    // id="save" 
-                    onClick={ClickOrder}>주문하기</button>
-                )}
-
-                {/* <Button variant="primary" onClick={ClickOrder}>
-                    주문버튼
-                </Button>
-                <Modal 
-                    show={show} 
-                    data-toggle="modal"
-                    onHide={handleClose}
-                >
-                    <Modal.Header closeButton>
-                    <Modal.Title>결제하기</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        
-                    </Modal.Body>
-                    <Modal.Footer>
-                    </Modal.Footer>
-                </Modal>    */}
-            </div>
-
+                <div style={{width:"100%", height:50, display:"flex", justifyContent:"center", border:"1px solid"}}>
+                    
+                    {checkAgree === false  &&(
+                        <button type="button" style={{backgroundColor:"lightGray"}}>주문하기</button>
+                    )}
+                    {checkAgree === true  &&(
+                        <button type="button" style={{backgroundColor:"lightcyan"}}
+                        name="save" 
+                        // id="save" 
+                        onClick={ClickOrder}>주문하기</button>
+                    )}
+                </div>
             </div>
         </div>
     );
