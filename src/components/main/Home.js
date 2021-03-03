@@ -43,7 +43,6 @@ const Home = () => {
     const [story, setStory] = useState([])
     // const [mdRecommend, setMdRecommend] = useState([])
 
- 
     const [certificate, setCertificate] = useState('')
     const [itemClick, setItemClick] = useState(false)
 
@@ -61,8 +60,6 @@ const Home = () => {
         .get(getAllList)
         .then((response)=>{
             //신상품
-            console.log("get all List response")
-            console.log(response)
             if(response.data.items[7]){
                 const listArr = [];
                 response.data.items[7].products.map((item)=>listArr.push({
@@ -130,40 +127,6 @@ const Home = () => {
             });
     }, []);
 
-
-
-
-
-
-
-
-    
-  // axios
-            // .get(cartUrl, {headers: authHeader()})
-            // .then((response)=>{
-            //     console.log(response)
-            //     const arr = []
-            //     response.data.items.map((demo)=>arr.push({
-            //         id: demo.cartId
-            //     }))
-            //     console.log("arr")
-            //     console.log(arr)
-
-            // })
-            // setCheck(checkValue)
-
-
-
-
-
-
-
-
-
-
-
-
-
     // 상품 후기 불러오기
     useEffect(()=>{
         axios
@@ -172,17 +135,18 @@ const Home = () => {
             const listArr = [];
             console.log("review response")
             console.log(response)
-            // response.data.item.map((review)=>listArr.push({
-            //     id : review.id,
-            //     img : review.product.thumnail,
-            //     content: makeReviewElement(
-            //         review.product.name,
-            //         review.point,
-            //         review.description,
-            //         review.shippingFee
-            //     )
-            // }))
-            // setUserReview(listArr)
+            response.data.item.map((review)=>listArr.push({
+                id : review.id,
+                img : review.product.thumnail,
+                productId :review.product.productId,
+                content: makeReviewElement(
+                    review.product.name,
+                    review.point,
+                    review.description,
+                    review.shippingFee
+                )
+            }))
+            setUserReview(listArr)
         })
     },[])
 
@@ -191,8 +155,8 @@ const Home = () => {
         axios
         .get(eventBenerList)
         .then((response)=>{
-            console.log("상단 event bener 내부 response")
-            console.log(response)
+            // console.log("상단 event bener 내부 response")
+            // console.log(response)
             const listArr = [];
             response.data.items.map((event)=>listArr.push({
                 id : event.id,
@@ -220,8 +184,6 @@ const Home = () => {
     //         setStory(listArr)
     //     })
     // },[])
-
-    console.log(story)
 
     //상품이용 후기 
     function makeReviewElement (name,point,description){

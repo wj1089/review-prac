@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState,useCallback } from 'react';
+import axios from 'axios';
 import { withRouter } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../actions/userAction';
@@ -13,6 +14,11 @@ import DaumPostcode from 'react-daum-postcode';
 import PasswordMask from 'react-password-mask';
 
 const Signin = (props) => {
+
+
+    const searchPhone = 'https://childsnack-test.appspot.com/_ah/api/user/v1/getAuthNum?phone=';
+    const checkAuthNum = 'https://childsnack-test.appspot.com/_ah/api/user/v1/checkAuthNum'
+
     const dispatch = useDispatch();
     const [checkAgree, setCheckAgree] = useState(false);
     const [signInput,setSignInput] = useState({
@@ -24,6 +30,8 @@ const Signin = (props) => {
             pswcheck:'',
             addressDetail:''
         })
+    console.log("signInput")
+    console.log(signInput)
 
     const {email,password,name, phone,gender,pswcheck,addressDetail} = signInput;
     const [birthday, setBirthday] = useState(new Date());
@@ -32,6 +40,26 @@ const Signin = (props) => {
     const [disabled, setDisabled] = useState(false)
     const [error, setError] = useState({})
     const [show, setShow] = useState(false);
+
+ 
+    // 코드 요청
+    const [rqustSwitch, setRqustSwitch] = useState(false)
+    // 입력받은 코드넘버
+    const [rqustAuth, setRqustAuth] = useState('')
+    // 입력한 코드넘버
+    const [codeNum, setCodeNum] = useState('')
+    const [agreeRqst, setAgreeRqst] = useState(false)
+    // 최종확인
+    const [finalCheck, setFinalCheck] = useState(false)
+
+
+
+
+    const codeNumChange = (e) =>{
+        setCodeNum(e.target.value)
+        console.log("codeNum")
+        console.log(codeNum)
+    }
 
     const handleShow = () => {setShow(true);}
     const handleClose = () => {setShow(false);}
@@ -80,6 +108,10 @@ const Signin = (props) => {
             password : password,
             pswcheck : pswcheck
         };
+        if(finalCheck === false){
+            alert("인증절차를 다시 진행해주세요.")
+            return
+        }
         // checkValidate를 등록하여 
         // validation이 통과할 경우,다음 단계로 진입을 하는 형식
 
@@ -103,6 +135,84 @@ const Signin = (props) => {
             alert(error.response.data.error.message)
         })
     }
+    
+    // 인증번호 요청 버튼 클릭
+    const handleCodeSwitch = useCallback(() =>{
+        // e.preventDefault()
+        setRqustSwitch(true)
+        console.log("sending Auth number")
+        console.log(rqustSwitch)
+        // setRqustSwitch(rqustSwitch);
+
+        if(signInput.phone.length > 11 || signInput.phone.length < 10){
+            alert("전화번호 입력이 틀림")
+            setRqustSwitch(false);
+            console.log(rqustSwitch)
+            return
+        }else{
+            setRqustSwitch(true);
+        }
+        axios
+        .get(searchPhone+signInput.phone)
+        .then((response)=>{
+            if(response && response.data){
+            const parseJson = JSON.parse(response.data.authId)
+            console.log("response.data")
+            console.log(parseJson)
+            setRqustAuth(parseJson)
+            // setRqustSwitch(true);
+            // setMinutes(3);
+            console.log(rqustSwitch)
+        }
+        })
+        // .catch((error)=>{
+        //     console.log("error log")
+        //     console.log(error.response.data.error.message)
+        //     alert(error.response.data.error.message)
+        // })
+    },[])
+
+     //인증번호 입력후 완료 절차
+     function handleCFcode() {
+        if (codeNum.length !== 6 && agreeRqst === false) {
+            console.log("return까지 왔음")
+            alert("인증번호 틀림")
+            return;
+        }
+        // if (minutes === 0 && seconds === 0) {
+        //     return;
+        // }
+        // else {
+        //     console.log("통과")
+        //     setRqustSwitch(true)
+        //     setAgreeRqst(true)
+        // }
+        axios
+          .post(checkAuthNum,{
+            authId : rqustAuth, 
+            code : codeNum
+        } )
+          .then((response) => {
+            if(response && response.data.code === "1"){
+                console.log("완료")
+                console.log(response)
+                alert("인증 성공!")
+                setAgreeRqst(true)
+                setFinalCheck(true)
+            }
+          })
+          .catch((error)=>{
+            console.log(error.response.data.error.message)
+            alert(error.response.data.error.message)
+        })
+    }
+    console.log("signInput")
+    console.log(signInput)
+
+
+
+
+    // forgotInfo.name, forgotInfo.phone, rqustSwitch
 
     const LogModal = () => {
         return (
@@ -176,7 +286,8 @@ const Signin = (props) => {
                         <div>
                             <input 
                                 className="sign-input" 
-                                value={signInput.name} name="name" 
+                                value={signInput.name} 
+                                name="name" 
                                 type="text" 
                                 placeholder="이름" 
                                 onChange={handleInfoChange} 
@@ -184,7 +295,26 @@ const Signin = (props) => {
                                 {error.name && <p>{error.name}</p>}
                         </div>
 
-                        <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div style={{}}>
                             <input 
                                 className="sign-input"
                                 value={signInput.phone}
@@ -193,8 +323,50 @@ const Signin = (props) => {
                                 placeholder="휴대폰"
                                 onChange={handleInfoChange}
                             />
-                                {error.phone && <p>{error.phone}</p>}
+                            <button type="button" onClick={handleCodeSwitch}>인증하기</button>
+                            
+                            {rqustSwitch === false &&
+                                (
+                                    <div>
+
+                                    </div>
+                                )
+                            }
+                            {rqustSwitch === true &&
+                                (
+                                    <>
+                                        <input 
+                                            type='text'
+                                            name="codeNum"
+                                            value={codeNum}
+                                            onChange={codeNumChange}
+                                            style={{width:"100%",border:"1px solid"}}
+                                            placeholder="인증번호를 입력해주세요."
+                                        />
+                                            
+                                        <div style={{width:"100%",border:"1px solid"}}>
+                                            <button type="button" onClick={handleCodeSwitch}>다시전송</button>
+                                            <button type="submit" onClick={handleCFcode}>확인</button>
+                                        </div>
+                                    </>
+                                )
+                            }
+                            {error.phone && <p>{error.phone}</p>}
                         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                         {/* 다음주소 API */}
                         <div>
@@ -221,6 +393,7 @@ const Signin = (props) => {
                                 value={signInput.addressDetail}
                                 onChange={handleInfoChange}
                             />
+
                             {error.addressDetail && <p>{error.addressDetail}</p>}
                         </div>
 

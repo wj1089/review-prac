@@ -14,6 +14,8 @@ const AddressForm = ({
     
     
     const [userInfo, setUserInfo] = useState([])
+    console.log("userInfo")
+    console.log(userInfo)
 
     const [modifyAdrs,setModifyAdrs] = useState({
         name:'',
@@ -151,7 +153,7 @@ const AddressForm = ({
                         onChange={handleModifyAdrsInfo} 
                         value={modifyAdrs.phone} 
                     />
-                    </p>
+                </p>
                 <div style={{display:"flex"}}>
                     <p>주소 :  
                         <input 

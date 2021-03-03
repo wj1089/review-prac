@@ -10,38 +10,32 @@ const ProductDetail = ({history}) => {
     const productGetItem = "https://childsnack-test.appspot.com/_ah/api/product/v1/get?id="
     const addItemURL = "https://childsnack-test.appspot.com/_ah/api/cart/v1/insert"
     const cartUrl = 'https://childsnack-test.appspot.com/_ah/api/cart/v1/getCartList';
-    
+    const reviewUrl = "/_ah/api/review/v1/getProductReviewList?productId="
    
 
     const query = window.location.search
     const urlParams = new URLSearchParams(query)
     const getId = urlParams.get('id')
 
-    const [infoMenu, setInfoMenu] = useState([])
     const [toggle, setToggle] = useState(1)
-    const [able, setAble] = useState(false)
-    const [cartList, setCartList] = useState([]) 
+    const [count, setCount] = useState(0)
+    const [infoMenu, setInfoMenu] = useState([])
+    const [option, setOption] = useState([])
+    console.log("option")
+    console.log(option)
 
     const [show, setShow] = useState(false);
+    const [onOptionBtn, setOnOptionBtn] = useState(false)
+
     const handleShow = () => {setShow(true);}
     const handleClose = () => {setShow(false);}
-    const [count, setCount] = useState(1)
 
     //count 숫자 parse int로 계산
     const turnToNum = JSON.stringify(infoMenu.price)
     const countNum = parseInt(count)
     const calcItems = parseInt(turnToNum)*countNum;
+
     console.log(countNum)
-
-    const [option, setOption] = useState([])
-    
-    const [onOptionBtn, setOnOptionBtn] = useState(false)
-    const [addBag, setAddbag] = useState(false)
-
-    const boxCheck = useRef(null); 
-
-
-
 
     //뒤로가기
     const goBack = () =>{
@@ -58,18 +52,21 @@ const ProductDetail = ({history}) => {
             setCount(0)
         }
     }
-    const handlePutIn = () =>{
-        setAddbag(true)
-    }
     
     const payModal =()=>{
         setShow(true)
     }
-
+    console.log("infoMenu.listArr")
+    console.log(infoMenu.listArr)
 
     //장바구니 담기
     const addProduct = () =>{
         console.log("추가하기")
+        if(count === 0){
+            alert("옵션을 선택해주세요!")
+            console.log("옵션을 선택해주세요!")
+            return
+        }
         axios
         .post(addItemURL,{
             cartItems: [ // 상품정보 목록
@@ -99,15 +96,44 @@ const ProductDetail = ({history}) => {
     }
 
     const handleOptionMenu=()=>{
-        setOnOptionBtn(true)
+        setOnOptionBtn(!onOptionBtn)
         console.log(onOptionBtn)
+        // if(onOptionBtn === true){
+        //     console.log("옵션선택")
+        // }
+    }
+    const [selectOption, setSelectOption] = useState(false)
 
-        if(onOptionBtn === true){
-            console.log("옵션선택")
-        }
+    const chooseOption =()=>{
+        setSelectOption(!selectOption)
+        console.log("옵션 선택")
+        console.log(selectOption)
+
+        // if(selectOption){
+        // }
     }
 
 
+    //옵션 선택시
+    function makeOptionMenu(){
+        return(
+            <>
+                {option.map((review)=>(
+                    <div>
+                        <div className="optionName">{review.name}</div> 
+                        <div style={{display:"flex"}}>
+                            <button type="button" onClick={decreaseNum}>-</button>
+                            <div>{count}</div>
+                            <button type="button" onClick={increaseNum}>+</button>
+                            <button onClick={chooseOption}>선택</button>
+                        </div>
+                    </div>
+                ))}
+            </>
+        )
+    }
+
+    //상품 정보
     useEffect(()=>{
         axios
         .get(productGetItem + getId)
@@ -115,9 +141,9 @@ const ProductDetail = ({history}) => {
             console.log("response")
             console.log(response)
             const baseUrl = response.data
-
             const altId = baseUrl.productId
             const headImg = baseUrl.detailImage
+          
             const distributor = baseUrl.distributor
             const description = baseUrl.description
             const name = baseUrl.name
@@ -132,14 +158,15 @@ const ProductDetail = ({history}) => {
             const addressInfo = baseUrl.madeInfo
             
             const listArr = []
-            // const option =
+            //option map list
             baseUrl.options.map((option)=>listArr.push({
                 optionId : option.optionId,
                 name : option.name
             }))
-            setOption(listArr.optionId)
-            console.log("inside option")
-            console.log(listArr.optionId)
+
+            setOption(listArr)
+            console.log("option")
+            console.log(option)
 
             const detailInfo = {altId,headImg,distributor,description,name,shippingInfo,addressInfo,listArr,
                 price,retailPrice,detailImg,exchangeInfo,paymentInfo,serviceInfo}
@@ -147,6 +174,20 @@ const ProductDetail = ({history}) => {
             setInfoMenu(detailInfo)
         })
     },[])
+
+    // 리뷰가져오기
+    // useEffect(()=>{
+    //     axios
+    //     .get(reviewUrl+getId+ &count=5&startCursor=0)
+    //     .then((response)=>{
+    //         console.log(response)
+    //     })
+    //     .catch((error)=>{
+    //         console.log(error)
+    //     })
+    // },[])
+
+    
 
     return (
         <>
@@ -163,38 +204,29 @@ const ProductDetail = ({history}) => {
                         <img src={infoMenu.headImg} alt={infoMenu.altId} />
                     </div>
                     <div style={{border:"1px solid"}}>
-                        <p>회사 이름 :{infoMenu.distributor}</p>
-                        <p>상품 이름 :{infoMenu.name}</p>
-                        <p>상품 내용 :{infoMenu.description}</p>
+                        <p>{infoMenu.distributor}</p>
+                        <b>{infoMenu.name}</b>
+                        <p>{infoMenu.description}</p>
                         {/* <p>product name {infoMenu.name}</p> */}
-                        <div style={{display:"flex"}}>
+                        <div style={{display:"flex", fontSize:25}}>
+                            <b>{infoMenu.price}원</b>
+                            <p style={{textDecoration:"line-through",color:"gray"}}>
+                                {infoMenu.retailPrice}원
+                            </p>
+                        </div>
+                        {/* <div style={{display:"flex"}}>
                             <button type="button" onClick={handleOptionMenu}>옵션</button>
-                            {onOptionBtn === true && (
-                                <>
-                                    <div className="optionName">{infoMenu.listArr[0].name}</div>
-                                </>
-                                )
-                            }
-                            {onOptionBtn === false && (
-                                <>
-                                    <div>필요한 옵션을 선택해주세요</div>
-                                </>
-                                )
-                            }
-                            {/* {option[0].name} */}
-                            {/* 0번째로 일단 고정 */}
-                        </div>
+                            <div>
+                                {onOptionBtn? makeOptionMenu(): <div>필요한 옵션을 선택해주세요</div>}
+                            </div>
+                        </div> */}
 
-
-                        <div style={{border:"1px solid", display:"flex"}}>
-                            <p>product price {infoMenu.price}</p> 
-                            <p>product retailPrice {infoMenu.retailPrice}</p> 
-                        </div>
-                        <div style={{border:"1px solid"}}>
-                            {/* <p>배송비{infoMenu.shippingFee}</p> */}
+                        <div style={{display:"flex"}}>
+                            <div style={{width:50,border:"1px solid"}}>배송비{infoMenu.shippingFee}</div>
                             <p>제주, 도서지역 추가 3,000원</p>
-                            {/* <p>shipping place{infoMenu.addressInfo}</p> */}
+                        {/* <p>{infoMenu.addressInfo}</p> */}
                         </div>
+
                     </div>
 
                     <div style={{width:"100%"}}>
@@ -256,19 +288,24 @@ const ProductDetail = ({history}) => {
                     <Modal.Title>상품선택</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                            <div>
-                                <div>{infoMenu.name}</div>
-                                <div>
-                                    <div style={{display:"flex", justifyContent:"right"}}>
-                                        <p>{infoMenu.price}</p>
-                                        <button onClick={decreaseNum}>-</button>{count}<button onClick={increaseNum}>+</button>
+                        <div>
+                            {option.map((review)=>(
+                                <div style={{display:"flex", justifyContent:"right"}}>
+                                    <div className="optionName">{review.name}</div> 
+                                    <p>{infoMenu.price}</p>
+                                    <div style={{display:"flex"}}>
+                                        <button type="button" onClick={decreaseNum}>-</button>
+                                        <div>{count}</div>
+                                        <button type="button" onClick={increaseNum}>+</button>
+                                        {/* <button onClick={chooseOption}>선택</button> */}
                                     </div>
-                                    <p>총 금액 : {calcItems}</p>
                                 </div>
-                                <div style={{width:"100%", display:"flex", justifyContent:"center"}}>
-                                    <button type="button" onClick={addProduct}>장바구니 담기</button>
-                                </div>
+                            ))}
+                            <p>총 금액 : {calcItems}원</p>
+                            <div style={{width:"100%", display:"flex", justifyContent:"center"}}>
+                                <button type="button" onClick={addProduct}>장바구니 담기</button>
                             </div>
+                        </div>
                     </Modal.Body>
                     <Modal.Footer>
                     </Modal.Footer>

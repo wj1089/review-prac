@@ -34,6 +34,8 @@ import AddressForm from './components/cart/AddressForm'
 import NewAddress from './components/cart/NewAddress'
 import AdrsManage from './components/user/AdrsManage'
 // import AdrsDetailList from './components/user/AdrsDetailList'
+import CheckPw from './components/user/CheckPw'
+import ChangePw from './components/user/ChangePw'
 
 
 const Page = () => {
@@ -74,6 +76,9 @@ const Page = () => {
                 <Route path="/newAddress" component={NewAddress} />
                 <Route path="/adrsManage" component={AdrsManage} />
                 {/* <Route path="/adrsDetailList" component={AdrsDetailList} /> */}
+
+                <Route path="/checkPw" component={CheckPw} />
+                <Route path="/changePw" component={ChangePw} />
 
             </Switch>
         </>

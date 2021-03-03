@@ -1,11 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./cart.css"
 import authHeader from "../../actions/userAction"
-import Products from "../products/Products"
-import CartItem from './CartItem';
-import OrderNav from '../navi/OrderNav';
-import {Modal, Button} from "react-bootstrap"
+// import Products from "../products/Products"
+// import CartItem from './CartItem';
+// import OrderNav from '../navi/OrderNav';
+// import {Modal, Button} from "react-bootstrap"
 import PropTypes from 'prop-types';
 
 const Cart = ({
@@ -14,10 +14,10 @@ const Cart = ({
     contentLayout,
     imgLayout}) => {
     const cartUrl = 'https://childsnack-test.appspot.com/_ah/api/cart/v1/getCartList';
-    const removeCartUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/delete";
     const orderUrl = "https://childsnack-test.appspot.com/_ah/api/order/v1/insert";
     const updateUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/update";
     const receiverUrl = "https://childsnack-test.appspot.com/_ah/api/receiver/v1/getReceiver"
+    const removeCartUrl = "https://childsnack-test.appspot.com/_ah/api/cart/v1/delete";
 
     const [count, setCount] = useState(1)
 
@@ -68,7 +68,7 @@ const Cart = ({
             setCheck([])
         }
     }
-    
+    console.log("check")
     console.log(check)
 
     //개별체크
@@ -90,13 +90,28 @@ const Cart = ({
         }
     }
 
+
+    const query = window.location.search
+    const urlParams = new URLSearchParams(query)
+    const getId = urlParams.get('id')
+    const wrapId = cartList.map((cart)=>cart.id);
+    
+    // console.clear()
+
+
+
     //항목삭제
     const removeItem = () =>{
         // setRemoveMenu(true)
+        const deleteUrl = JSON.stringify(check)
+        console.log("deleteUrl")
+        console.log(deleteUrl)
         axios
-        .delete(removeCartUrl,
-            {cartItems:{check}},
-            {headers: authHeader()})
+        .delete(
+            removeCartUrl,
+            {cartItems:[{id:deleteUrl}]},
+            {headers: authHeader()}
+            )
         .then((response)=>{
             console.log("삭제 들어왔음")
             console.log(response)
@@ -116,7 +131,7 @@ const Cart = ({
     } 
 
     
-    
+    //기본 카트 아이템 항목들
     useEffect(()=>{
         console.log("카트에 진입")
         axios
@@ -140,7 +155,8 @@ const Cart = ({
             console.log(error)
         })
     },[])
-  
+
+    
 
     //주문버튼 클릭
     const ClickOrder = (e)=>{
@@ -169,7 +185,6 @@ const Cart = ({
                 addressDetail:userInfo.addressDetail,
                 phone:userInfo.phone
             }))
-           
             setReceiver(receiverArr)
         })
     },[])

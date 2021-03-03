@@ -35,11 +35,6 @@ const AdrsManage = ({history,data}) => {
     
         useEffect(()=>{
 
-            // if(isAdres.defaultReceiver === "1"){
-            //    
-            //     console.log(isAdres.reverse())
-            // }
-
             axios
             .get(addressUrl, {headers: authHeader()})
             .then((response)=>{

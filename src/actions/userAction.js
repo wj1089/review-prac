@@ -49,4 +49,3 @@ export function updateProfile(toDataSubmit){
         payload: data,
     }
 }
-

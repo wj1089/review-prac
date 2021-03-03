@@ -91,12 +91,6 @@ const Payment = ({
     },[])
 
 
-    const query = window.location.search
-    const urlParams = new URLSearchParams(query)
-    const getId = urlParams.get('id')
-
-  
-    
     useEffect(()=>{
         axios
         .get(getOrderList, {headers: authHeader()})
@@ -127,15 +121,6 @@ const Payment = ({
             setOrderBill(parsingMemo)
             // setProductInfo(listArr)
             // setReceiverInfo(receiver)
-
-            console.log("orderBill")
-            console.log(orderBill)
-
-            // console.log("localStorage.getItem()")
-            // console.log(localStorage.getItem("save"))
-            // console.log("localStorage.getItem()")
-            // console.log(localStorage.getItem("save"))
-            // localStorage.getItem('user',JSON.stringify(response.payload))
         })
         .catch((error)=>{
             console.log("error")
@@ -154,8 +139,6 @@ const Payment = ({
         })
     },[])
     
-
-        
 
     return (
         <>
@@ -182,7 +165,8 @@ const Payment = ({
                     />
                 </div>
                 <h3>상품 정보</h3>
-                <div>{orderBill.map((cartItem)=>(
+                <div>
+                    {orderBill.map((cartItem)=>(
                             <div className={containerLayout} alt={cartItem.id}>
                                 <div className={contentLayout}>
                                 <div style={{border:"1px solid"}}>

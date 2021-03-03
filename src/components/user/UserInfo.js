@@ -7,6 +7,7 @@ import "./userinfo.css"
 import DaumPostcode from 'react-daum-postcode';
 import { useDispatch } from 'react-redux';
 
+
 const UserInfo = ({props,history}) => {
     const userInfomation = "https://childsnack-test.appspot.com/_ah/api/user/v1/getAccount"
     const exitService = "https://childsnack-test.appspot.com/_ah/api/user/v1/exitService"
@@ -122,24 +123,6 @@ const UserInfo = ({props,history}) => {
     const goBack = () =>{
         history.goBack();
     }
-    //카카오 주소API
-    // const handleComplete = (data) => {
-    //     let fullAddress = data.roadAddress;
-    //     let extraAddress = ''; 
-
-    //     if (data.addressType === 'R') {
-    //         extraAddress += data.bname;
-    //         }  if (data.bname !== '') {
-            
-    //         if (data.buildingName !== '') {
-    //         extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
-    //         }
-    //         fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
-    //     }
-    //     setIsAddress(fullAddress)
-    //     setAddShow(false)
-    //     setAllow(true)
-    // }
 
     const handleClickEvent = () =>{
         setClickAction(!clickAction)
@@ -378,7 +361,6 @@ const UserInfo = ({props,history}) => {
                 <input value={newPw} onChange={newPwChange} style={{width:"100%"}} type="text" placeholder="새로운 비밀번호를 입력해주세요." />
                 <input value={checkPw} onChange={checkPwChange} style={{width:"100%"}} type="text" placeholder="다시 한번 입력해주세요." />
                 
-                
                 <button type="button" onClick={handlePwClick}>취소</button>
                 <button onClick={validatePw}>확인</button>
             </div>
@@ -395,7 +377,7 @@ const UserInfo = ({props,history}) => {
                     value={oldPw}
                     type="text" 
                     placeholder="비밀번호" 
-                    style={{border: "1px solid", width:100,height:30}} 
+                    style={{border: "1px solid",height:30}} 
                     >
                     {oldPw}
                     </div>
@@ -405,7 +387,7 @@ const UserInfo = ({props,history}) => {
                     value={newPw}
                     type="text" 
                     placeholder="비밀번호" 
-                    style={{border: "1px solid", width:100,height:30}} 
+                    style={{border: "1px solid",height:30}} 
                     >
                     {newPw}
                     </div>
@@ -416,230 +398,14 @@ const UserInfo = ({props,history}) => {
         </>
     )
     
-    //사용자 정보 수정 전
-    const provideInfo = (
-        <>
-            <div className="user-infoContent">
-                <p>계정 이메일</p>
-                <div 
-                    name="email" 
-                    value={userInfo.email}
-                    style={{border: "1px solid",height:30}}  
-                    placeholder="계정 이메일" 
-                >
-                    {userInfo.email}
-                </div>
-            </div>
-
-            <div  className="user-infoContent"s>
-                <p>이름</p>
-                <div 
-                    type="text"
-                    name="name" 
-                    value={userInfo.name} 
-                    style={{border: "1px solid", width:100,height:30}}  
-                    placeholder="이름"
-                >
-                    {userInfo.name}
-                </div>
-            </div>
-
-            <div  className="user-infoContent">
-                <p>생년월일</p>
-                <div 
-                    name="birth" 
-                    value={userInfo.birth}
-                    style={{border: "1px solid", width:100,height:30}}  
-                    placeholder="생년월일" 
-                >
-                    {userInfo.birthday}
-                </div>
-            </div>
-
-            <div className="user-infoContent">
-                <p>비밀번호</p>
-                <div 
-                    type="text" 
-                    placeholder="비밀번호" 
-                    style={{border: "1px solid", width:100,height:30}} 
-                >
-                    {"*******"}
-                </div>
-
-            </div>
-
-            <div className="user-infoContent">
-                <p>전화번호</p>
-                <div 
-                    type="text" 
-                    placeholder="전화번호" 
-                    style={{border: "1px solid", width:100, height:30}}
-                >
-                    {userInfo.phone}
-                </div>
-
-            </div>
-
-            <div className="user-infoContent">
-                <p>주소</p> 
-                <div 
-                    value={userInfo.address}
-                    type="text" 
-                    placeholder="주소" 
-                    style={{border: "1px solid",height:30}}
-                >
-                    {userInfo.address}
-                </div>
-            </div>
-
-            <div className="user-infoContent">
-                <p>상세주소</p> 
-                <div 
-                    value={userInfo.addressDetail}
-                    type="text" 
-                    placeholder="상세주소" 
-                    style={{border: "1px solid",width: 100,height:30}}
-                >
-                    {userInfo.addressDetail}
-                </div>
-            </div>
-
-            <a href="./myPage"><button>마이페이지</button></a>
-            <button type="button" onClick={handleClickEvent}>수정하기</button>
-        </>
-    )
-
-
-
-    //사용자 정보 수정 후
-    const modifiedInfo = (
-        <>
-            <div  className="user-infoContent">
-                <p>계정 이메일</p>
-                <div 
-                    name="email" 
-                    value={userInfo.email}
-                    style={{border: "1px solid",height:30}}  
-                    placeholder="계정 이메일" 
-                >
-                    {userInfo.email}
-                </div>
-            </div>
-
-            <div  className="user-infoContent"s>
-                <p>이름</p>
-                <div 
-                    type="text"
-                    name="name" 
-                    value={userInfo.name} 
-                    style={{border: "1px solid", width:100,height:30}}  
-                    placeholder="이름"
-                >
-                    {userInfo.name}
-                </div>
-            </div>
-
-            <div  className="user-infoContent">
-                <p>생년월일</p>
-                <div 
-                    name="birth" 
-                    value={userInfo.birth}
-                    style={{border: "1px solid", width:100,height:30}}  
-                    placeholder="생년월일" 
-                >
-                    {userInfo.birthday}
-                </div>
-            </div>
-
-            <div className="user-infoContent">
-                <div>{passwordClick ? pwForm : beforeChange}</div>
-            </div>
-
-            <div className="user-infoContent">
-                <p>전화번호</p>
-                <div 
-                    type="text" 
-                    placeholder="전화번호" 
-                    style={{border: "1px solid", width:100, height:30}}
-                >
-                    {allow === true && (
-                        phoneInput
-                    )}
-                    {allow === false && (
-                        userInfo.phone
-                    )}
-                </div>
-                <PhoneModal type="button" />
-            </div>
-
-            <div className="user-infoContent">
-                <p>주소</p> 
-                    <div 
-                        type="text" 
-                        id="address" 
-                        name="address"
-                        placeholder="주소" 
-                        value={isAddress}
-                        selected={isAddress}
-                        style={{border: "1px solid", maxWidth: 250}}
-                    >
-                        {allow === true && (
-                            isAddress
-                        )}
-                        {allow === false && (
-                            userInfo.address
-                        )}
-                    </div>
-                    {/* ?id=${userInfo.accountId} */}
-                    <a href={`/adrsManage`}><button type="button">주소록관리</button></a>
-            </div>
-            <div className="user-infoContent">
-                <p>상세주소</p> 
-                {addDetail === true && (
-                <>
-                    <input 
-                        value={isAddressDetail}
-                        type="text" 
-                        placeholder="상세주소" 
-                        style={{border: "1px solid",width: 100,height:30}}
-                        onChange={addDetailChange}
-                    />
-                    <button onClick={handleAddDetailSwitch}>취소</button>
-                </>
-                )}
-                
-                {addDetail === false && (
-                <>
-                    <div 
-                        value={userInfo.addressDetail}
-                        type="text" 
-                        placeholder="상세주소" 
-                        style={{border: "1px solid",width: 100,height:30}}
-                        onChange={addDetailChange}
-                    >
-                        {userInfo.addressDetail}
-                    </div>
-                    <button onClick={handleAddDetailSwitch}>입력하기</button>
-                </>
-                )}
-            </div>
-            <button onClick={handleClickEvent}>뒤로가기</button>
-            <button onClick={changeSubmit}>변경확인</button>
-        </>
-    )
 
     //회원정보 진입시 첫화면
     useEffect(()=>{
-        console.log("useEffect 들어옴")
         axios
         .get(userInfomation,{headers: authHeader()})
         .then((response)=>{
-            console.log("response 들어옴")
-            console.log(response.data)
             const userInfo = response.data
             setUserInfo(userInfo)
-            console.log("userInfo.address")
-            console.log(userInfo.address)
         })
         .catch((error)=>{
             console.log(error.response.data.error.message)
@@ -651,15 +417,244 @@ const UserInfo = ({props,history}) => {
     return (
         <>
             <div>
-                <h1>회원정보수정</h1>
-                <div 
-                style={{display:"flex", justifyContent:"center",width:600, border:"1px solid", textAlign:"right"}}>
-                    <div style={{width:500, border:"1px solid", backgroundColor:"lightGray"}}>
-                        {!clickAction ? provideInfo : modifiedInfo}
-                    </div>
+                <div className="info-topicArea">
+                    <a href="./mypage"><button>뒤로</button></a>
+                    <div className="info-topic">회원정보수정</div>
                 </div>
 
-                
+                <div style={{textAlign:"left",padding :"0 16px 0 16px"}}>
+                    <hr className="info-boldLine"/>
+                    <div className="info-title">회원정보</div>
+                    <hr className="info-lightLine"/>
+
+                    <div>
+                        {clickAction === true && 
+                            (
+                            <>
+                                <div  className="user-infoContent">
+                                    <p>계정 이메일</p>
+                                    <div 
+                                        name="email" 
+                                        value={userInfo.email}
+                                        style={{border: "1px solid",height:30}}  
+                                        placeholder="계정 이메일" 
+                                    >
+                                        {userInfo.email}
+                                    </div>
+                                </div>
+                    
+                                <div  className="user-infoContent"s>
+                                    <p>이름</p>
+                                    <div 
+                                        type="text"
+                                        name="name" 
+                                        value={userInfo.name} 
+                                        style={{border: "1px solid", width:100,height:30}}  
+                                        placeholder="이름"
+                                    >
+                                        {userInfo.name}
+                                    </div>
+                                </div>
+                    
+                                <div  className="user-infoContent">
+                                    <p>생년월일</p>
+                                    <div 
+                                        name="birth" 
+                                        value={userInfo.birth}
+                                        style={{border: "1px solid", width:100,height:30}}  
+                                        placeholder="생년월일" 
+                                    >
+                                        {userInfo.birthday}
+                                    </div>
+                                </div>
+                    
+                                <div className="user-infoContent">
+                                    <div>{passwordClick ? pwForm : beforeChange}</div>
+                                </div>
+                    
+                                <div className="user-infoContent">
+                                    <p>전화번호</p>
+                                    <div 
+                                        type="text" 
+                                        placeholder="전화번호" 
+                                        style={{border: "1px solid", width:100, height:30}}
+                                    >
+                                        {allow === true && (
+                                            phoneInput
+                                        )}
+                                        {allow === false && (
+                                            userInfo.phone
+                                        )}
+                                    </div>
+                                    <PhoneModal type="button" />
+                                </div>
+                    
+                                <div className="user-infoContent">
+                                    <p>주소</p> 
+                                        <div 
+                                            type="text" 
+                                            id="address" 
+                                            name="address"
+                                            placeholder="주소" 
+                                            value={isAddress}
+                                            selected={isAddress}
+                                            style={{border: "1px solid", maxWidth: 250}}
+                                        >
+                                            {allow === true && (
+                                                isAddress
+                                            )}
+                                            {allow === false && (
+                                                userInfo.address
+                                            )}
+                                        </div>
+                                        {/* ?id=${userInfo.accountId} */}
+                                        <a href={`/adrsManage`}><button type="button">주소록관리</button></a>
+                                </div>
+                                <div className="user-infoContent">
+                                    <p>상세주소</p> 
+                                    {addDetail === true && (
+                                    <>
+                                        <input 
+                                            value={isAddressDetail}
+                                            type="text" 
+                                            placeholder="상세주소" 
+                                            style={{border: "1px solid",width: 100,height:30}}
+                                            onChange={addDetailChange}
+                                        />
+                                        <button onClick={handleAddDetailSwitch}>취소</button>
+                                    </>
+                                    )}
+                                    
+                                    {addDetail === false && (
+                                    <>
+                                        <div 
+                                            value={userInfo.addressDetail}
+                                            type="text" 
+                                            placeholder="상세주소" 
+                                            style={{border: "1px solid",width: 100,height:30}}
+                                            onChange={addDetailChange}
+                                        >
+                                            {userInfo.addressDetail}
+                                        </div>
+                                        <button onClick={handleAddDetailSwitch}>입력하기</button>
+                                    </>
+                                    )}
+                                </div>
+                                <button onClick={handleClickEvent}>뒤로가기</button>
+                                <button onClick={changeSubmit}>변경확인</button>
+                            </>
+                            )
+                        }
+
+                        {
+                            clickAction === false && (
+                                <>
+                                    <div  className="user-infoContent">
+                                        <div 
+                                            type="text"
+                                            name="name" 
+                                            value={userInfo.name} 
+                                            className="user-textbox"
+                                            placeholder="이름"
+                                        >
+                                            {userInfo.name}
+                                        </div>
+                                    </div>
+
+                                    <div className="user-infoContent">
+                                        {/* <p>계정 이메일</p> */}
+                                        <div 
+                                            name="email" 
+                                            value={userInfo.email}
+                                            className="user-textbox" 
+                                            placeholder="계정 이메일" 
+                                        >
+                                            {userInfo.email}
+                                        </div>
+                                    </div>
+
+                                    {/* <div  className="user-infoContent">
+                                        <div 
+                                            name="birth" 
+                                            value={userInfo.birth}
+                                            style={{border: "1px solid",height:30}}  
+                                            placeholder="생년월일" 
+                                        >
+                                            {userInfo.birthday}
+                                        </div>
+                                    </div> */}
+
+                                    <div className="user-infoContent">
+                                        {/* <p>비밀번호</p> */}
+                                        <div 
+                                            type="text" 
+                                            placeholder="비밀번호" 
+                                            className="user-textbox"
+                                        >
+                                            {"*******"}
+                                        </div>
+
+                                    </div>
+
+                                    <div className="user-infoContent">
+                                        {/* <p>전화번호</p> */}
+                                        <div 
+                                            type="text" 
+                                            placeholder="전화번호" 
+                                            className="user-textbox"
+                                        >
+                                            {userInfo.phone}
+                                        </div>
+                                    </div>
+
+                                    <div className="user-infoBtn">
+                                        <a href="./checkPw">
+                                            <div  type="button" className="user-btnbox">
+                                                개인정보 수정
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <hr className="info-boldLine" />
+
+                                    <div className="info-title">기본 배송지</div>
+
+                                    <div className="user-infoContent">
+                                        <div 
+                                            value={userInfo.address}
+                                            type="text" 
+                                            placeholder="주소" 
+                                            className="user-textbox"
+                                        >
+                                            {userInfo.address}
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div className="user-infoContent">
+                                        <div 
+                                            value={userInfo.addressDetail}
+                                            type="text" 
+                                            placeholder="상세주소" 
+                                            className="user-textbox"
+                                        >
+                                            {userInfo.addressDetail}
+                                        </div>
+                                    </div>
+
+                                    <div className="user-infoBtn">
+                                        <div  type="button" className="user-btnbox">
+                                            배송지 관리
+                                        </div>
+                                    </div>
+                                    <hr className="info-boldLine" />
+                                    <a href="./myPage"><button>마이페이지</button></a>
+                                    <button type="button" onClick={handleClickEvent}>수정하기</button>
+                                </>
+                            )
+                        }
+                    </div>
+                </div>
             </div>
         </>
     );

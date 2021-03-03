@@ -18,7 +18,8 @@ const RvCenter = () => {
             console.log(response)
             
             response.data.map((reviews)=>ListArr.push({
-
+                count : reviews.count,
+                total : reviews.totalCount,
             }))
             setReviews(ListArr)
         })
@@ -27,13 +28,20 @@ const RvCenter = () => {
             console.log(error.response)
         })
     })
+    console.log("reviews")
+    console.log(reviews)
 
     return (
         <>
             <div>
                 <h1>Review manage Center</h1>
                 <div>
+                    <p>작성가능한 리뷰</p>
 
+                </div>
+                <div>
+                    <p>작성한 리뷰</p>
+                    
                 </div>
             </div>
         </>
