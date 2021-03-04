@@ -33,26 +33,33 @@
 
 
 .user-infoContent{
-    width: 100%;
+    /* width: 100%; */
     margin: 0 0 16px 0;
     text-align: left;
     border-radius: 4px;
     border: solid 1px #cccccc;
     background-color: #f5f5f5;
 }
-
+.user-blankContent{
+    /* width: 100%; */
+    margin: 0 0 16px 0;
+    text-align: left;
+    border-radius: 4px;
+    border: solid 1px #cccccc;
+    background-color: #ffffff;
+}
 
 .user-textbox{
     font-size: 15px;
     font-weight: 500;
-    padding: 13px 0 13px 0;
+    padding: 13px 0 13px 13px;
 }
 
 .user-infoBtn{
     width: 100%;
     margin: 0 0 36px 0;
     border-radius: 4px;
-    border: solid 1px #de6e57;
+    /* border: solid 1px #de6e57; */
 }
 
 .user-btnbox{
@@ -66,7 +73,7 @@
     font-size: 16px;
     font-weight: 500;
     letter-spacing: normal;
-    color: #de6e57;
+    /* color: #de6e57; */
 }
 
 .info-descrip{

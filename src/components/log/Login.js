@@ -7,7 +7,7 @@ import PasswordMask from 'react-password-mask';
 import "./login.css"
 import "../../index.css"
 
-const Login = (props,{submitForm}) => {
+const Login = (props) => {
     const dispatch = useDispatch();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')

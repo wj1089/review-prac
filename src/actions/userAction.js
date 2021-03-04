@@ -9,7 +9,11 @@ const UPDATE_URL = "https://childsnack-test.appspot.com/updateProfile"
 export default function authHeader() {
     const user = JSON.parse(localStorage.getItem('user'));
     if(user) {
-        return {Authorization : user};
+        return {
+            Authorization : user,
+            // ContentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+            // AccessControlllowOrigin: "*"
+        };
     }else{
         return {};
     }

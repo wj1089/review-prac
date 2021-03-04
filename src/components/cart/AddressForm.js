@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import authHeader from "../../actions/userAction"
 import {Modal, Button} from "react-bootstrap"
 import DaumPostcode from 'react-daum-postcode';
+import "./cart.css"
 
 const AddressForm = ({
     history
@@ -20,6 +21,7 @@ const AddressForm = ({
     const [modifyAdrs,setModifyAdrs] = useState({
         name:'',
         phone:'',
+        address:'',
         addressDetail:''
     })
 
@@ -103,7 +105,7 @@ const AddressForm = ({
         .delete(removeAdrsUrl + getId,{headers: authHeader()})
         .then((response=>{
             console.log(response)
-            history.push("./changeAdrs")
+            history.push("./adrsManage")
         }))
         .catch((error)=>{
             console.log("error")
@@ -133,56 +135,126 @@ const AddressForm = ({
 
     return (
         <>
-            <button onClick={goBack}>뒤로가기</button>
+            <div className="info-topicArea">
+                <a href="./mypage"><div>뒤로</div></a>
+                <div className="info-topic">배송지 수정</div>
+                {/* <a href={`/newAddress?id=${isAdres.receiverId}`}>
+                    <div type="button" style={{width:"100%",outlin:"none", textDecoration:"none"}}>추가</div>
+                </a> */}
+            </div>
+            <div style={{textAlign:"left",padding :"0 16px 0 16px",borderRadius: 5}}>
 
             <div>
-                <p type="text">수령인 : 
-                <input 
-                    id="name"
-                    name="name"
-                    type="name"
-                    value={modifyAdrs.name} 
-                    onChange={handleModifyAdrsInfo}
-                />
-                </p>
-                <p>연락처 : 
+                <div className="user-blankContent">
                     <input 
-                        id="phone"
-                        name="phone"
-                        type="phone"
-                        onChange={handleModifyAdrsInfo} 
-                        value={modifyAdrs.phone} 
+                        type="text"
+                        name="name" 
+                        className="user-textbox"
+                        // placeholder="수령인"
+                        value={userInfo.name} 
+                        style={{fontSize: 16,fontWeight: 500,outline:"none", border:"none", font: "small-caption", width:"100%"}}
+                        onChange={handleModifyAdrsInfo}
                     />
-                </p>
+                </div>
+
+                <div className="user-blankContent">
+                    <input 
+                        type="tel"
+                        name="phone" 
+                        className="user-textbox"
+                        placeholder="휴대폰 번호(- 없이 입력)" 
+                        value={userInfo.phone}
+                        style={{fontSize: 16,fontWeight: 500, outline:"none", border:"none", font: "small-caption", width:"100%"}}
+                        onChange={handleModifyAdrsInfo}
+                    />
+                </div>
+
                 <div style={{display:"flex"}}>
-                    <p>주소 :  
-                        <input 
+                    <div className="user-infoContent" style={{width:"100%", marginRight:8}}>
+                        <div 
+                            type="address"
                             id="address"
                             name="address"
-                            type="address"
+                            className="user-textbox"
                             onChange={handleModifyAdrsInfo} 
-                            value={isAddress}
-                        />
-                    </p>
-                    <Button variant="primary" type="button" onClick={handleAddShow}>
+                            value={userInfo.address}
+                            style={{width:"100%",fontSize: 16,
+                            fontWeight: 500,}}
+                        >
+                            {isAddress}
+                        </div>
+                    </div>
+                    <Button 
+                        variant="primary" 
+                        type="button" 
+                        onClick={handleAddShow}
+                        style={{
+                            width:180,
+                            marginBottom: 16,
+                            borderRadius: 4,
+                            fontSize: 16,
+                            fontWeight: 500,
+                            border: "solid 1px #ec9281",
+                            backgroundColor:"#ec9281",
+                            color: "#ffffff",
+                        }}
+                    >
                         주소검색
                     </Button>
                 </div>
-
-                <p>상세주소 : 
+                <div className="user-blankContent">
                     <input 
-                        id="addressDetail"
-                        name="addressDetail"
-                        type="addressDetail"
-                        onChange={handleModifyAdrsInfo} 
-                        value={modifyAdrs.addressDetail}
+                        type="text"
+                        name="addressDetail" 
+                        className="user-textbox"
+                        // placeholder="상세주소입력" 
+                        value={userInfo.addressDetail}
+                        style={{fontSize: 16,fontWeight: 500, outline:"none", border:"none", font: "small-caption", width:"100%"}}
+                        onChange={handleModifyAdrsInfo}
                     />
-                </p>
+                    {/* {modifyAdrs.addressDetail} */}
+                </div>
             </div>
             {/* <button type="button" onClick={modifyInfo}>수정하기</button>    */}
-            <button type="button" onClick={saveModifyInfo}>저장</button>   
-            <button type="button" onClick={removeInfo}>삭제</button>   
-
+            <div style={{display:"inline-flex", width:"100%"}}>
+                <div 
+                    type="button" 
+                    style={{ 
+                        width:"50%",
+                        height: 52,
+                        display:"flex", 
+                        justifyContent:"center", 
+                        alignItems:"center", 
+                        borderRadius: 6, 
+                        backgroundColor: "#ffffff",
+                        fontSize: 17,
+                        border:"1px solid #cccccc",
+                        color: "#565656",
+                        marginRight: 8
+                    }}
+                    onClick={removeInfo}
+                >
+                    삭제
+                </div>
+                <div 
+                    type="button" 
+                    style={{ 
+                        width:"50%",
+                        height: 52,
+                        display:"flex", 
+                        justifyContent:"center", 
+                        alignItems:"center", 
+                        borderRadius: 6, 
+                        backgroundColor: "#ec9281",
+                        fontSize: 17,
+                        color: "#ffffff",
+                        // margin:"8px 10px 6px 10px"
+                    }}
+                    onClick={saveModifyInfo}
+                >
+                    저장
+                </div>
+            </div>
             {/* 모달 주소검색 확인 */}
             <Modal 
                 show={addShow} 
@@ -198,6 +270,7 @@ const AddressForm = ({
                 <Modal.Footer>
                 </Modal.Footer>
             </Modal>   
+            </div>
         </>
     );
 };
