@@ -1,7 +1,5 @@
 import React from 'react';
 import { withRouter } from "react-router-dom";
-// import { useDispatch, useSelector } from 'react-redux';
-// import { logoutUser } from '../actions/userAction'
 
 const Logout = (props) => {
     //첫번째 파라미터 = "state=> state.out" = map state같은 
@@ -10,25 +8,30 @@ const Logout = (props) => {
     // const dispatch = useDispatch();
 
     const onClickHandler = () =>{
-        // dispatch(logoutUser())
         localStorage.removeItem("user");
         props.history.push("/")
-
         console.log("localStorage-logout")
         console.log(localStorage)
-        // .then((response)=>{
-        //     if(response.payload.success !== false){
-        //     }
-        // })
-        // .catch((error)=>{
-        //     alert(error.response.data.error.message)
-        // })
     }
-
     return (
         <>
             <div>
-                <button type="button" onClick={onClickHandler}>Logout</button>
+                <button 
+                    type="button" 
+                    style={{
+                        borderRadius: 24, 
+                        width:"100%",
+                        border:"none",
+                        backgroundColor:"#ffffff",
+                        padding:"8px 0 8px 0",
+                        fontSize: 16,
+                        color: '#000000',
+                        // margin:"0 10px 0 10px",
+                    }} 
+                    onClick={onClickHandler}
+                >
+                    로그아웃
+                </button>
             </div>
         </>
     );

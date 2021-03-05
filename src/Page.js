@@ -36,7 +36,7 @@ import AdrsManage from './components/user/AdrsManage'
 // import AdrsDetailList from './components/user/AdrsDetailList'
 import CheckPw from './components/user/CheckPw'
 import ChangeProfile from './components/user/ChangeProfile'
-
+import Point from './components/user/Point'
 
 const Page = () => {
     return (
@@ -76,6 +76,7 @@ const Page = () => {
                 <Route path="/newAddress" component={NewAddress} />
                 <Route path="/adrsManage" component={AdrsManage} />
                 {/* <Route path="/adrsDetailList" component={AdrsDetailList} /> */}
+                <Route path="/point" component={Point} />
 
                 <Route path="/checkPw" component={CheckPw} />
                 <Route path="/changeProfile" component={ChangeProfile} />

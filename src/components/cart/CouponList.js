@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import authHeader from "../../actions/userAction"
+// import "./cart.css";
+import "../remote.css"
 
 const CouponList = ({history}) => {
     const couponUrl = "https://childsnack-test.appspot.com/_ah/api/user/v1/getCoupons"
@@ -22,7 +24,10 @@ const CouponList = ({history}) => {
     return (
         <>
             <div>
-                <h1>쿠폰</h1>
+                <div className="info-topicArea">
+                    <a href="./mypage"><button>뒤로</button></a>
+                    <div className="info-topic">쿠폰함</div>
+                </div>
                 <button type="button" onClick={goBack}>뒤로가기</button>
                 <div style={{height:300, border:"1px solid"}}>
 

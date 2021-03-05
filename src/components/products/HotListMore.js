@@ -1,7 +1,7 @@
 import axios from "axios"
 import React,{useEffect, useState} from 'react';
 import HotListDetail from "./HotListDetail"
-
+import "../remote.css"
 
 const HotListMore = () => {
 
@@ -22,7 +22,8 @@ const HotListMore = () => {
                     newItems.distributor,
                     newItems.description,
                     newItems.price,
-                    newItems.reviewPoint,
+                    newItems.retailPrice,
+                    newItems.reviewPoint.toFixed(1),
                     newItems.reviewCount
                 )
             }))
@@ -31,15 +32,20 @@ const HotListMore = () => {
     },[])
     console.log(hotList)
 
-    function makeHotList(distributor,description,price,reviewPoint,reviewCount){
+    function makeHotList(distributor,description,price,reviewPoint,reviewCount,retailPrice){
         return(
             <>
                 <div className="newListText">
                     <p className="newListCompany">{distributor}</p>
                     <p className="newListDescription">{description}</p>
-                    <p className="newListPrice">{price}</p>
-                    <p className="newListreviewPoint">{reviewPoint}</p>
-                    <p className="newList">{reviewCount}</p>
+                    <div style={{display:"flex"}}>
+                        <p className="newListPrice">{price}</p>
+                        <p className="newListRetailPrice">{retailPrice}</p>
+                    </div>
+                    <div style={{display:"flex"}}>
+                        <p className="newListreviewPoint">별 : {reviewPoint}</p>
+                        <p className="newList">리뷰 : {reviewCount}</p>
+                    </div>
                 </div>
             </>
         )
@@ -47,14 +53,19 @@ const HotListMore = () => {
 
     return (
         <>
-            <h3>인기상품 리스트</h3>
-            <div>
-                <HotListDetail 
-                data={hotList}
-                containerCss="itemContainer"
-                contentCss="contentLayout"
-                imgCss="imgLayout"
-                />
+            <div className="info-lightTopicArea">
+                <a href="./"><button>뒤로</button></a>
+                <div className="info-topic">인기상품</div>
+            </div>
+            <div style={{padding:"28px 0 52px 0"}}>
+                <div style={{display:"flex",width:"100%",textAlign:"center"}}>
+                    <HotListDetail 
+                    data={hotList}
+                    containerCss="itemContainer"
+                    contentCss="contentLayout"
+                    imgCss="imgLayout"
+                    />
+                </div>
             </div>
         </>
     );

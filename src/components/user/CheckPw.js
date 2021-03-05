@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React,{useEffect,useState} from 'react';
 import authHeader from "../../actions/userAction"
-import "./userinfo.css"
 import { useDispatch } from 'react-redux';
 import { loginUser } from "../../actions/userAction"
+import "./userinfo.css"
+import "../remote.css"
 
 const CheckPw = ({history}) => {
 

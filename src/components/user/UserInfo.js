@@ -2,10 +2,10 @@ import axios from 'axios';
 import { withRouter} from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import authHeader from "../../actions/userAction"
-import "./userinfo.css"
 import DaumPostcode from 'react-daum-postcode';
 import { useDispatch } from 'react-redux';
-
+import "./userinfo.css"
+import "../remote.css"
 
 const UserInfo = ({props,history}) => {
     const userInfomation = "https://childsnack-test.appspot.com/_ah/api/user/v1/getAccount"
@@ -161,8 +161,8 @@ const UserInfo = ({props,history}) => {
                                         </a>
                                     </div>
                                     <hr className="info-boldLine" />
-                                    <a href="./myPage"><button>마이페이지</button></a>
-                                    <button type="button" onClick={handleClickEvent}>수정하기</button>
+                                    {/* <a href="./myPage"><button>마이페이지</button></a>
+                                    <button type="button" onClick={handleClickEvent}>수정하기</button> */}
                                 </>
                             )
                         }
