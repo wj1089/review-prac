@@ -1,40 +1,40 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// import React from 'react';
+// import PropTypes from 'prop-types';
 
-const CategoryDetail = ({
- data,containerCss,contentCss,imgCss
-}) => {
+// const CategoryDetail = ({
+//  data,containerCss,contentCss,imgCss
+// }) => {
 
 
-    return (
-        <>
-            {data.map((category)=>(
-                <a href={`/categoryMore?id=${category.id}`}>
-                    <div className={containerCss}>
-                        <div className={contentCss}>
-                            <img className={imgCss} src={category.img} alt={category.id} />
-                            {category.name}
-                        </div>
-                    </div>
-                </a>
-            ))
-            }
-        </>
-    );
-};
+//     return (
+//         <>
+//             {data.map((category)=>(
+//                 <a href={`/categoryMore?id=${category.id}`}>
+//                     <div className={containerCss}>
+//                         <div className={contentCss}>
+//                             <img className={imgCss} src={category.img} alt={category.id} />
+//                             {category.name}
+//                         </div>
+//                     </div>
+//                 </a>
+//             ))
+//             }
+//         </>
+//     );
+// };
 
-export default CategoryDetail;
-CategoryDetail.propTypes={
-    data:PropTypes.arrayOf(PropTypes.object),
-    containerCss: PropTypes.string,
-    contentCss: PropTypes.string,
-    imgCss: PropTypes.string
-}
+// export default CategoryDetail;
+// CategoryDetail.propTypes={
+//     data:PropTypes.arrayOf(PropTypes.object),
+//     containerCss: PropTypes.string,
+//     contentCss: PropTypes.string,
+//     imgCss: PropTypes.string
+// }
 
-PropTypes.defaultType= {
-    data:[],
-    containerCss:"categoryContainer",
-    contentCss:"categoryContent",
-    imgCss:"categoryImg"
-}
+// PropTypes.defaultType= {
+//     data:[],
+//     containerCss:"categoryContainer",
+//     contentCss:"categoryContent",
+//     imgCss:"categoryImg"
+// }
 

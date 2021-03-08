@@ -294,7 +294,9 @@ const Home = () => {
                             <div style={{ width:"100%",height: 70, border:"1px solid",display:"flex", padding:" 20px 0 0 20px"}}>
                                 <h3>신상품</h3>
                                 <a href="./newArrive">
-                                    <button type="button" style={{float:'right'}} >더보기</button>
+                                    <button type="button" style={{float:'right'}} >
+                                        더보기 
+                                    </button>
                                 </a>
                             </div>
                             <div style={{display:"flex", alignContent:"center",justifyContent:"center", height:400, border:"1px solid",textAlign:"center"}}>

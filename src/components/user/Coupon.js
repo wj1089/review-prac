@@ -62,8 +62,15 @@ const Coupon = ({history}) => {
         <>
             <div>
                 <div className="info-lightTopicArea">
-                    <a href="./mypage"><button>뒤로</button></a>
+                    <a href="./mypage">
+                        <div>
+                            <i class="fas fa-arrow-left" 
+                                style={{outline:"none", textDecoration:"none"}}
+                            />
+                        </div>
+                        </a>
                     <div className="info-topic">쿠폰함</div>
+                    <div type="button" />
                 </div>
                 <div style={{padding:"0 0 52px 0"}}>
                     <div style={{display:"flex",width:"100%",textAlign:"center"}}>

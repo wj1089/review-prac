@@ -10,6 +10,13 @@ p{
     margin: 0;
     
 }
+
+.banerLogo{
+    width: 93.8px;
+    height: 18.5px;
+}
+
+
 /* 굵은 선 메뉴 */
 .info-bigTitleArea{
     display: flex;
@@ -46,8 +53,9 @@ p{
 /* 얇은 선 메뉴 */
 .info-lightTopicArea{
     display: flex;
-    justify-content: center;
-    padding: 16px 0 16px 0.5px;
+    /* justify-content: center; */
+    justify-content: space-between;
+    padding: 16px;
     background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
 }

@@ -1,9 +1,8 @@
-import React, { useRef, useState,useEffect } from 'react';
+import React, { useRef, useState} from 'react';
 import Logout from '../log/Logout';
-import authHeader from "../../actions/userAction"
-import "./navi.css";
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+import DownNav from "../navi/DownNav"
+import "./navi.css";
 
 const Navbar = ({history},data) => {
 
@@ -69,22 +68,22 @@ const Navbar = ({history},data) => {
         }else{
           history.push(`./cart`)
         }
-          // axios
-          // .get(cartHistory, {headers: authHeader()})
-          // .then((response)=>{
-          //     console.log("장바구니 진입")
-          //     console.log(response)
-          //     const demo = response.data.items.map((item)=>(item.cartId))
-          //       history.push(`./cart?id=${demo.cartId}`)
-          //       console.log(demo)
-          // })
-          // .catch((error)=>{
-          //   console.log("error log")
-          //   console.log(error)
-          // })
       }
     }
-
+    
+    // axios
+    // .get(cartHistory, {headers: authHeader()})
+    // .then((response)=>{
+    //     console.log("장바구니 진입")
+    //     console.log(response)
+    //     const demo = response.data.items.map((item)=>(item.cartId))
+    //       history.push(`./cart?id=${demo.cartId}`)
+    //       console.log(demo)
+    // })
+    // .catch((error)=>{
+    //   console.log("error log")
+    //   console.log(error)
+    // })
     return (
         <>
           <div className="nav-bar" style={{width:"100%"}}>
@@ -93,7 +92,10 @@ const Navbar = ({history},data) => {
                       <div style={{width:"100%"}}>
                           <h1 style={{float:"left"}}>Before Login Page</h1>
                           {/* <button style={{float:"right"}} onClick={submitForm}>로그인</button> */}
-                          <button type="button" onClick={handleCertificate}>카트</button>
+                          <button type="button" onClick={handleCertificate}>
+                            카트
+                            <span class="material-icons">shopping_cart</span>
+                          </button>
                       </div>
                   </>
               )}
@@ -106,7 +108,10 @@ const Navbar = ({history},data) => {
                           <div style={{float:"right", display:"flex"}}>
                               {/* <a href="/mypage"><button >마이페이지</button></a> */}
                               <Logout />
-                              <button type="button" onClick={handleCertificate}>카트</button>
+                              <button type="button" onClick={handleCertificate}>
+                                카트
+                                <span class="material-icons">shopping_cart</span>
+                              </button>
                           </div>
                       </div>
                   </>

@@ -1,9 +1,10 @@
 import axios from "axios"
 import React,{useEffect, useState} from 'react';
 import HotListDetail from "./HotListDetail"
+import DownNav from "../navi/DownNav"
 import "../remote.css"
 
-const HotListMore = () => {
+const HotListMore = ({history}) => {
 
     const getAllList = "https://childsnack-test.appspot.com/_ah/api/category/v1/getAllList"
 
@@ -50,23 +51,48 @@ const HotListMore = () => {
             </>
         )
     }
+    //장바구니 버튼
+    const [cart, setCart] = useState(true)
+    const ticket = localStorage.getItem("user")
+
+    const handleCertificate =() =>{
+        if(cart === true){
+          if(ticket === null){
+            alert("로그인을 먼저 진행해주세요")
+            history.push('./login')
+            return
+          }else{
+            history.push(`./cart`)
+          }
+        }
+      }
 
     return (
         <>
             <div className="info-lightTopicArea">
-                <a href="./"><button>뒤로</button></a>
+                <a href="./">
+                    <div>
+                        <i class="fas fa-arrow-left" 
+                            style={{outline:"none", textDecoration:"none"}}
+                        />
+                    </div>
+                </a>
                 <div className="info-topic">인기상품</div>
+                <div type="button" onClick={handleCertificate}>
+                    <span class="material-icons">shopping_cart</span>
+                </div>
             </div>
             <div style={{padding:"28px 0 52px 0"}}>
                 <div style={{display:"flex",width:"100%",textAlign:"center"}}>
                     <HotListDetail 
-                    data={hotList}
-                    containerCss="itemContainer"
-                    contentCss="contentLayout"
-                    imgCss="imgLayout"
+                        data={hotList}
+                        containerCss="itemContainer"
+                        contentCss="contentLayout"
+                        imgCss="imgLayout"
                     />
                 </div>
             </div>
+            <DownNav />
         </>
     );
 };

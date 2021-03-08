@@ -1,10 +1,53 @@
 .categoryContainer{
-width: 300px;
-border: 1px solid;
+    display: flex;
+    border: 1px solid;
+    padding: 0 24px 0 24px;
+    margin: 0 8px 8px 0;
+    float: left;
 }
 .categoryContent{
-
+    width: 110px;
+    border: 1px solid;
+    text-align: center;
+    padding: 0 0 16px 0;
 }
 .categoryImg{
-width: 300px;
+    width: 110px;
+    height: 94px;
+    border: 1px solid;
+
 }
+
+/* categoryDetail */
+.cateItemContainer{
+
+}
+
+
+.open {
+    color: blue;
+    background-color: lightpink;
+}
+
+.notOpen {
+    color: lightgray;
+    background-color: cadetblue;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

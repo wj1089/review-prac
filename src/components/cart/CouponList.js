@@ -25,7 +25,13 @@ const CouponList = ({history}) => {
         <>
             <div>
                 <div className="info-topicArea">
-                    <a href="./mypage"><button>뒤로</button></a>
+                    <a href="./mypage">
+                        <div>
+                            <i class="fas fa-arrow-left" 
+                                style={{outline:"none", textDecoration:"none"}}
+                            />
+                        </div>
+                    </a>
                     <div className="info-topic">쿠폰함</div>
                 </div>
                 <button type="button" onClick={goBack}>뒤로가기</button>

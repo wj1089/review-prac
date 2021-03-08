@@ -1,14 +1,19 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import CategoryDetail from './CategoryDetail';
+import PropTypes from 'prop-types';
+import "./category.css"
 
-const CategoryMore = ({history}) => {
+const CategoryMore = ({
+    history, 
+    containerCss,
+    contentCss,
+    imgCss
+}) => {
 
-    const categoryAllUrl = "https://childsnack-test.appspot.com/_ah/api/category/v1/getList?id=";
-    const [cateList, setCateList] = useState([])
-    // const [cateList, setCateList] = useState([])
-    // const [cateList, setCateList] = useState([])
-
+    const categoryAllUrl = "https://childsnack-test.appspot.com/_ah/api/category/v1/getList?id=6242045807034368";
+    
+    const [categoryList, setCategoryList] = useState([])
     const query = window.location.search
     const urlParams = new URLSearchParams(query)
     const getId = urlParams.get('id')
@@ -20,110 +25,59 @@ const CategoryMore = ({history}) => {
 
     useEffect(()=>{
         axios
-        .get(categoryAllUrl+getId)
+        .get(categoryAllUrl)
         .then((response)=>{
             console.log("get id list 들어옴")
-            console.log(response)
+            console.log(response.data)
             const listArr = []
-            // const shippingFee = response.data.items.products.shippingCompany.shippingFee
-            response.data.items[0].products.map((category)=>listArr.push({
-                id:category.productId,
-                // cateId: category.categoryId,
-                // fullNo:category.fullNo,
-                // fullName:category.fullName,
-                name:category.name,
-                mainDisplay:category.mainDisplay,
-                content:makeCategoryElement(
-                    category.thumnail,
-                    category.distributor,
-                    category.name,
-                    category.retailPrice,
-                    category.price,
-                    category.reviewCount,
-                    category.reviewPoint,
-                )
-            }))
-            setCateList(listArr)
-
-            // response.data.items[1].products.map((category)=>listArr.push({
-            //     id: category.categoryId,
-            //     fullName:category.fullName,
-            //     name:category.name,
-            //     mainDisplay:category.mainDisplay,
-            //     // content:makeCategoryElement(
-            //     //     category.products.thumnail,
-            //     //     category.products.distributor,
-            //     //     category.products.name,
-            //     //     category.products.retailPrice,
-            //     //     category.products.price,
-            //     //     category.products.reviewCount,
-            //     //     category.products.reviewPoint,
-            //     // )
-            // }))
-            // setCateList(listArr)
-
-            // response.data.items[2].products.map((category)=>listArr.push({
-            //     id: category.categoryId,
-            //     fullName:category.fullName,
-            //     name:category.name,
-            //     mainDisplay:category.mainDisplay,
-            //     content:makeCategoryElement(
-            //         category.products.thumnail,
-            //         category.products.distributor,
-            //         category.products.name,
-            //         category.products.retailPrice,
-            //         category.products.price,
-            //         category.products.reviewCount,
-            //         category.products.reviewPoint,
-            //     )
-            // }))
-            // setCateList(listArr)
+            response.data.items.map((data)=>{
+                if(data.depth === 1){
+                    listArr.push({ 
+                        categoryId : data.categoryId,
+                        name : data.name,
+                        fullName: data.fullName,
+                        products : data.products
+                    })
+                }
+            })
+            setCategoryList(listArr)
+            // setDepth(depths)
         })
     },[])
-    console.log("cateList")
-    console.log(cateList)
-
-    function makeCategoryElement(thumnail,distributor,name,retailPrice,price,reviewCount,reviewPoint){
-        return(
-            <>
-                <div>
-                    <div className="category-thumnail">{thumnail}</div>
-                    <p className="category-distributor">{distributor}</p>
-                    <p className="category-name">{name}</p>
-
-                    <div style={{display:"flex"}}>
-                        <p className="category-retailPrice">{retailPrice}</p>
-                        <p className="category-price">{price}</p>
-                    </div>
-
-                    <div style={{display:"flex"}}>
-                        <p className="category-reviewCount">{reviewCount}</p>
-                        <p className="category-reviewPoint">{reviewPoint}</p>
-                    </div>
-                </div>
-            </>
-        )
-    }
-
+    
+    console.log("categoryList")
+    console.log(categoryList)
 
     return (
         <>
             <div>
                 <button type="button" onClick={goBack}>뒤로가기</button>
-                category More
-                <div style={{border:"1px solid", width:500}}>
-                    <h1>{cateList.name}</h1>
-                    <h3>{cateList.fullName}</h3>
-                    <CategoryDetail 
-                        data={cateList}
-                        containerCss="itemContainer"
-                        contentCss="contentLayout"
-                        imgCss="imgLayout"
-                    />
+                    category More
+                <div style={{border:"1px solid", display:"flex"}}>
+                    {/* <div>{categoryList}</div> */}
+
+
                 </div>
-            </div>
-        </>
-    );
-};
+                </div>
+            </>
+        );
+    };  
+
+
+                    
 
 export default CategoryMore;
+
+CategoryDetail.propTypes ={
+    data: PropTypes.arrayOf(PropTypes.object),
+    containerCss : PropTypes.string,
+    contentCss : PropTypes.string,
+    imgCss: PropTypes.string,
+}
+
+PropTypes.defaultType = {
+    data :[],
+    containerCss : 'cateItemContainer',
+    contentCss : 'contentLayout',
+    imgCss : 'imgLayout'
+}

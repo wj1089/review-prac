@@ -32,8 +32,15 @@ const OrderHistory = () => {
         <>
             <div>
                 <div className="info-lightTopicArea">
-                    <a href="./userinfo"><button>뒤로</button></a>
+                    <a href="./mypage">
+                        <div>
+                            <i class="fas fa-arrow-left" 
+                                style={{outline:"none", textDecoration:"none"}}
+                            />
+                        </div>
+                    </a>
                     <div className="info-topic">주문내역</div>
+                    <div/>
                 </div>
                 <div style={{padding:"28px 16px 52px 16px"}}>
                     {orderList.length === 0?

@@ -17,7 +17,7 @@ const ProductDetail = ({history}) => {
     const urlParams = new URLSearchParams(query)
     const getId = urlParams.get('id')
 
-    const [toggle, setToggle] = useState(1)
+    const [toggle, setToggle] = useState(0)
     const [count, setCount] = useState(0)
     const [infoMenu, setInfoMenu] = useState([])
     const [option, setOption] = useState([])
@@ -226,22 +226,21 @@ const ProductDetail = ({history}) => {
                             <p>제주, 도서지역 추가 3,000원</p>
                         {/* <p>{infoMenu.addressInfo}</p> */}
                         </div>
-
                     </div>
 
                     <div style={{width:"100%"}}>
                         <div style={{ display:"flex",width:"100%"}}>
-                            <div style={{width:100}}  type="button" id="productExplain" className={toggle === 1?"able":"disable"} onClick={()=>onClickDetailInfo(1)}>상품설명</div>
-                            <div style={{width:100}}  type="button" id="productInfo" className={toggle === 2?"able":"disable"} onClick={()=>onClickDetailInfo(2)}>상세정보</div>
-                            <div style={{width:100}}  type="button" id="review"  className={toggle === 3?"able":"disable"} onClick={()=>onClickDetailInfo(3)}>리뷰</div>
+                            <div style={{width:100}}  type="button" id="productExplain" className={toggle === 0?"able":"disable"} onClick={()=>onClickDetailInfo(1)}>상품설명</div>
+                            <div style={{width:100}}  type="button" id="productInfo" className={toggle === 1?"able":"disable"} onClick={()=>onClickDetailInfo(2)}>상세정보</div>
+                            <div style={{width:100}}  type="button" id="review"  className={toggle === 2?"able":"disable"} onClick={()=>onClickDetailInfo(3)}>리뷰</div>
                         </div>
                         <div>
-                            {toggle === 1 &&(
+                            {toggle === 0 &&(
                                 <>
                                     <img src={infoMenu.detailImg} alt={infoMenu.productId} />
                                 </>
                             )}
-                            {toggle === 2 &&(
+                            {toggle === 1 &&(
                                 <>
                                     <p><b>필수표기정보</b><br />
                                     {infoMenu.serviceInfo}</p>
@@ -256,7 +255,7 @@ const ProductDetail = ({history}) => {
                                     {infoMenu.exchangeInfo}</p>
                                 </>
                             )}
-                            {toggle === 3 &&(
+                            {toggle === 2 &&(
                                 <>
                                     <h1>리뷰</h1>
                                     <div style={{ display:"flex",width:"100%",justifyContent:"center"}}>
@@ -310,11 +309,6 @@ const ProductDetail = ({history}) => {
                     <Modal.Footer>
                     </Modal.Footer>
                 </Modal>   
-
-
-
-
-
             </div>  
         </>
     );

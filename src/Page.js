@@ -15,7 +15,7 @@ import UserInfo from './components/user/UserInfo';
 import MyPage from './components/user/MyPage';
 import Notice from './components/user/Notice';
 import OrderHistory from './components/user/OrderHistory';
-import RvCenter from './components/review/RvCenter';
+import RvCenter from './components/user/RvCenter';
 import EventCenter from './components/event/EventCenter';
 import Coupon from './components/user/Coupon';
 import Category from './components/categorys/Category';
@@ -32,11 +32,13 @@ import ChangeAdrs from './components/cart/ChangeAdrs'
 import CouponList from './components/cart/CouponList'
 import AddressForm from './components/cart/AddressForm'
 import NewAddress from './components/cart/NewAddress'
+import NewReview from './components/user/NewReview'
 import AdrsManage from './components/user/AdrsManage'
 // import AdrsDetailList from './components/user/AdrsDetailList'
 import CheckPw from './components/user/CheckPw'
 import ChangeProfile from './components/user/ChangeProfile'
 import Point from './components/user/Point'
+import OrderCancel from './components/user/OrderCancel';
 
 const Page = () => {
     return (
@@ -66,6 +68,8 @@ const Page = () => {
 
                 <Route path="/reviewMore" component={ReviewMore} />
                 <Route path="/newArrive" component={NewArrive} />
+                <Route path="/newReview" component={NewReview} />
+
                 <Route path="/hotListMore" component={HotListMore} />
                 <Route path="/storyMore" component={StoryMore} />
                 <Route path="/eventMore" component={EventMore} />
@@ -80,6 +84,7 @@ const Page = () => {
 
                 <Route path="/checkPw" component={CheckPw} />
                 <Route path="/changeProfile" component={ChangeProfile} />
+                <Route path="/orderCancel" component={OrderCancel} />
 
             </Switch>
         </>
