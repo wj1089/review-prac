@@ -65,19 +65,18 @@ const Category = ({history,containerCss,contentCss,imgCss}) => {
                     </div>
                 </div>
 
-                <div style={{padding:"28px 16px 38px 16px",border:"1px solid"}}>
-                    <div type="button" style={{textAlign:"right", width:"100%"}}>
-                        <a href="./totalProducts">
-                            <h>전체 상품보기</h>
-                        </a>
-                    </div>
-                    <div>
+                <div style={{padding:"28px 16px 38px 16px",border:"1px solid", 
+                            width:"100%",textAlign:"center"}}>
+                    <a href="./totalProducts">
+                        <div type="button" style={{fontSize: 14, color: "#000000",marginBottom:13,textAlign:"right", width:"100%"}}>전체 상품보기</div>
+                    </a>
+                    <div style={{width:"100%"}}>
                         {category.map((category)=>(
                             <a href={`/categoryMore?id=${category.categoryId}`}>
                                 <div className="categoryContainer">
                                     <div className="categoryContent">
                                         <img className="categoryImg" src={category.thumbnail} alt={category.categoryId} />
-                                        <div>{category.name}</div>
+                                        <div style={{fontSize: 16,color: "#000000",fontWeight: 500 }}>{category.name}</div>
                                     </div>
                                 </div>
                             </a>
@@ -85,6 +84,7 @@ const Category = ({history,containerCss,contentCss,imgCss}) => {
                         }
                     </div>
                 </div>
+
                 <DownNav/>
             </div>
         </>

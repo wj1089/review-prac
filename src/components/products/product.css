@@ -3,47 +3,38 @@
     overflow: hidden;
 }
 .contentLayout{
-    /* border: 1px solid; */
-    /* height: 40px; */
     margin: 0 4px 32px 4px;
     float: left;
 }
 .imgLayout{
     height: 162px;
     width: 162px;
-    /* width: 100%; */
-    /* border: 1px solid; */
     text-align: left;
 }
 
 .item-container{
+    position: relative;
     width: 162px;
     height: 150px;
-    position: relative;
-    /* border: 1px solid; */
     margin: 0;
+    
     float: left;
-
 }
 
 .productZone{
-    /* width: 360px; */
     height: 100%;
     display: flex;
-    /* border: 1px solid; */
     justify-content: center;
     align-items: center;
 }
 
 .slide-area{
     position: absolute;
-    /* width: 360px; */
     height :250px;
     border: 1px solid;
     overflow: hidden;
 }
 .show-slide{
-    /* width: 1000px; */
     display: flex;
     height: 100%;
     overflow: hidden;
@@ -67,7 +58,6 @@
     width: 100%;
 
 }
-
 
 .newListDescription{
     overflow: hidden;

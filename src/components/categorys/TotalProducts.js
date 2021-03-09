@@ -56,12 +56,37 @@ const TotalProducts = ({history}) => {
         history.goBack();
     }
 
+    //장바구니 버튼
+    const [cart, setCart] = useState(true)
+    const ticket = localStorage.getItem("user")
+
+    const handleCertificate =() =>{
+        if(cart === true){
+        if(ticket === null){
+            alert("로그인을 먼저 진행해주세요")
+            history.push('./login')
+            return
+        }else{
+            history.push(`./cart`)
+        }
+        }
+    }
 
     return (
         <>
             <div style={{width:500, border:"1xp solid"}}>
-                <h1>Total Products</h1>
-                <button type="button" onClick={goBack}>뒤로가기</button>
+                <div className="info-lightTopicArea">
+                    <a href="./category">
+                        <div>
+                            <i class="fas fa-arrow-left"  style={{outline:"none", textDecoration:"none"}}/>
+                        </div>
+                    </a>
+                    <div className="info-topic">전체상품</div>
+                    <div type="button" onClick={handleCertificate}>
+                        <span class="material-icons">shopping_cart</span>
+                    </div>
+                </div>
+
                 <div>
                     <CategoryDetail
                         data={productTotal}
@@ -70,6 +95,7 @@ const TotalProducts = ({history}) => {
                         imgCss="categoryImg"
                     />
                 </div>
+
             </div>
         </>
     );
